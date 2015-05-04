@@ -16,7 +16,7 @@ public class CustomFragment extends android.support.v4.app.Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.custom_layout, container, false);
+        view = inflater.inflate(R.layout.list_item, container, false);
 
         return view;
     }
