@@ -11,7 +11,7 @@ public class Student {
     private String email;
     //private Byte[] image;
 
-    public Student(String email, String phone, BirthDate birthDate, String surname, String name) {
+    public Student(String name, String surname, BirthDate birthDate, String phone, String email) {
         this.email = email;
         this.phone = phone;
         this.birthDate = birthDate;

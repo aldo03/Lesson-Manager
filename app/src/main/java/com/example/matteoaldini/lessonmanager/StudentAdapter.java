@@ -1,10 +1,13 @@
 package com.example.matteoaldini.lessonmanager;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -38,10 +41,18 @@ public class StudentAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        /*LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = inflater.inflate(R.layout.rowcustom, null);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = inflater.inflate(R.layout.list_item, null);
         TextView name = (TextView)convertView.findViewById(R.id.name);
-        name.setText(studentList.get(position).getName()+" "+studentList.get(position).getSurname());*/
+        name.setText(studentList.get(position).getName()+" "+studentList.get(position).getSurname());
+        this.roundedImage(convertView);
         return convertView;
+    }
+
+    private void roundedImage(View convertView){
+        ImageView imageView1 = (ImageView) convertView.findViewById(R.id.person);
+        Bitmap bm = BitmapFactory.decodeResource(convertView.getResources(), R.drawable.person);
+        RoundImage roundedImage = new RoundImage(bm);
+        imageView1.setImageDrawable(roundedImage);
     }
 }

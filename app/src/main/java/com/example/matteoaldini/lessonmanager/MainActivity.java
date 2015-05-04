@@ -6,12 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 
-import com.example.matteoaldini.lessonmanager.SlidingBar.SlidingTabLayout;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.example.matteoaldini.lessonmanager.material_design.SlidingTabLayout;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -19,8 +15,6 @@ public class MainActivity extends ActionBarActivity {
     private ViewPager pager;
     private TabAdapter tabAdapter;
     private SlidingTabLayout tabs;
-    private StudentAdapter studAdapter;
-    private ListView list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,24 +44,7 @@ public class MainActivity extends ActionBarActivity {
 
         // Setting the ViewPager For the SlidingTabsLayout
         this.tabs.setViewPager(pager);
-
-        this.studAdapter = new StudentAdapter(this, this.generateStudents());
-        this.list = (ListView) findViewById(R.id.listView);
-        this.list.setAdapter(this.studAdapter);
     }
-
-
-    private List<Student> generateStudents(){
-        List<Student> list = new ArrayList<>();
-        BirthDate b1 = new BirthDate(3,3,2001);
-        BirthDate b2 = new BirthDate(5,6,2004);
-        BirthDate b3 = new BirthDate(7,10,2000);
-        list.add(new Student("Matteo","Aldini",b1,"33334343","matteo.aldini@gmail.com"));
-        list.add(new Student("Brando","Mordenti",b2,"3455645646","brando.mordenti@gmail.com"));
-        list.add(new Student("Filippo","Berlini",b3,"322446463","filippo.berlini@gmail.com"));
-        return list;
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

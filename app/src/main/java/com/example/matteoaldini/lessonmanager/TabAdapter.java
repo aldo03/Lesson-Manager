@@ -14,7 +14,7 @@ public class TabAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
-        CustomFragment fragment = new CustomFragment();
+        StudentListFragment fragment = new StudentListFragment();
         return fragment;
     }
 

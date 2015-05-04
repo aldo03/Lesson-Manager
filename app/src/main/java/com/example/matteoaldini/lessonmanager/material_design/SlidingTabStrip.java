@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.matteoaldini.lessonmanager.SlidingBar;
+package com.example.matteoaldini.lessonmanager.material_design;
 
 import android.R;
 import android.content.Context;

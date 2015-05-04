@@ -3,19 +3,25 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:paddingBottom="25dp"
+        android:paddingTop="25dp"
+        android:paddingLeft="30dp">
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_launcher"
-            android:layout_alignParentLeft="true"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/person"
+            android:scaleType="centerCrop"
+            android:id="@+id/person"
 
-        />
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -23,14 +29,16 @@
             android:id="@+id/name"
             android:fontFamily="Roboto Regular"
             android:textSize="17dp"
-            android:layout_alignParentRight="true"
             android:text="Clodoaldo Aldini"
             android:clickable="true"
-            android:paddingTop="35dp"
-            android:paddingLeft="10dp"/>
+            android:paddingLeft="30dp"
+            android:textColor="#ff130002"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/person"
+            android:layout_toEndOf="@+id/person" />
 
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
 
