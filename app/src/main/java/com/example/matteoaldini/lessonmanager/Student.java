@@ -9,6 +9,7 @@ public class Student {
     private BirthDate birthDate;
     private String phone;
     private String email;
+    //private Byte[] image;
 
     public Student(String email, String phone, BirthDate birthDate, String surname, String name) {
         this.email = email;
