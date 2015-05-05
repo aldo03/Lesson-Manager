@@ -1,4 +1,4 @@
-package com.example.matteoaldini.lessonmanager;
+package com.example.matteoaldini.lessonmanager.material_design;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
