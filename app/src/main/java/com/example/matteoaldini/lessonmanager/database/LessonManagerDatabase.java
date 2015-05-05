@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.matteoaldini.lessonmanager.MyTime;
 import com.example.matteoaldini.lessonmanager.Student;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +34,11 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     private static final String DATE_TIME_START = "datelesson";
     private static final String DURATION = "duration";
+    private static final String LESSON_FREQUENCY = "lesson_frequency";
     private static final String ID_LESSON = "id_lesson";
     private static final String LESSON_STUDENT = "lesson_student";
+    private static final String LESSON_PRESENT = "lesson_present";
+    private static final String LESSON_PAID = "lesson_paid";
 
 
 
@@ -43,7 +48,8 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     private static final String CREATE_LESSON_TABLE =
             "CREATE TABLE " + LESSONS_TABLE + " (" + ID_LESSON + " INTEGER PRIMARY KEY,"
-                    + DATE_TIME_START + " TEXT," + DURATION + " INTEGER," + LESSON_STUDENT + " INTEGER, FOREIGN KEY("
+                    + DATE_TIME_START + " TEXT," + DURATION + " INTEGER," + LESSON_PRESENT + " INTEGER,"
+                    + LESSON_FREQUENCY + " INTEGER," + LESSON_PAID + " INTEGER,"+ LESSON_STUDENT + " INTEGER, FOREIGN KEY("
                     + LESSON_STUDENT +") REFERENCES " + STUDENTS_TABLE + " (" + ID_STUDENT +")";
 
     public LessonManagerDatabase(Context context) {
@@ -102,7 +108,21 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         return students;
     }
 
-    public void insertNewLesson(){
+    public boolean insertNewLesson(Student s, CalendarDay day, MyTime time, Integer duration,
+                                   boolean paid, boolean present, Integer frequency){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DATE_TIME_START, day.toString()+" "+time.toString());
+        values.put(DURATION, duration);
+        values.put(LESSON_FREQUENCY, frequency);
+        values.put(LESSON_STUDENT, s.getId());
+        values.put(LESSON_PRESENT, present);
+        values.put(LESSON_PAID, paid);
 
+        long result = db.insert(LESSONS_TABLE, null, values);
+
+        if (result == -1)
+            return false;
+        return true;
     }
 }
