@@ -1,5 +1,6 @@
 package com.example.matteoaldini.lessonmanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -16,10 +17,11 @@ import java.util.List;
  * Created by matteo.aldini on 04/05/2015.
  */
 public class StudentListFragment extends android.support.v4.app.Fragment {
+    private static final int REQUEST_CODE = 9;
     private View view;
     private StudentAdapter studAdapter;
     private ListView list;
-
+    private Intent intent;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,6 +31,13 @@ public class StudentListFragment extends android.support.v4.app.Fragment {
         this.list.setAdapter(this.studAdapter);
         FloatingActionButton fab = (FloatingActionButton) this.view.findViewById(R.id.fab);
         fab.attachToListView(this.list);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(view.getContext() ,AddStudentActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
+            }
+        });
         return this.view;
     }
 
@@ -44,6 +53,8 @@ public class StudentListFragment extends android.support.v4.app.Fragment {
         list.add(new Student("Filippo","Berlini",b3,"322446463","filippo.berlini@gmail.com"));
         return list;
     }
+
+
 
 
 }

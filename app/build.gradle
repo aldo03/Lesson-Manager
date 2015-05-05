@@ -26,4 +26,6 @@ dependencies {
     compile 'it.neokree:MaterialTabs:0.11'
     //material floating action button
     compile 'com.melnykov:floatingactionbutton:1.3.0'
+    //material edit text
+    compile 'com.rengwuxian.materialedittext:library:2.1.3'
 }
