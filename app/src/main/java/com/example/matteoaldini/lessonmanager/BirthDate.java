@@ -25,4 +25,8 @@ public class BirthDate {
     public int getDay() {
         return day;
     }
+
+    public String toString(){
+        return ""+this.day+"/"+this.month+"/"+this.year;
+    }
 }
