@@ -1,20 +1,24 @@
 package com.example.matteoaldini.lessonmanager;
 
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.matteoaldini.lessonmanager.material_design.SlidingTabLayout;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements StudentListFragment.StudentListListener {
+    private static final int ADD_STUDENT_CODE = 9;
     private Toolbar toolbar;
     private ViewPager pager;
     private TabAdapter tabAdapter;
     private SlidingTabLayout tabs;
+    private Intent addStudentIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,5 +70,18 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void addNewStudent() {
+        addStudentIntent = new Intent(this.getApplicationContext() ,AddStudentActivity.class);
+        startActivityForResult(addStudentIntent, ADD_STUDENT_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Toast.makeText(getApplicationContext(),"Student added successfully",Toast.LENGTH_SHORT).show();
+
     }
 }

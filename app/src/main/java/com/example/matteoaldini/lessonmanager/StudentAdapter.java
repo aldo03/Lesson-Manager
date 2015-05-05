@@ -10,6 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.matteoaldini.lessonmanager.material_design.RoundImage;
+
 import java.util.List;
 
 /**

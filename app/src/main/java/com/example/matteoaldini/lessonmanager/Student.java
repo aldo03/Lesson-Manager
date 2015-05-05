@@ -9,6 +9,7 @@ public class Student {
     private BirthDate birthDate;
     private String phone;
     private String email;
+    private long id;
     //private Byte[] image;
 
     public Student(String name, String surname, BirthDate birthDate, String phone, String email) {
@@ -51,11 +52,23 @@ public class Student {
         this.email = email;
     }
 
+    public String getBirthDateString() {
+        return birthDate.toString();
+    }
+
     public BirthDate getBirthDate() {
         return birthDate;
     }
 
     public void setBirthDate(BirthDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
