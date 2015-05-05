@@ -20,11 +20,6 @@
         <activity
             android:name=".AddStudentActivity"
             android:label="Add Student" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

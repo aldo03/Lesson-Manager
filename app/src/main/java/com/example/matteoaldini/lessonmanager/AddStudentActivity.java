@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 /**
  * Created by brando on 05/05/2015.
@@ -44,8 +45,10 @@ public class AddStudentActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.add_student_menu){
             LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
-            db.addNewStudent(this.name.getText().toString(),this.surname.getText().toString(),this.birthdate.getText().toString(),
+            Student s = db.addNewStudent(this.name.getText().toString(),this.surname.getText().toString(),this.birthdate.getText().toString(),
                     this.phone.getText().toString(),this.email.getText().toString());
+            CalendarDay cd = new CalendarDay();
+            //db.insertNewLesson();
             Intent intent = new Intent();
             setResult(RESULT_OK,intent);
             finish();

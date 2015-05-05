@@ -62,7 +62,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         db.execSQL(CREATE_LESSON_TABLE);
     }
 
-    public boolean addNewStudent(String name, String surname, String birthDate, String phone, String mail){
+    public Student addNewStudent(String name, String surname, String birthDate, String phone, String mail){
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -73,9 +73,12 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
         long result = db.insert(STUDENTS_TABLE, null, values);
 
+        Student s = new Student(name, surname, phone, mail);
+        s.setId(result);
+
         if (result == -1)
-            return false;
-        return true;
+            return null;
+        return s;
     }
 
     @Override
