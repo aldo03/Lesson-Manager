@@ -1,5 +1,6 @@
 package com.example.matteoaldini.lessonmanager;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.Context;
 import android.os.Bundle;
@@ -19,11 +20,25 @@ import java.util.List;
  * Created by matteo.aldini on 04/05/2015.
  */
 public class StudentListFragment extends android.support.v4.app.Fragment {
-    private static final int REQUEST_CODE = 9;
     private View view;
     private StudentAdapter studAdapter;
     private ListView list;
     private Intent intent;
+    private StudentListListener listener;
+
+    public interface StudentListListener{
+        //adds a new student to the database
+        public void addNewStudent();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if(activity instanceof StudentListListener){
+            this.listener = (StudentListListener)activity;
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,11 +51,20 @@ public class StudentListFragment extends android.support.v4.app.Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent = new Intent(view.getContext() ,AddStudentActivity.class);
-                startActivityForResult(intent, REQUEST_CODE);
+                listener.addNewStudent();
             }
         });
         return this.view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.studAdapter = new StudentAdapter(getActivity(), this.loadStudents(getActivity()));
+        this.list = (ListView) this.view.findViewById(R.id.studentListId);
+        this.list.setAdapter(this.studAdapter);
+        FloatingActionButton fab = (FloatingActionButton) this.view.findViewById(R.id.fab);
+        fab.attachToListView(this.list);
     }
 
     private List<Student> loadStudents(Context context) {
@@ -60,7 +84,7 @@ public class StudentListFragment extends android.support.v4.app.Fragment {
         list.add(new Student("Filippo","Berlini",b3,"322446463","filippo.berlini@gmail.com"));
         list.add(new Student("Filippo","Berlini",b3,"322446463","filippo.berlini@gmail.com"));
         return list;
-    }
+    }*/
 
 
 }

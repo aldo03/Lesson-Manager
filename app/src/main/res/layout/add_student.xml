@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <include
         android:id="@+id/tool_bar"
@@ -36,12 +35,11 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:id="@+id/name"
-            android:layout_toRightOf="@+id/person"
-            android:layout_toEndOf="@+id/person"
-            android:layout_centerVertical="true"
+            android:id="@+id/nameAdd"
             android:hint="Name"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
 
     </RelativeLayout>
@@ -71,12 +69,11 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:id="@+id/surname"
-            android:layout_toRightOf="@+id/imageView"
-            android:layout_toEndOf="@+id/imageView"
-            android:layout_centerVertical="true"
+            android:id="@+id/surnameAdd"
             android:hint="Surname"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -103,10 +100,9 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/email"
+        android:id="@+id/emailAdd"
         android:hint="E-Mail"
         android:gravity="center_horizontal"
-        android:layout_alignTop="@+id/imageView2"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
 
@@ -134,7 +130,7 @@
             android:layout_height="wrap_content"
             android:inputType="phone"
             android:ems="10"
-            android:id="@+id/phone"
+            android:id="@+id/phoneAdd"
             android:gravity="center_horizontal"
             android:hint="Phone"
             android:layout_alignParentTop="true"
@@ -166,7 +162,7 @@
             android:layout_height="wrap_content"
             android:inputType="date"
             android:ems="10"
-            android:id="@+id/birthdate"
+            android:id="@+id/birthdateAdd"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:hint="Birth Date"

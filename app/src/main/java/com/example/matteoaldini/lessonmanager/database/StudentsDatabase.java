@@ -45,23 +45,21 @@ public class StudentsDatabase extends SQLiteOpenHelper {
         db.execSQL(CREATE_STUDENTS_TABLE);
     }
 
-    public Student addNewStudent(Student student){
+    public boolean addNewStudent(String name, String surname, String birthDate, String phone, String mail){
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(NAME, student.getName());
-        values.put(SURNAME, student.getSurname());
-        values.put(BIRTHDATE, student.getBirthDateString());
-        values.put(PHONE, student.getPhone());
-        values.put(EMAIL, student.getEmail());
+        values.put(NAME, name);
+        values.put(SURNAME, surname);
+        values.put(BIRTHDATE, birthDate);
+        values.put(PHONE, phone);
+        values.put(EMAIL, mail);
 
         long result = db.insert(STUDENTS_TABLE, null, values);
 
         if (result == -1)
-            return null;
-
-        student.setId(result);
-        return student;
+            return false;
+        return true;
     }
 
     @Override
