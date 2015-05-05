@@ -14,8 +14,18 @@ public class TabAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
-        StudentListFragment fragment = new StudentListFragment();
-        return fragment;
+        Fragment f = new Fragment();
+        switch(i){
+            case 0:
+                StudentListFragment fragment = new StudentListFragment();
+                f = fragment;
+            break;
+            case 1:
+                CalendarFragment calFragment = new CalendarFragment();
+                f =  calFragment;
+            break;
+        }
+        return f;
     }
 
     @Override
