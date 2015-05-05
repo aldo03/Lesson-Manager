@@ -9,13 +9,16 @@ public class Lesson {
 
     private Student student;
     private CalendarDay date;
-
+    private MyTime timeStart;
+    private Integer duration;
     private boolean present;
     private boolean paid;
 
-    public Lesson(CalendarDay date, Student student) {
+    public Lesson(CalendarDay date, Student student, Integer hour, Integer minute, Integer duration) {
         this.date = date;
         this.student = student;
+        this.timeStart = new MyTime(hour, minute);
+        this.duration = duration;
     }
 
     public void setPaid(boolean paid) {
@@ -32,6 +35,14 @@ public class Lesson {
 
     public CalendarDay getDate() {
         return date;
+    }
+
+    public Integer getHourBegin(){
+        this.timeStart.getHour();
+    }
+
+    public Integer getMinuteBegin(){
+        this.timeStart.getMinute();
     }
 
     public boolean isPresent() {

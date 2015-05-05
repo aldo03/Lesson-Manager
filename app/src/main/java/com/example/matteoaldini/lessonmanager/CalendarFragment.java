@@ -6,6 +6,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TimePicker;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -26,11 +29,15 @@ public class CalendarFragment extends Fragment {
     private CalendarListener listener;
     private View view;
     private MaterialCalendarView calendar;
+    private LinearLayout layout;
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.calendar_layout, container, false);
         this.calendar = (MaterialCalendarView)this.view.findViewById(R.id.calendarView);
+        this.layout = (LinearLayout)this.view.findViewById(R.id.linearLayout);
+        this.layout.addView(inflater.inflate(R.layout.lesson_layout, null));
         return this.view;
     }
 }
