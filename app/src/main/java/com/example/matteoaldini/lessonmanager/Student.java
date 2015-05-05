@@ -6,16 +6,14 @@ package com.example.matteoaldini.lessonmanager;
 public class Student {
     private String name;
     private String surname;
-    private BirthDate birthDate;
     private String phone;
     private String email;
     private long id;
     //private Byte[] image;
 
-    public Student(String name, String surname, BirthDate birthDate, String phone, String email) {
+    public Student(String name, String surname, String phone, String email) {
         this.email = email;
         this.phone = phone;
-        this.birthDate = birthDate;
         this.surname = surname;
         this.name = name;
     }
@@ -50,18 +48,6 @@ public class Student {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getBirthDateString() {
-        return birthDate.toString();
-    }
-
-    public BirthDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(BirthDate birthDate) {
-        this.birthDate = birthDate;
     }
 
     public long getId() {

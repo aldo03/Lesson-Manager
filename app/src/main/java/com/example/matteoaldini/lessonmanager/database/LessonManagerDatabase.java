@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.matteoaldini.lessonmanager.BirthDate;
 import com.example.matteoaldini.lessonmanager.Student;
 
 import java.util.ArrayList;
@@ -18,31 +17,43 @@ import java.util.List;
 
 
 
-public class StudentsDatabase extends SQLiteOpenHelper {
+public class LessonManagerDatabase extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "students_db";
+    public static final String DATABASE_NAME = "lesson_m_database";
     private static final String STUDENTS_TABLE = "students";
+    private static final String LESSONS_TABLE = "lessons";
 
-    private static final String ID = "id";
+    private static final String ID_STUDENT = "id_student";
     private static final String NAME = "name";
     private static final String SURNAME = "surname";
-    private static final String BIRTHDATE = "birthdate";
     private static final String PHONE = "phone";
     private static final String EMAIL = "email";
     //private static final String IMAGE = "image";
 
+    private static final String DATE_TIME_START = "datelesson";
+    private static final String DURATION = "duration";
+    private static final String ID_LESSON = "id_lesson";
+    private static final String LESSON_STUDENT = "lesson_student";
+
+
+
     private static final String CREATE_STUDENTS_TABLE =
-            "CREATE TABLE " + STUDENTS_TABLE + " (" + ID + " INTEGER PRIMARY KEY,"
-                    + NAME + " TEXT," + SURNAME + " TEXT," + BIRTHDATE + " TEXT," + PHONE + " TEXT," + EMAIL +" TEXT)";
+            "CREATE TABLE " + STUDENTS_TABLE + " (" + ID_STUDENT + " INTEGER PRIMARY KEY,"
+                    + NAME + " TEXT," + SURNAME + " TEXT," + PHONE + " TEXT," + EMAIL +" TEXT)";
 
+    private static final String CREATE_LESSON_TABLE =
+            "CREATE TABLE " + LESSONS_TABLE + " (" + ID_LESSON + " INTEGER PRIMARY KEY,"
+                    + DATE_TIME_START + " TEXT," + DURATION + " INTEGER," + LESSON_STUDENT + " INTEGER, FOREIGN KEY("
+                    + LESSON_STUDENT +") REFERENCES " + STUDENTS_TABLE + " (" + ID_STUDENT +")";
 
-    public StudentsDatabase(Context context) {
+    public LessonManagerDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_STUDENTS_TABLE);
+        db.execSQL(CREATE_LESSON_TABLE);
     }
 
     public boolean addNewStudent(String name, String surname, String birthDate, String phone, String mail){
@@ -51,7 +62,6 @@ public class StudentsDatabase extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(NAME, name);
         values.put(SURNAME, surname);
-        values.put(BIRTHDATE, birthDate);
         values.put(PHONE, phone);
         values.put(EMAIL, mail);
 
@@ -81,11 +91,10 @@ public class StudentsDatabase extends SQLiteOpenHelper {
         for (int i = 0; i < cursor.getCount(); i++) {
             String name = cursor.getString(cursor.getColumnIndex(NAME));
             String surname = cursor.getString(cursor.getColumnIndex(SURNAME));
-            BirthDate birthDate = parseDate(cursor.getString(cursor.getColumnIndex(BIRTHDATE)));
             String phone = cursor.getString(cursor.getColumnIndex(PHONE));
             String email = cursor.getString(cursor.getColumnIndex(EMAIL));
-            long id = cursor.getLong(cursor.getColumnIndex(ID));
-            Student student = new Student(name,surname,birthDate,phone,email);
+            long id = cursor.getLong(cursor.getColumnIndex(ID_STUDENT));
+            Student student = new Student(name,surname,phone,email);
             student.setId(id);
             students.add(student);
             cursor.moveToNext();
@@ -93,10 +102,7 @@ public class StudentsDatabase extends SQLiteOpenHelper {
         return students;
     }
 
-    private BirthDate parseDate(String date){
-        BirthDate birthDate;
-        String[] s = date.split("/");
-        birthDate = new BirthDate(Integer.parseInt(s[0]),Integer.parseInt(s[1]),Integer.parseInt(s[2]));
-        return birthDate;
+    public void insertNewLesson(){
+
     }
 }

@@ -8,7 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import com.example.matteoaldini.lessonmanager.database.StudentsDatabase;
+import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
 
 /**
  * Created by brando on 05/05/2015.
@@ -43,7 +43,7 @@ public class AddStudentActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.add_student_menu){
-            StudentsDatabase db = new StudentsDatabase(getApplicationContext());
+            LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
             db.addNewStudent(this.name.getText().toString(),this.surname.getText().toString(),this.birthdate.getText().toString(),
                     this.phone.getText().toString(),this.email.getText().toString());
             Intent intent = new Intent();

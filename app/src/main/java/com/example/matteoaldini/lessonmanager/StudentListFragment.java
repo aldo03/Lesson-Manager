@@ -10,10 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.example.matteoaldini.lessonmanager.database.StudentsDatabase;
+import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
 import com.melnykov.fab.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -68,7 +67,7 @@ public class StudentListFragment extends android.support.v4.app.Fragment {
     }
 
     private List<Student> loadStudents(Context context) {
-        StudentsDatabase db = new StudentsDatabase(context);
+        LessonManagerDatabase db = new LessonManagerDatabase(context);
         List<Student> listStud = db.getStudents();
         return listStud;
     }
