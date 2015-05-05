@@ -81,7 +81,8 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Toast.makeText(getApplicationContext(),"Student added successfully",Toast.LENGTH_SHORT).show();
-
+        if(data!=null){
+            Toast.makeText(getApplicationContext(),"Student added successfully",Toast.LENGTH_SHORT).show();
+        }
     }
 }
