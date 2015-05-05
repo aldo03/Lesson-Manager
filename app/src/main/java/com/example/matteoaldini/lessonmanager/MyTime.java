@@ -24,4 +24,7 @@ public class MyTime {
         this.minute = minute + hour*60;
     }
 
+    public void addDuration(Integer duration){
+        this.minute += duration;
+    }
 }

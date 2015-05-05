@@ -38,11 +38,15 @@ public class Lesson {
     }
 
     public Integer getHourBegin(){
-        this.timeStart.getHour();
+        return this.timeStart.getHour();
     }
 
     public Integer getMinuteBegin(){
-        this.timeStart.getMinute();
+        return this.timeStart.getMinute();
+    }
+
+    public Integer getDuration() {
+        return duration;
     }
 
     public boolean isPresent() {
