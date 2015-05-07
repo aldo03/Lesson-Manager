@@ -1,5 +1,6 @@
 package com.example.matteoaldini.lessonmanager;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -14,6 +15,21 @@ import java.util.Calendar;
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
 
+    public interface DatePickerObserver{
+        public void dateChanged(int year, int month, int day, boolean startEnd);
+    }
+
+    private DatePickerObserver listener;
+    private boolean startEnd;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if(activity instanceof DatePickerObserver){
+            this.listener = (DatePickerObserver) activity;
+        }
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current date as the default date in the picker
@@ -27,6 +43,10 @@ public class DatePickerFragment extends DialogFragment
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        // Do something with the date chosen by the user
+        this.listener.dateChanged(year, month, day, this.startEnd);
+    }
+
+    public void setStart(boolean startEnd){
+        this.startEnd = startEnd;
     }
 }

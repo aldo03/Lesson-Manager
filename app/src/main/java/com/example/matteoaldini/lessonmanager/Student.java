@@ -1,9 +1,11 @@
 package com.example.matteoaldini.lessonmanager;
 
+import java.io.Serializable;
+
 /**
  * Created by matteo.aldini on 04/05/2015.
  */
-public class Student {
+public class Student implements Serializable {
     private String name;
     private String surname;
     private String phone;

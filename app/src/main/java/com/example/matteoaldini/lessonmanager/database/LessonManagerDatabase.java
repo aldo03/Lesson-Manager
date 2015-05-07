@@ -6,11 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.matteoaldini.lessonmanager.MyTime;
+import com.example.matteoaldini.lessonmanager.Lesson;
 import com.example.matteoaldini.lessonmanager.Student;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -32,11 +33,13 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
     private static final String EMAIL = "email";
     //private static final String IMAGE = "image";
 
-    private static final String DATE_TIME_START = "datelesson";
-    private static final String DURATION = "duration";
+    private static final String DATE_LESSON = "datelesson";
+    private static final String HOUR_START = "hour_start";
+    private static final String MIN_START = "min_start";
+    private static final String HOUR_END = "hour_end";
+    private static final String MIN_END = "min_end";
     private static final String FARE = "fare";
     private static final String LOCATION = "location";
-    private static final String LESSON_FREQUENCY = "lesson_frequency";
     private static final String ID_LESSON = "id_lesson";
     private static final String LESSON_STUDENT = "lesson_student";
     private static final String LESSON_PRESENT = "lesson_present";
@@ -50,8 +53,9 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     private static final String CREATE_LESSON_TABLE =
             "CREATE TABLE " + LESSONS_TABLE + " (" + ID_LESSON + " INTEGER PRIMARY KEY,"
-                    + DATE_TIME_START + " TEXT," + LOCATION + " TEXT," + DURATION + " INTEGER," + FARE + " INTEGER," + LESSON_PRESENT + " INTEGER,"
-                    + LESSON_FREQUENCY + " INTEGER," + LESSON_PAID + " INTEGER,"+ LESSON_STUDENT + " INTEGER, FOREIGN KEY("
+                    + DATE_LESSON + " DATE," + LOCATION + " TEXT," + HOUR_START + " INTEGER," + MIN_START + " INTEGER,"
+                    + HOUR_END + " INTEGER," + MIN_END + " INTEGER," + FARE + " INTEGER," + LESSON_PRESENT + " INTEGER,"
+                    + LESSON_PAID + " INTEGER,"+ LESSON_STUDENT + " INTEGER, FOREIGN KEY("
                     + LESSON_STUDENT +") REFERENCES " + STUDENTS_TABLE + " (" + ID_STUDENT +"))";
 
     public LessonManagerDatabase(Context context) {
@@ -113,18 +117,19 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         return students;
     }
 
-    public boolean insertNewLesson(Student s, CalendarDay day, MyTime time, Integer duration, int fare, String location,
-                                   boolean paid, boolean present, Integer frequency){
+    public boolean insertNewLesson(Lesson lesson , int frequency, Calendar endDate){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(DATE_TIME_START, day.toString()+" "+time.toString());
-        values.put(DURATION, duration);
-        values.put(FARE, fare);
-        values.put(LOCATION, location);
-        values.put(LESSON_FREQUENCY, frequency);
-        values.put(LESSON_STUDENT, s.getId());
-        values.put(LESSON_PRESENT, present);
-        values.put(LESSON_PAID, paid);
+        values.put(DATE_LESSON, lesson.getDate().toString());
+        values.put(HOUR_START, lesson.getHourStart());
+        values.put(MIN_START, lesson.getMinStart());
+        values.put(HOUR_END, lesson.getHourEnd());
+        values.put(MIN_END, lesson.getMinEnd());
+        values.put(FARE, lesson.getFare());
+        values.put(LOCATION, lesson.getLocation());
+        values.put(LESSON_STUDENT, lesson.getStudent().getId());
+        values.put(LESSON_PRESENT, lesson.isPresent());
+        values.put(LESSON_PAID, lesson.isPaid());
 
         long result = db.insert(LESSONS_TABLE, null, values);
 

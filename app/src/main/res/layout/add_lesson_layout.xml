@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Large Text"
         android:id="@+id/dateLesson"
         android:layout_alignParentTop="true"
@@ -25,7 +25,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Large Text"
         android:id="@+id/startLesson"
         android:layout_alignParentTop="true"
@@ -37,7 +37,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Large Text"
         android:id="@+id/endLesson"
         android:layout_alignParentTop="true"
@@ -55,13 +55,13 @@
         android:id="@+id/relativeLayout">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:id="@+id/imageView5"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:src="@drawable/ic_map_marker_grey600_48dp" />
+            android:src="@drawable/ic_map_marker_grey600_48dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/locationLesson"
+            android:layout_toStartOf="@+id/locationLesson" />
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,7 +69,6 @@
             android:ems="10"
             android:id="@+id/locationLesson"
             android:hint="Location"
-            android:gravity="center_horizontal"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true" />
 
@@ -82,13 +81,13 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/relativeLayout2">
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:id="@+id/imageView6"
+            android:src="@drawable/ic_currency_eur_grey600_48dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:src="@drawable/ic_currency_eur_grey600_48dp" />
+            android:layout_toLeftOf="@+id/fareLesson"
+            android:layout_toStartOf="@+id/fareLesson" />
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -96,22 +95,63 @@
             android:ems="10"
             android:id="@+id/fareLesson"
             android:hint="Fare"
-            android:gravity="center_horizontal"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true" />
         </RelativeLayout>
 
-    <EditText
+    <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:ems="10"
-        android:hint="Frequency"
-        android:id="@+id/frequencyLesson"
-        android:gravity="center_horizontal"
+        android:text="Frequency"
+        android:id="@+id/checkFrequency"
         android:layout_below="@+id/relativeLayout2"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="120dp"
+        android:layout_below="@+id/checkFrequency"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:id="@+id/layoutFrequency">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/imageView7"
+            android:src="@drawable/ic_calendar_check_grey600_48dp"
+            android:layout_alignTop="@+id/frequencyspinner"
+            android:layout_toLeftOf="@+id/frequencyspinner"
+            android:layout_toStartOf="@+id/frequencyspinner" />
+        <Spinner
+            android:layout_width="215dp"
+            android:layout_height="wrap_content"
+            android:entries="@array/frequencies"
+            android:id="@+id/frequencyspinner"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp">
+        </Spinner>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/endDateLesson"
+            android:layout_alignParentBottom="true"
+            android:layout_alignLeft="@+id/imageView7"
+            android:layout_alignStart="@+id/imageView7" />
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Lesson"
+        android:id="@+id/addLessonBut"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

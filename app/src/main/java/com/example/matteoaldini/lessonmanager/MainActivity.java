@@ -82,6 +82,7 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
     @Override
     public void detailsStudent(Student s) {
         this.detailsStudentIntent = new Intent(this.getApplicationContext(), AddLessonActivity.class);
+        this.detailsStudentIntent.putExtra("student",s);
         startActivity(this.detailsStudentIntent);
     }
 

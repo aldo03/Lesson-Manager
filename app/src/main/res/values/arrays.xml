@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="frequencies">
+        <item> every week </item> <item> every 2 weeks </item>  <item> every 3 weeks </item> <item> every month </item> <item> every 2 month </item>
+    </string-array>
+</resources>
