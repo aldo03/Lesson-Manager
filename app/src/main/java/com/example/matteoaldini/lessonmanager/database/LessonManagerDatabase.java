@@ -34,6 +34,8 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     private static final String DATE_TIME_START = "datelesson";
     private static final String DURATION = "duration";
+    private static final String FARE = "fare";
+    private static final String LOCATION = "location";
     private static final String LESSON_FREQUENCY = "lesson_frequency";
     private static final String ID_LESSON = "id_lesson";
     private static final String LESSON_STUDENT = "lesson_student";
@@ -48,9 +50,9 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     private static final String CREATE_LESSON_TABLE =
             "CREATE TABLE " + LESSONS_TABLE + " (" + ID_LESSON + " INTEGER PRIMARY KEY,"
-                    + DATE_TIME_START + " TEXT," + DURATION + " INTEGER," + LESSON_PRESENT + " INTEGER,"
+                    + DATE_TIME_START + " TEXT," + LOCATION + " TEXT," + DURATION + " INTEGER," + FARE + " INTEGER," + LESSON_PRESENT + " INTEGER,"
                     + LESSON_FREQUENCY + " INTEGER," + LESSON_PAID + " INTEGER,"+ LESSON_STUDENT + " INTEGER, FOREIGN KEY("
-                    + LESSON_STUDENT +") REFERENCES " + STUDENTS_TABLE + " (" + ID_STUDENT +")";
+                    + LESSON_STUDENT +") REFERENCES " + STUDENTS_TABLE + " (" + ID_STUDENT +"))";
 
     public LessonManagerDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -62,7 +64,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         db.execSQL(CREATE_LESSON_TABLE);
     }
 
-    public Student addNewStudent(String name, String surname, String birthDate, String phone, String mail){
+    public Student addNewStudent(String name, String surname, String phone, String mail){
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -111,12 +113,14 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         return students;
     }
 
-    public boolean insertNewLesson(Student s, CalendarDay day, MyTime time, Integer duration,
+    public boolean insertNewLesson(Student s, CalendarDay day, MyTime time, Integer duration, int fare, String location,
                                    boolean paid, boolean present, Integer frequency){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(DATE_TIME_START, day.toString()+" "+time.toString());
         values.put(DURATION, duration);
+        values.put(FARE, fare);
+        values.put(LOCATION, location);
         values.put(LESSON_FREQUENCY, frequency);
         values.put(LESSON_STUDENT, s.getId());
         values.put(LESSON_PRESENT, present);

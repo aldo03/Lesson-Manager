@@ -30,7 +30,6 @@ public class AddStudentActivity extends ActionBarActivity {
         setSupportActionBar(this.toolbar);
         this.name = (EditText) findViewById(R.id.nameAdd);
         this.surname = (EditText) findViewById(R.id.surnameAdd);
-        this.birthdate = (EditText) findViewById(R.id.birthdateAdd);
         this.phone = (EditText) findViewById(R.id.phoneAdd);
         this.email = (EditText) findViewById(R.id.emailAdd);
     }
@@ -45,10 +44,8 @@ public class AddStudentActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.add_student_menu){
             LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
-            Student s = db.addNewStudent(this.name.getText().toString(),this.surname.getText().toString(),this.birthdate.getText().toString(),
+            Student s = db.addNewStudent(this.name.getText().toString(),this.surname.getText().toString(),
                     this.phone.getText().toString(),this.email.getText().toString());
-            CalendarDay cd = new CalendarDay();
-            //db.insertNewLesson();
             Intent intent = new Intent();
             setResult(RESULT_OK,intent);
             finish();

@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
@@ -22,12 +23,13 @@ public class StudentListFragment extends android.support.v4.app.Fragment {
     private View view;
     private StudentAdapter studAdapter;
     private ListView list;
-    private Intent intent;
     private StudentListListener listener;
 
     public interface StudentListListener{
         //adds a new student to the database
         public void addNewStudent();
+
+        public void detailsStudent(Student s);
     }
 
     @Override
@@ -51,6 +53,12 @@ public class StudentListFragment extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 listener.addNewStudent();
+            }
+        });
+        this.list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                listener.detailsStudent(studAdapter.getItem(position));
             }
         });
         return this.view;

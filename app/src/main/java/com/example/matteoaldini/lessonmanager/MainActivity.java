@@ -19,6 +19,7 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
     private TabAdapter tabAdapter;
     private SlidingTabLayout tabs;
     private Intent addStudentIntent;
+    private Intent detailsStudentIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +75,14 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
 
     @Override
     public void addNewStudent() {
-        addStudentIntent = new Intent(this.getApplicationContext() ,AddStudentActivity.class);
+        this.addStudentIntent = new Intent(this.getApplicationContext() ,AddStudentActivity.class);
         startActivityForResult(addStudentIntent, ADD_STUDENT_CODE);
+    }
+
+    @Override
+    public void detailsStudent(Student s) {
+        this.detailsStudentIntent = new Intent(this.getApplicationContext(), AddLessonActivity.class);
+        startActivity(this.detailsStudentIntent);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.example.matteoaldini.lessonmanager;
 
-import com.prolificinteractive.materialcalendarview.CalendarDay;
+import java.util.Date;
 
 /**
  * Created by Filo on 05/05/2015.
@@ -8,19 +8,25 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 public class Lesson {
 
     private Student student;
-    private CalendarDay date;
+    private Date date;
     private MyTime timeStart;
     private Integer duration;
+    private int fare;
+    private String location;
     private int frequency;
     private boolean present;
     private boolean paid;
 
-    public Lesson(CalendarDay date, Student student, Integer hour, Integer minute, Integer duration, int frequency) {
+    public Lesson(Date date, Student student, Integer hour, Integer minute, Integer duration, int fare, String location, int frequency) {
         this.date = date;
         this.student = student;
         this.timeStart = new MyTime(hour, minute);
         this.duration = duration;
+        this.fare = fare;
+        this.location = location;
         this.frequency = frequency;
+        this.paid = false;
+        this.present = true;
     }
 
     public void setPaid(boolean paid) {
@@ -35,7 +41,7 @@ public class Lesson {
         this.student = student;
     }
 
-    public void setDate(CalendarDay date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -55,7 +61,7 @@ public class Lesson {
         return student;
     }
 
-    public CalendarDay getDate() {
+    public Date getDate() {
         return date;
     }
 
@@ -77,6 +83,7 @@ public class Lesson {
      * 3 every three weeks
      * 4..
      */
+
     public int getFrequency() {
         return frequency;
     }
@@ -89,4 +96,23 @@ public class Lesson {
         return paid;
     }
 
+    public MyTime getTimeStart() {
+        return timeStart;
+    }
+
+    public int getFare() {
+        return fare;
+    }
+
+    public void setFare(int fare) {
+        this.fare = fare;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }

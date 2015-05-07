@@ -32,7 +32,7 @@ public class StudentAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Student getItem(int position) {
         return this.studentList!=null?this.studentList.get(position):null;
     }
 
