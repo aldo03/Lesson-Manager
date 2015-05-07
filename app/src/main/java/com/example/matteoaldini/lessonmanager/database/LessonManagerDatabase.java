@@ -5,11 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.matteoaldini.lessonmanager.Lesson;
 import com.example.matteoaldini.lessonmanager.Student;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -118,23 +120,42 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
     }
 
     public boolean insertNewLesson(Lesson lesson , int frequency, Calendar endDate){
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(DATE_LESSON, lesson.getDate().toString());
-        values.put(HOUR_START, lesson.getHourStart());
-        values.put(MIN_START, lesson.getMinStart());
-        values.put(HOUR_END, lesson.getHourEnd());
-        values.put(MIN_END, lesson.getMinEnd());
-        values.put(FARE, lesson.getFare());
-        values.put(LOCATION, lesson.getLocation());
-        values.put(LESSON_STUDENT, lesson.getStudent().getId());
-        values.put(LESSON_PRESENT, lesson.isPresent());
-        values.put(LESSON_PAID, lesson.isPaid());
+        int step = 0;
+        switch (frequency){
+            case 1:
+                step = 7;
+                break;
+            case 2:
+                step = 14;
+                break;
+            case 3:
+                step = 21;
+                break;
+        }
+        Calendar day = Calendar.getInstance();
+        day = lesson.getDate();
+        while(day.compareTo(endDate)<0) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            SQLiteDatabase db = getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(DATE_LESSON, sdf.format(day.getTime()));
+            values.put(HOUR_START, lesson.getHourStart());
+            values.put(MIN_START, lesson.getMinStart());
+            values.put(HOUR_END, lesson.getHourEnd());
+            values.put(MIN_END, lesson.getMinEnd());
+            values.put(FARE, lesson.getFare());
+            values.put(LOCATION, lesson.getLocation());
+            values.put(LESSON_STUDENT, lesson.getStudent().getId());
+            values.put(LESSON_PRESENT, lesson.isPresent());
+            values.put(LESSON_PAID, lesson.isPaid());
+            Log.i("", sdf.format(day.getTime())+"DAY OF WEEK:"+day.get(Calendar.DAY_OF_WEEK));
+            day.add(Calendar.DAY_OF_MONTH,step);
 
-        long result = db.insert(LESSONS_TABLE, null, values);
+            long result = db.insert(LESSONS_TABLE, null, values);
 
-        if (result == -1)
-            return false;
+            if (result == -1)
+                return false;
+        }
         return true;
     }
 }
