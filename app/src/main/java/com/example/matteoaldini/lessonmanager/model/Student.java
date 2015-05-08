@@ -19,6 +19,7 @@ public class Student implements Serializable {
         this.phone = phone;
         this.surname = surname;
         this.name = name;
+        this.color = color;
     }
 
     public String getName() {
