@@ -131,9 +131,11 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Medium Text"
             android:id="@+id/endDateLesson"
-            android:layout_below="@+id/frequencyspinner"
-            android:layout_alignLeft="@+id/imageView7"
-            android:layout_alignStart="@+id/imageView7" />
+            android:layout_below="@id/frequencyspinner"
+            android:layout_alignLeft="@id/imageView7"
+            android:layout_alignStart="@id/imageView7"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="5dp"/>
 
     </RelativeLayout>
 
