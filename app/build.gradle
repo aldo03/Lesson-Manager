@@ -30,4 +30,6 @@ dependencies {
     compile 'com.prolificinteractive:material-calendarview:0.3.2'
     //material checkbox
     compile 'com.github.navasmdc:MaterialDesign:1.+@aar'
+    //material cards
+    compile 'com.android.support:cardview-v7:21.0.+'
 }

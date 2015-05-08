@@ -15,8 +15,12 @@ import com.example.matteoaldini.lessonmanager.adapters.TabAdapter;
 import com.example.matteoaldini.lessonmanager.fragments.StudentListFragment;
 import com.example.matteoaldini.lessonmanager.material_design.SlidingTabLayout;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
-public class MainActivity extends ActionBarActivity implements StudentListFragment.StudentListListener {
+
+public class MainActivity extends ActionBarActivity implements StudentListFragment.StudentListListener, CalendarFragment.CalendarListener {
     private static final int ADD_STUDENT_CODE = 9;
     private static final int DETAILS_STUDENT_CODE = 10;
     private static final String STUDENT_EXTRA = "student";
@@ -102,5 +106,11 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
                 Toast.makeText(getApplicationContext(), R.string.lesson_added,Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public List<Lesson> getLessons(Calendar date) {
+        List<Lesson> list = new ArrayList<>();
+        return list;
     }
 }
