@@ -31,13 +31,12 @@
             android:layout_alignParentStart="true" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/nameAdd"
             android:hint="Name"
-            android:gravity="center_horizontal"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
 
@@ -65,13 +64,12 @@
             android:layout_alignParentStart="true" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/surnameAdd"
             android:hint="Surname"
-            android:gravity="center_horizontal"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
@@ -96,13 +94,12 @@
         android:layout_alignParentStart="true" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/emailAdd"
         android:hint="E-Mail"
-        android:gravity="center_horizontal"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
 
@@ -126,16 +123,41 @@
             android:layout_alignParentStart="true" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:inputType="phone"
             android:ems="10"
             android:id="@+id/phoneAdd"
-            android:gravity="center_horizontal"
             android:hint="Phone"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="30dp">
+
+        <Spinner
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/colorSpinner"
+            android:entries="@array/colorsStudent"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/imageView10"
+            android:src="@drawable/person" />
+
+    </RelativeLayout>
+
+
 
 </LinearLayout>

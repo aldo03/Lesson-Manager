@@ -24,4 +24,21 @@
         <item> Law </item>
         <item> Physics </item>
     </string-array>
+    <string-array name="colorsStudent">
+        <item> Blue </item>
+        <item> Light Blue </item>
+        <item> Cyan </item>
+        <item> Dark Green </item>
+        <item> Green </item>
+        <item> Magenta </item>
+        <item> Olive Green </item>
+        <item> Orange </item>
+        <item> Purple </item>
+        <item> Red </item>
+        <item> Sand </item>
+        <item> Turquoise </item>
+        <item> Violet </item>
+        <item> Yellow </item>
+        <item> Sky Blue </item>
+    </string-array>
 </resources>
