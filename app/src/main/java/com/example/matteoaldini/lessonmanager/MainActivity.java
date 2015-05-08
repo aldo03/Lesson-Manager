@@ -11,8 +11,12 @@ import android.widget.Toast;
 
 import com.example.matteoaldini.lessonmanager.material_design.SlidingTabLayout;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
-public class MainActivity extends ActionBarActivity implements StudentListFragment.StudentListListener {
+
+public class MainActivity extends ActionBarActivity implements StudentListFragment.StudentListListener, CalendarFragment.CalendarListener {
     private static final int ADD_STUDENT_CODE = 9;
     private Toolbar toolbar;
     private ViewPager pager;
@@ -92,5 +96,11 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
         if(data!=null){
             Toast.makeText(getApplicationContext(),"Student added successfully",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public List<Lesson> getLessons(Calendar date) {
+        List<Lesson> list = new ArrayList<>();
+        return list;
     }
 }
