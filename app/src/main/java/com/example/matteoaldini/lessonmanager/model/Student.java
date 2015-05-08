@@ -10,10 +10,11 @@ public class Student implements Serializable {
     private String surname;
     private String phone;
     private String email;
+    private int color;
     private long id;
     //private Byte[] image;
 
-    public Student(String name, String surname, String phone, String email) {
+    public Student(String name, String surname, String phone, String email, int color) {
         this.email = email;
         this.phone = phone;
         this.surname = surname;
@@ -58,5 +59,13 @@ public class Student implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 }
