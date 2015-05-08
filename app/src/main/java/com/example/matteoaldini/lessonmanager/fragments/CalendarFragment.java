@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -58,6 +59,7 @@ public class CalendarFragment extends Fragment {
                 TextView info;
                 TextView startHour;
                 TextView endHour;
+                ImageView img;
                 Lesson l;
                 List<Lesson> list = listener.getLessons(calendar.getSelectedDate().getCalendar());
                 Iterator<Lesson> iterator = list.iterator();
@@ -66,10 +68,12 @@ public class CalendarFragment extends Fragment {
                     info = (TextView)tempView.findViewById(R.id.student_info);
                     startHour = (TextView)tempView.findViewById(R.id.hour_info);
                     endHour = (TextView)tempView.findViewById(R.id.hour_info2);
+                    img = (ImageView)tempView.findViewById(R.id.imageView);
                     l = iterator.next();
                     info.setText(l.getStudent().getName()+" "+l.getStudent().getSurname());
                     startHour.setText(getHourFromInt(l.getHourStart())+":"+getHourFromInt(l.getMinStart()));
                     endHour.setText(getHourFromInt(l.getHourEnd())+":"+getHourFromInt(l.getMinEnd()));
+                    setImage(img, l.getSubject());
                     layout.addView(tempView);
                 }
                 layout.invalidate();
@@ -83,5 +87,58 @@ public class CalendarFragment extends Fragment {
         if(time<10){
             return "0"+time;
         }else return ""+time;
+    }
+
+    private void setImage(ImageView img, String s){
+        switch (s){
+            case "Biology":
+                img.setImageResource(R.drawable.biology);
+                break;
+            case "Chemistry":
+                img.setImageResource(R.drawable.chemistry);
+                break;
+            case "Computer Science":
+                img.setImageResource(R.drawable.computerscience);
+                break;
+            case "Economy":
+                img.setImageResource(R.drawable.economy);
+                break;
+            case "English":
+                img.setImageResource(R.drawable.english);
+                break;
+            case "Geography":
+                img.setImageResource(R.drawable.geography);
+                break;
+            case "Greek":
+                img.setImageResource(R.drawable.greek);
+                break;
+            case "History":
+                img.setImageResource(R.drawable.history);
+                break;
+            case "Italian":
+                img.setImageResource(R.drawable.italian);
+                break;
+            case "Languages":
+                img.setImageResource(R.drawable.language);
+                break;
+            case "Latin":
+                img.setImageResource(R.drawable.latin);
+                break;
+            case "Law":
+                img.setImageResource(R.drawable.law);
+                break;
+            case "Maths":
+                img.setImageResource(R.drawable.maths);
+                break;
+            case "Music":
+                img.setImageResource(R.drawable.music);
+                break;
+            case "Physics":
+                img.setImageResource(R.drawable.physics);
+                break;
+            case "Science":
+                img.setImageResource(R.drawable.science);
+                break;
+        }
     }
 }
