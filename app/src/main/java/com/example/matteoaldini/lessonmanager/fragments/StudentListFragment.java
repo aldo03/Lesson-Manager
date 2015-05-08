@@ -1,7 +1,6 @@
-package com.example.matteoaldini.lessonmanager;
+package com.example.matteoaldini.lessonmanager.fragments;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.matteoaldini.lessonmanager.R;
+import com.example.matteoaldini.lessonmanager.model.Student;
+import com.example.matteoaldini.lessonmanager.adapters.StudentAdapter;
 import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
 import com.melnykov.fab.FloatingActionButton;
 

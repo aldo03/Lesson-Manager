@@ -1,4 +1,4 @@
-package com.example.matteoaldini.lessonmanager;
+package com.example.matteoaldini.lessonmanager.activities;
 
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
@@ -9,11 +9,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.matteoaldini.lessonmanager.R;
+import com.example.matteoaldini.lessonmanager.model.Student;
+import com.example.matteoaldini.lessonmanager.adapters.TabAdapter;
+import com.example.matteoaldini.lessonmanager.fragments.StudentListFragment;
 import com.example.matteoaldini.lessonmanager.material_design.SlidingTabLayout;
 
 
 public class MainActivity extends ActionBarActivity implements StudentListFragment.StudentListListener {
     private static final int ADD_STUDENT_CODE = 9;
+    private static final int DETAILS_STUDENT_CODE = 10;
+    private static final String STUDENT_EXTRA = "student";
     private Toolbar toolbar;
     private ViewPager pager;
     private TabAdapter tabAdapter;
@@ -82,15 +88,19 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
     @Override
     public void detailsStudent(Student s) {
         this.detailsStudentIntent = new Intent(this.getApplicationContext(), AddLessonActivity.class);
-        this.detailsStudentIntent.putExtra("student",s);
-        startActivity(this.detailsStudentIntent);
+        this.detailsStudentIntent.putExtra(STUDENT_EXTRA,s);
+        startActivityForResult(this.detailsStudentIntent, DETAILS_STUDENT_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(data!=null){
-            Toast.makeText(getApplicationContext(),"Student added successfully",Toast.LENGTH_SHORT).show();
+            if(requestCode==ADD_STUDENT_CODE){
+                Toast.makeText(getApplicationContext(), R.string.student_added,Toast.LENGTH_SHORT).show();
+            }else if(requestCode==DETAILS_STUDENT_CODE){
+                Toast.makeText(getApplicationContext(), R.string.lesson_added,Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

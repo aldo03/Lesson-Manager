@@ -1,21 +1,26 @@
-package com.example.matteoaldini.lessonmanager;
+package com.example.matteoaldini.lessonmanager.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.matteoaldini.lessonmanager.model.Lesson;
+import com.example.matteoaldini.lessonmanager.R;
+import com.example.matteoaldini.lessonmanager.model.Student;
 import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
+import com.example.matteoaldini.lessonmanager.fragments.DatePickerFragment;
+import com.example.matteoaldini.lessonmanager.fragments.TimePickerFragment;
 
 import java.util.Calendar;
 
@@ -23,7 +28,7 @@ import java.util.Calendar;
  * Created by Filo on 07/05/2015.
  */
 public class AddLessonActivity extends ActionBarActivity implements DatePickerFragment.DatePickerObserver, TimePickerFragment.TimePickerObserver {
-    private static final int DATE_DIALOG_ID = 999;
+    private static final String STUDENT_EXTRA = "student";
     private Toolbar toolbar;
     private Student student;
     private TextView date;
@@ -33,14 +38,14 @@ public class AddLessonActivity extends ActionBarActivity implements DatePickerFr
     private EditText fare;
     private EditText location;
     private Calendar calendar;
-    private Spinner spinner;
+    private Spinner frequency_spinner;
+    private Spinner subjects_spinner;
     private CheckBox checkBox;
     private RelativeLayout rLayout;
     private DatePickerFragment datePicker;
     private DatePickerFragment endDatePicker;
     private TimePickerFragment startTimePicker;
     private TimePickerFragment endTimePicker;
-    private Button addLessonBut;
     private int year;
     private int month;
     private int day;
@@ -60,7 +65,7 @@ public class AddLessonActivity extends ActionBarActivity implements DatePickerFr
         setSupportActionBar(this.toolbar);
 
         Intent i = getIntent();
-        this.student = (Student)i.getSerializableExtra("student");
+        this.student = (Student)i.getSerializableExtra(STUDENT_EXTRA);
 
         this.date = (TextView) findViewById(R.id.dateLesson);
         this.endDate = (TextView) findViewById(R.id.endDateLesson);
@@ -81,8 +86,8 @@ public class AddLessonActivity extends ActionBarActivity implements DatePickerFr
         this.startMin = 0;
         this.endHour = 0;
         this.endMin = 0;
-        this.date.setText(""+this.day+" / "+this.month+" / "+this.year);
-        this.endDate.setText("" + this.endDay + " / " + this.endMonth + " / " + this.endYear);
+        this.date.setText(""+this.day+" / "+(this.month+1)+" / "+this.year);
+        this.endDate.setText("" + this.endDay + " / " + (this.endMonth+1) + " / " + this.endYear);
         this.datePicker = new DatePickerFragment();
         this.endDatePicker = new DatePickerFragment();
         this.startTimePicker = new TimePickerFragment();
@@ -115,24 +120,18 @@ public class AddLessonActivity extends ActionBarActivity implements DatePickerFr
                 endTimePicker.setStart(false);
             }
         });
-        this.spinner = (Spinner) findViewById(R.id.frequencyspinner);
+        this.frequency_spinner = (Spinner) findViewById(R.id.frequencyspinner);
+        this.subjects_spinner = (Spinner) findViewById(R.id.subject_spinner);
         this.rLayout = (RelativeLayout) findViewById(R.id.layoutFrequency);
         this.checkBox = (CheckBox) findViewById(R.id.checkFrequency);
         this.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
                     rLayout.setVisibility(View.VISIBLE);
-                } else{
+                } else {
                     rLayout.setVisibility(View.INVISIBLE);
                 }
-            }
-        });
-        this.addLessonBut = (Button)findViewById(R.id.addLessonBut);
-        this.addLessonBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               addNewLesson();
             }
         });
     }
@@ -199,13 +198,44 @@ public class AddLessonActivity extends ActionBarActivity implements DatePickerFr
         day.set(this.year, this.month, this.day);
         Calendar endDay = Calendar.getInstance();
         endDay.set(this.endYear, this.endMonth, this.endDay);
-        lesson = new Lesson(this.student, day, this.startHour, this.startMin, this.endHour, this.endMin,
-                Integer.parseInt(this.fare.getText().toString()), this.location.getText().toString());
+
         LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
-        if(this.checkBox.isChecked()){
-            db.insertNewLesson(lesson, this.spinner.getSelectedItemPosition() + 1,endDay);
+        if(this.location.getText().toString().equals("")||this.fare.getText().toString().equals("")){
+            Toast.makeText(getApplicationContext(), R.string.field_missing, Toast.LENGTH_LONG).show();
+        }else if((this.startHour*60+this.startMin)>=(this.endHour*60+this.endMin)){
+            Toast.makeText(getApplicationContext(), R.string.start_end_hour_wrong, Toast.LENGTH_LONG).show();
         }else {
-            db.insertNewLesson(lesson, 0 ,endDay);
+            lesson = new Lesson(this.student, day, this.startHour, this.startMin, this.endHour, this.endMin,
+                    Integer.parseInt(this.fare.getText().toString()), this.location.getText().toString(),this.subjects_spinner.getSelectedItem().toString());
+            if(this.checkBox.isChecked()){
+                if(day.compareTo(endDay)>=0){
+                    Toast.makeText(getApplicationContext(), R.string.wrong_end_date, Toast.LENGTH_LONG).show();
+                }else {
+                    db.insertNewLesson(lesson, this.frequency_spinner.getSelectedItemPosition() + 1,endDay);
+                    Intent intent = new Intent();
+                    setResult(RESULT_OK,intent);
+                    finish();
+                }
+            }else {
+                db.insertNewLesson(lesson, 0 ,endDay);
+                Intent intent = new Intent();
+                setResult(RESULT_OK,intent);
+                finish();
+            }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_add_item,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==R.id.add_item_menu){
+            this.addNewLesson();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

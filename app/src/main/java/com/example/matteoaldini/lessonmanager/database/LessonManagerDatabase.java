@@ -7,9 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.matteoaldini.lessonmanager.Lesson;
-import com.example.matteoaldini.lessonmanager.Student;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.example.matteoaldini.lessonmanager.model.Lesson;
+import com.example.matteoaldini.lessonmanager.model.Student;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,6 +41,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
     private static final String MIN_END = "min_end";
     private static final String FARE = "fare";
     private static final String LOCATION = "location";
+    private static final String TYPE_LESSON = "type_lesson";
     private static final String ID_LESSON = "id_lesson";
     private static final String LESSON_STUDENT = "lesson_student";
     private static final String LESSON_PRESENT = "lesson_present";
@@ -55,7 +55,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     private static final String CREATE_LESSON_TABLE =
             "CREATE TABLE " + LESSONS_TABLE + " (" + ID_LESSON + " INTEGER PRIMARY KEY,"
-                    + DATE_LESSON + " DATE," + LOCATION + " TEXT," + HOUR_START + " INTEGER," + MIN_START + " INTEGER,"
+                    + DATE_LESSON + " DATE," + LOCATION + " TEXT," + TYPE_LESSON + " TEXT," + HOUR_START + " INTEGER," + MIN_START + " INTEGER,"
                     + HOUR_END + " INTEGER," + MIN_END + " INTEGER," + FARE + " INTEGER," + LESSON_PRESENT + " INTEGER,"
                     + LESSON_PAID + " INTEGER,"+ LESSON_STUDENT + " INTEGER, FOREIGN KEY("
                     + LESSON_STUDENT +") REFERENCES " + STUDENTS_TABLE + " (" + ID_STUDENT +"))";
@@ -121,6 +121,18 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     public boolean insertNewLesson(Lesson lesson , int frequency, Calendar endDate){
         int step = 0;
+        long result;
+        Calendar day;
+        day = lesson.getDate();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+         Log.i("SUBJECT",lesson.getSubject());
+        if(frequency==0){
+            result = this.addSingleLesson(lesson, sdf.format(day.getTime()));
+            Log.i("", sdf.format(day.getTime())+"DAY OF WEEK:"+day.get(Calendar.DAY_OF_WEEK));
+            if (result == -1)
+                return false;
+            else return true;
+        }
         switch (frequency){
             case 1:
                 step = 7;
@@ -131,31 +143,34 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
             case 3:
                 step = 21;
                 break;
+            case 4:
+                step = 28;
+                break;
         }
-        Calendar day = Calendar.getInstance();
-        day = lesson.getDate();
         while(day.compareTo(endDate)<0) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            SQLiteDatabase db = getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put(DATE_LESSON, sdf.format(day.getTime()));
-            values.put(HOUR_START, lesson.getHourStart());
-            values.put(MIN_START, lesson.getMinStart());
-            values.put(HOUR_END, lesson.getHourEnd());
-            values.put(MIN_END, lesson.getMinEnd());
-            values.put(FARE, lesson.getFare());
-            values.put(LOCATION, lesson.getLocation());
-            values.put(LESSON_STUDENT, lesson.getStudent().getId());
-            values.put(LESSON_PRESENT, lesson.isPresent());
-            values.put(LESSON_PAID, lesson.isPaid());
             Log.i("", sdf.format(day.getTime())+"DAY OF WEEK:"+day.get(Calendar.DAY_OF_WEEK));
             day.add(Calendar.DAY_OF_MONTH,step);
-
-            long result = db.insert(LESSONS_TABLE, null, values);
-
+            result = this.addSingleLesson(lesson, sdf.format(day.getTime()));
             if (result == -1)
                 return false;
         }
         return true;
+    }
+
+    private long addSingleLesson(Lesson lesson, String date){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DATE_LESSON, date);
+        values.put(HOUR_START, lesson.getHourStart());
+        values.put(MIN_START, lesson.getMinStart());
+        values.put(HOUR_END, lesson.getHourEnd());
+        values.put(MIN_END, lesson.getMinEnd());
+        values.put(FARE, lesson.getFare());
+        values.put(LOCATION, lesson.getLocation());
+        values.put(TYPE_LESSON, lesson.getSubject());
+        values.put(LESSON_STUDENT, lesson.getStudent().getId());
+        values.put(LESSON_PRESENT, lesson.isPresent());
+        values.put(LESSON_PAID, lesson.isPaid());
+        return(db.insert(LESSONS_TABLE, null, values));
     }
 }

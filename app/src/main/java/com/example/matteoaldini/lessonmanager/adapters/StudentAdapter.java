@@ -1,4 +1,4 @@
-package com.example.matteoaldini.lessonmanager;
+package com.example.matteoaldini.lessonmanager.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,6 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.matteoaldini.lessonmanager.R;
+import com.example.matteoaldini.lessonmanager.model.Student;
 import com.example.matteoaldini.lessonmanager.material_design.RoundImage;
 
 import java.util.List;

@@ -1,8 +1,11 @@
-package com.example.matteoaldini.lessonmanager;
+package com.example.matteoaldini.lessonmanager.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.example.matteoaldini.lessonmanager.fragments.CalendarFragment;
+import com.example.matteoaldini.lessonmanager.fragments.StudentListFragment;
 
 /**
  * Created by matteo.aldini on 04/05/2015.

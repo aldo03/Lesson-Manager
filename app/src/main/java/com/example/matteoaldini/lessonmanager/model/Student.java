@@ -1,4 +1,4 @@
-package com.example.matteoaldini.lessonmanager;
+package com.example.matteoaldini.lessonmanager.model;
 
 import java.io.Serializable;
 

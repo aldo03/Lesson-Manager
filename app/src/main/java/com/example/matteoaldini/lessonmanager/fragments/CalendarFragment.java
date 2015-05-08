@@ -1,4 +1,4 @@
-package com.example.matteoaldini.lessonmanager;
+package com.example.matteoaldini.lessonmanager.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TimePicker;
 
+import com.example.matteoaldini.lessonmanager.model.Lesson;
+import com.example.matteoaldini.lessonmanager.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 

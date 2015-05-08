@@ -1,4 +1,4 @@
-package com.example.matteoaldini.lessonmanager;
+package com.example.matteoaldini.lessonmanager.fragments;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;

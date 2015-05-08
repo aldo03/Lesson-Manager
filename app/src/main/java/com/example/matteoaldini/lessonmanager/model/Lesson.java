@@ -1,7 +1,6 @@
-package com.example.matteoaldini.lessonmanager;
+package com.example.matteoaldini.lessonmanager.model;
 
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by Filo on 05/05/2015.
@@ -15,11 +14,13 @@ public class Lesson {
     private int minEnd;
     private int fare;
     private String location;
+    private String subject;
     private boolean present;
     private boolean paid;
     private long idLesson;
 
-    public Lesson(Student student, Calendar date, int hourStart, int minStart, int hourEnd, int minEnd, int fare, String location) {
+    public Lesson(Student student, Calendar date, int hourStart, int minStart, int hourEnd, int minEnd,
+                  int fare, String location, String subject) {
         this.student = student;
         this.date = date;
         this.hourStart = hourStart;
@@ -30,6 +31,7 @@ public class Lesson {
         this.location = location;
         this.present = true;
         this.paid = false;
+        this.subject = subject;
     }
 
     public Student getStudent() {
@@ -114,5 +116,9 @@ public class Lesson {
 
     public void setIdLesson(long id){
         this.idLesson = id;
+    }
+
+    public String getSubject() {
+        return subject;
     }
 }
