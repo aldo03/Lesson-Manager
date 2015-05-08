@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.matteoaldini.lessonmanager.model.Lesson;
@@ -59,6 +62,7 @@ public class CalendarFragment extends Fragment {
                 TextView info;
                 TextView startHour;
                 TextView endHour;
+                CardView card;
                 ImageView img;
                 Lesson l;
                 List<Lesson> list = listener.getLessons(calendar.getSelectedDate().getCalendar());
@@ -69,10 +73,17 @@ public class CalendarFragment extends Fragment {
                     startHour = (TextView)tempView.findViewById(R.id.hour_info);
                     endHour = (TextView)tempView.findViewById(R.id.hour_info2);
                     img = (ImageView)tempView.findViewById(R.id.imageView);
+                    card = (CardView)tempView.findViewById(R.id.card_view);
+                    card.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.i("","asdasd");
+                        }
+                    });
                     l = iterator.next();
                     info.setText(l.getStudent().getName()+" "+l.getStudent().getSurname());
                     startHour.setText(getHourFromInt(l.getHourStart())+":"+getHourFromInt(l.getMinStart()));
-                    endHour.setText(getHourFromInt(l.getHourEnd())+":"+getHourFromInt(l.getMinEnd()));
+                    endHour.setText(getHourFromInt(l.getHourEnd()) + ":" + getHourFromInt(l.getMinEnd()));
                     setImage(img, l.getSubject());
                     layout.addView(tempView);
                 }

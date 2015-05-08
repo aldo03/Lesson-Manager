@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/linearLayout">
 
-            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
 </ScrollView>
