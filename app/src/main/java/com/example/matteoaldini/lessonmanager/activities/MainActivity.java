@@ -10,6 +10,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.matteoaldini.lessonmanager.R;
+import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
+import com.example.matteoaldini.lessonmanager.fragments.CalendarFragment;
+import com.example.matteoaldini.lessonmanager.model.Lesson;
 import com.example.matteoaldini.lessonmanager.model.Student;
 import com.example.matteoaldini.lessonmanager.adapters.TabAdapter;
 import com.example.matteoaldini.lessonmanager.fragments.StudentListFragment;
@@ -110,7 +113,7 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
 
     @Override
     public List<Lesson> getLessons(Calendar date) {
-        List<Lesson> list = new ArrayList<>();
-        return list;
+        LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
+        return db.getDateLessons(date);
     }
 }

@@ -22,8 +22,8 @@ import java.util.List;
 
 
 public class LessonManagerDatabase extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "lesson_m_database";
+    public static final int DATABASE_VERSION = 2;
+    public static final String DATABASE_NAME = "lesson_manager_database";
     private static final String STUDENTS_TABLE = "students";
     private static final String LESSONS_TABLE = "lessons";
 
@@ -41,7 +41,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
     private static final String MIN_END = "min_end";
     private static final String FARE = "fare";
     private static final String LOCATION = "location";
-    private static final String TYPE_LESSON = "type_lesson";
+    private static final String SUBJECT_LESSON = "subject_lesson";
     private static final String ID_LESSON = "id_lesson";
     private static final String LESSON_STUDENT = "lesson_student";
     private static final String LESSON_PRESENT = "lesson_present";
@@ -55,7 +55,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     private static final String CREATE_LESSON_TABLE =
             "CREATE TABLE " + LESSONS_TABLE + " (" + ID_LESSON + " INTEGER PRIMARY KEY,"
-                    + DATE_LESSON + " DATE," + LOCATION + " TEXT," + TYPE_LESSON + " TEXT," + HOUR_START + " INTEGER," + MIN_START + " INTEGER,"
+                    + DATE_LESSON + " TEXT," + LOCATION + " TEXT," + SUBJECT_LESSON + " TEXT," + HOUR_START + " INTEGER," + MIN_START + " INTEGER,"
                     + HOUR_END + " INTEGER," + MIN_END + " INTEGER," + FARE + " INTEGER," + LESSON_PRESENT + " INTEGER,"
                     + LESSON_PAID + " INTEGER,"+ LESSON_STUDENT + " INTEGER, FOREIGN KEY("
                     + LESSON_STUDENT +") REFERENCES " + STUDENTS_TABLE + " (" + ID_STUDENT +"))";
@@ -105,12 +105,18 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         if (cursor == null || !cursor.moveToFirst())
             return null;
 
+        int indexName = cursor.getColumnIndex(NAME);
+        int indexSurname = cursor.getColumnIndex(SURNAME);
+        int indexPhone = cursor.getColumnIndex(PHONE);
+        int indexEmail = cursor.getColumnIndex(EMAIL);
+        int indexID = cursor.getColumnIndex(ID_STUDENT);
+
         for (int i = 0; i < cursor.getCount(); i++) {
-            String name = cursor.getString(cursor.getColumnIndex(NAME));
-            String surname = cursor.getString(cursor.getColumnIndex(SURNAME));
-            String phone = cursor.getString(cursor.getColumnIndex(PHONE));
-            String email = cursor.getString(cursor.getColumnIndex(EMAIL));
-            long id = cursor.getLong(cursor.getColumnIndex(ID_STUDENT));
+            String name = cursor.getString(indexName);
+            String surname = cursor.getString(indexSurname);
+            String phone = cursor.getString(indexPhone);
+            String email = cursor.getString(indexEmail);
+            long id = cursor.getLong(indexID);
             Student student = new Student(name,surname,phone,email);
             student.setId(id);
             students.add(student);
@@ -149,8 +155,8 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         }
         while(day.compareTo(endDate)<0) {
             Log.i("", sdf.format(day.getTime())+"DAY OF WEEK:"+day.get(Calendar.DAY_OF_WEEK));
-            day.add(Calendar.DAY_OF_MONTH,step);
             result = this.addSingleLesson(lesson, sdf.format(day.getTime()));
+            day.add(Calendar.DAY_OF_MONTH,step);
             if (result == -1)
                 return false;
         }
@@ -167,10 +173,79 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         values.put(MIN_END, lesson.getMinEnd());
         values.put(FARE, lesson.getFare());
         values.put(LOCATION, lesson.getLocation());
-        values.put(TYPE_LESSON, lesson.getSubject());
+        values.put(SUBJECT_LESSON, lesson.getSubject());
         values.put(LESSON_STUDENT, lesson.getStudent().getId());
         values.put(LESSON_PRESENT, lesson.isPresent());
         values.put(LESSON_PAID, lesson.isPaid());
         return(db.insert(LESSONS_TABLE, null, values));
+    }
+
+    public List<Lesson> getDateLessons(Calendar date) {
+        List<Lesson> lessons = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String dateToFind = sdf.format(date.getTime());
+        String query = "SELECT * FROM " + LESSONS_TABLE + " WHERE " + DATE_LESSON + "=?";
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, new String[]{dateToFind});
+
+        if (cursor == null)
+            return null;
+        int indexHourStart = cursor.getColumnIndex(HOUR_START);
+        int indexMinStart = cursor.getColumnIndex(MIN_START);
+        int indexHourEnd = cursor.getColumnIndex(HOUR_END);
+        int indexMinEnd = cursor.getColumnIndex(MIN_END);
+        int indexFare = cursor.getColumnIndex(FARE);
+        int indexLocation = cursor.getColumnIndex(LOCATION);
+        int indexSubject = cursor.getColumnIndex(SUBJECT_LESSON);
+        int indexIdLesson = cursor.getColumnIndex(ID_LESSON);
+        int indexStudent = cursor.getColumnIndex(LESSON_STUDENT);
+        int indexPresent = cursor.getColumnIndex(LESSON_PRESENT);
+        int indexPaid = cursor.getColumnIndex(LESSON_PAID);
+
+        while(cursor.moveToNext()){
+            int hourStart = cursor.getInt(indexHourStart);
+            int minStart = cursor.getInt(indexMinStart);
+            int hourEnd = cursor.getInt(indexHourEnd);
+            int minEnd = cursor.getInt(indexMinEnd);
+            int fare = cursor.getInt(indexFare);
+            String location = cursor.getString(indexLocation);
+            String subject = cursor.getString(indexSubject);
+            long idStud = cursor.getLong(indexStudent);
+            long idLesson = cursor.getLong(indexIdLesson);
+            int present = cursor.getInt(indexPresent);
+            int paid = cursor.getInt(indexPaid);
+            Student student = this.getStudentByID(idStud);
+            Lesson lesson = new Lesson(student, date, hourStart, minStart, hourEnd, minEnd, fare, location, subject);
+            lesson.setIdLesson(idLesson);
+            lessons.add(lesson);
+            Log.i("lesson:",lesson.toString());
+        }
+
+        return lessons;
+    }
+
+    private Student getStudentByID(long id){
+        String query = "SELECT * FROM " + STUDENTS_TABLE + " WHERE " + ID_STUDENT + "=?";
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, new String[]{""+id});
+
+        cursor.moveToNext();
+
+        int indexName = cursor.getColumnIndex(NAME);
+        int indexSurname = cursor.getColumnIndex(SURNAME);
+        int indexPhone = cursor.getColumnIndex(PHONE);
+        int indexEmail = cursor.getColumnIndex(EMAIL);
+        int indexID = cursor.getColumnIndex(ID_STUDENT);
+
+        String name = cursor.getString(indexName);
+        String surname = cursor.getString(indexSurname);
+        String phone = cursor.getString(indexPhone);
+        String email = cursor.getString(indexEmail);
+        Student student = new Student(name,surname,phone,email);
+        student.setId(id);
+        return student;
     }
 }

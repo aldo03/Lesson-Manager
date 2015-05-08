@@ -121,4 +121,22 @@ public class Lesson {
     public String getSubject() {
         return subject;
     }
+
+    @Override
+    public String toString() {
+        return "Lesson{" +
+                "student=" + student +
+                ", date=" + date +
+                ", hourStart=" + hourStart +
+                ", minStart=" + minStart +
+                ", hourEnd=" + hourEnd +
+                ", minEnd=" + minEnd +
+                ", fare=" + fare +
+                ", location='" + location + '\'' +
+                ", subject='" + subject + '\'' +
+                ", present=" + present +
+                ", paid=" + paid +
+                ", idLesson=" + idLesson +
+                '}';
+    }
 }

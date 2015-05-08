@@ -53,6 +53,7 @@ public class CalendarFragment extends Fragment {
         this.calendar.setOnDateChangedListener(new OnDateChangedListener() {
             @Override
             public void onDateChanged(MaterialCalendarView materialCalendarView, CalendarDay calendarDay) {
+                layout.removeAllViews();
                 View tempView;
                 TextView info;
                 TextView startHour;
@@ -67,15 +68,20 @@ public class CalendarFragment extends Fragment {
                     endHour = (TextView)tempView.findViewById(R.id.hour_info2);
                     l = iterator.next();
                     info.setText(l.getStudent().getName()+" "+l.getStudent().getSurname());
-                    startHour.setText(l.getHourStart()+":"+l.getMinStart());
-                    endHour.setText(l.getHourEnd()+":"+l.getMinEnd());
+                    startHour.setText(getHourFromInt(l.getHourStart())+":"+getHourFromInt(l.getMinStart()));
+                    endHour.setText(getHourFromInt(l.getHourEnd())+":"+getHourFromInt(l.getMinEnd()));
                     layout.addView(tempView);
                 }
+                layout.invalidate();
             }
         });
 
         return this.view;
     }
 
-
+    private String getHourFromInt(int time){
+        if(time<10){
+            return "0"+time;
+        }else return ""+time;
+    }
 }
