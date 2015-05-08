@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.matteoaldini.lessonmanager.R;
+import com.example.matteoaldini.lessonmanager.fragments.CalendarFragment;
+import com.example.matteoaldini.lessonmanager.model.Lesson;
 import com.example.matteoaldini.lessonmanager.model.Student;
 import com.example.matteoaldini.lessonmanager.adapters.TabAdapter;
 import com.example.matteoaldini.lessonmanager.fragments.StudentListFragment;
