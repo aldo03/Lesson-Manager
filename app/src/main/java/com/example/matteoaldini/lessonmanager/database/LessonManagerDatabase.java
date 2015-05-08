@@ -22,8 +22,8 @@ import java.util.List;
 
 
 public class LessonManagerDatabase extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 2;
-    public static final String DATABASE_NAME = "lesson_manager_database";
+    public static final int DATABASE_VERSION = 3;
+    public static final String DATABASE_NAME = "LSSMdb";
     private static final String STUDENTS_TABLE = "students";
     private static final String LESSONS_TABLE = "lessons";
 
@@ -31,6 +31,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
     private static final String NAME = "name";
     private static final String SURNAME = "surname";
     private static final String PHONE = "phone";
+    private static final String COLOR = "color";
     private static final String EMAIL = "email";
     //private static final String IMAGE = "image";
 
@@ -51,7 +52,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     private static final String CREATE_STUDENTS_TABLE =
             "CREATE TABLE " + STUDENTS_TABLE + " (" + ID_STUDENT + " INTEGER PRIMARY KEY,"
-                    + NAME + " TEXT," + SURNAME + " TEXT," + PHONE + " TEXT," + EMAIL +" TEXT)";
+                    + NAME + " TEXT," + SURNAME + " TEXT," + PHONE + " TEXT," + COLOR + " INTEGER," + EMAIL +" TEXT)";
 
     private static final String CREATE_LESSON_TABLE =
             "CREATE TABLE " + LESSONS_TABLE + " (" + ID_LESSON + " INTEGER PRIMARY KEY,"
@@ -70,7 +71,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         db.execSQL(CREATE_LESSON_TABLE);
     }
 
-    public Student addNewStudent(String name, String surname, String phone, String mail){
+    public Student addNewStudent(String name, String surname, String phone, String mail, int color){
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -78,10 +79,11 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         values.put(SURNAME, surname);
         values.put(PHONE, phone);
         values.put(EMAIL, mail);
+        values.put(COLOR, color);
 
         long result = db.insert(STUDENTS_TABLE, null, values);
 
-        Student s = new Student(name, surname, phone, mail);
+        Student s = new Student(name, surname, phone, mail, color);
         s.setId(result);
 
         if (result == -1)
@@ -109,6 +111,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         int indexSurname = cursor.getColumnIndex(SURNAME);
         int indexPhone = cursor.getColumnIndex(PHONE);
         int indexEmail = cursor.getColumnIndex(EMAIL);
+        int indexColor = cursor.getColumnIndex(COLOR);
         int indexID = cursor.getColumnIndex(ID_STUDENT);
 
         for (int i = 0; i < cursor.getCount(); i++) {
@@ -116,8 +119,9 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
             String surname = cursor.getString(indexSurname);
             String phone = cursor.getString(indexPhone);
             String email = cursor.getString(indexEmail);
+            int color = cursor.getInt(indexColor);
             long id = cursor.getLong(indexID);
-            Student student = new Student(name,surname,phone,email);
+            Student student = new Student(name,surname,phone,email, color);
             student.setId(id);
             students.add(student);
             cursor.moveToNext();
@@ -238,13 +242,14 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         int indexSurname = cursor.getColumnIndex(SURNAME);
         int indexPhone = cursor.getColumnIndex(PHONE);
         int indexEmail = cursor.getColumnIndex(EMAIL);
-        int indexID = cursor.getColumnIndex(ID_STUDENT);
+        int indexColor = cursor.getColumnIndex(COLOR);
 
         String name = cursor.getString(indexName);
         String surname = cursor.getString(indexSurname);
         String phone = cursor.getString(indexPhone);
         String email = cursor.getString(indexEmail);
-        Student student = new Student(name,surname,phone,email);
+        int color = cursor.getInt(indexColor);
+        Student student = new Student(name,surname,phone,email, color);
         student.setId(id);
         return student;
     }
