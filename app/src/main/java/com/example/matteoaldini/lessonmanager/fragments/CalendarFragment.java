@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.matteoaldini.lessonmanager.model.ImageUtils;
 import com.example.matteoaldini.lessonmanager.model.Lesson;
 import com.example.matteoaldini.lessonmanager.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -63,7 +64,8 @@ public class CalendarFragment extends Fragment {
                 TextView startHour;
                 TextView endHour;
                 CardView card;
-                ImageView img;
+                ImageView imgSubject;
+                ImageView imgIconStudent;
                 Lesson l;
                 List<Lesson> list = listener.getLessons(calendar.getSelectedDate().getCalendar());
                 Iterator<Lesson> iterator = list.iterator();
@@ -72,7 +74,8 @@ public class CalendarFragment extends Fragment {
                     info = (TextView)tempView.findViewById(R.id.student_info);
                     startHour = (TextView)tempView.findViewById(R.id.hour_info);
                     endHour = (TextView)tempView.findViewById(R.id.hour_info2);
-                    img = (ImageView)tempView.findViewById(R.id.imageView);
+                    imgSubject = (ImageView)tempView.findViewById(R.id.imageView);
+                    imgIconStudent = (ImageView)tempView.findViewById(R.id.userImage);
                     card = (CardView)tempView.findViewById(R.id.card_view);
                     card.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -84,7 +87,8 @@ public class CalendarFragment extends Fragment {
                     info.setText(l.getStudent().getName()+" "+l.getStudent().getSurname());
                     startHour.setText(getHourFromInt(l.getHourStart())+":"+getHourFromInt(l.getMinStart()));
                     endHour.setText(getHourFromInt(l.getHourEnd()) + ":" + getHourFromInt(l.getMinEnd()));
-                    setImage(img, l.getSubject());
+                    ImageUtils.setImageSubject(imgSubject, l.getSubject());
+                    ImageUtils.setImageFromPosition(imgIconStudent, l.getStudent().getColor());
                     layout.addView(tempView);
                 }
                 layout.invalidate();
