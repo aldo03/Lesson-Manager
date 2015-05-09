@@ -5,4 +5,20 @@
     <color name="tabsScrollColor">#004d40</color>
     <color name="floatingButton">#009688</color>
     <color name="floatingButtonPressed">#004d40</color>
+    <color name="blue">#0f00b0</color>
+    <color name="cyan">#465974</color>
+    <color name="dark_green">#569a4a</color>
+    <color name="green">#3eb900</color>
+    <color name="light_blue">#0073bd</color>
+    <color name="magenta">#bb003c</color>
+    <color name="olive_green">#6abd00</color>
+    <color name="orange">#bd4a00</color>
+    <color name="purple">#bd00a9</color>
+    <color name="red">#bd0500</color>
+    <color name="sand">#756147</color>
+    <color name="sky_blue">#00b1bc</color>
+    <color name="turquoise">#00bda1</color>
+    <color name="violet">#5400bc</color>
+    <color name="yellow">#cbb81d</color>
+
 </resources>

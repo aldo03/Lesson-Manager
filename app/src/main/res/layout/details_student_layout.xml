@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="@color/ColorPrimaryLight">
     <include
         android:id="@+id/tool_bar"
         layout="@layout/tool_bar"
@@ -14,15 +15,63 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_weight="0.04"
-        android:background="#ff87ff4a">
+        android:background="@color/light_blue"
+        android:layout_below="@+id/tool_bar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/layoutColor">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView9"
+            android:id="@+id/imageDetail"
             android:src="@drawable/person"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
-</LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Matteo"
+        android:id="@+id/nameDetails"
+        android:layout_below="@+id/layoutColor"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aldini"
+        android:id="@+id/surnameDetails"
+        android:layout_below="@+id/nameDetails"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="matteo.aldini03@gmail.com"
+        android:id="@+id/mailDetails"
+        android:layout_below="@+id/surnameDetails"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3337064464"
+        android:id="@+id/phoneDetails"
+        android:layout_below="@+id/mailDetails"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ADD LESSON"
+        android:id="@+id/addLessonBut"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

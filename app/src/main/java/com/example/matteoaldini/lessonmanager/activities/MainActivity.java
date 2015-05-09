@@ -94,7 +94,7 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
 
     @Override
     public void detailsStudent(Student s) {
-        this.detailsStudentIntent = new Intent(this.getApplicationContext(), AddLessonActivity.class);
+        this.detailsStudentIntent = new Intent(this.getApplicationContext(), DetailsStudentActivity.class);
         this.detailsStudentIntent.putExtra(STUDENT_EXTRA,s);
         startActivityForResult(this.detailsStudentIntent, DETAILS_STUDENT_CODE);
     }
@@ -105,8 +105,6 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
         if(data!=null){
             if(requestCode==ADD_STUDENT_CODE){
                 Toast.makeText(getApplicationContext(), R.string.student_added,Toast.LENGTH_SHORT).show();
-            }else if(requestCode==DETAILS_STUDENT_CODE){
-                Toast.makeText(getApplicationContext(), R.string.lesson_added,Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -26,6 +26,11 @@
             android:name=".activities.AddLessonActivity"
             android:label="Add Lesson" >
         </activity>
+
+        <activity
+            android:name=".activities.DetailsStudentActivity"
+            android:label="Details Student" >
+        </activity>
     </application>
 
 </manifest>

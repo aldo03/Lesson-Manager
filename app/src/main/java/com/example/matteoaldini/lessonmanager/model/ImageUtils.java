@@ -1,6 +1,8 @@
 package com.example.matteoaldini.lessonmanager.model;
 
+import android.content.Context;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.example.matteoaldini.lessonmanager.R;
 
@@ -107,6 +109,57 @@ public class ImageUtils {
                 break;
             case "Science":
                 img.setImageResource(R.drawable.science);
+                break;
+        }
+    }
+
+    public static void setColor(RelativeLayout l, int color, Context context){
+        switch (color){
+            case 0:
+                l.setBackgroundColor(context.getResources().getColor(R.color.blue));
+                break;
+            case 1:
+                l.setBackgroundColor(context.getResources().getColor(R.color.light_blue));
+                break;
+            case 2:
+                l.setBackgroundColor(context.getResources().getColor(R.color.cyan));
+                break;
+            case 3:
+                l.setBackgroundColor(context.getResources().getColor(R.color.dark_green));
+                break;
+            case 4:
+                l.setBackgroundColor(context.getResources().getColor(R.color.green));
+                break;
+            case 5:
+                l.setBackgroundColor(context.getResources().getColor(R.color.magenta));
+                break;
+            case 6:
+                l.setBackgroundColor(context.getResources().getColor(R.color.olive_green));
+                break;
+            case 7:
+                l.setBackgroundColor(context.getResources().getColor(R.color.orange));
+                break;
+            case 8:
+                l.setBackgroundColor(context.getResources().getColor(R.color.purple));
+                break;
+            case 9:
+                l.setBackgroundColor(context.getResources().getColor(R.color.red));
+                break;
+            case 10:
+                l.setBackgroundColor(context.getResources().getColor(R.color.sand));
+                break;
+            case 11:
+                l.setBackgroundColor(context.getResources().getColor(R.color.turquoise));
+                break;
+            case 12:
+                l.setBackgroundColor(context.getResources().getColor(R.color.violet));
+                break;
+            case 13:
+
+                l.setBackgroundColor(context.getResources().getColor(R.color.yellow));
+                break;
+            case 14:
+                l.setBackgroundColor(context.getResources().getColor(R.color.sky_blue));
                 break;
         }
     }
