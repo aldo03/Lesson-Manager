@@ -143,13 +143,13 @@ public class AddLessonActivity extends ActionBarActivity implements DatePickerFr
             this.month = month;
             this.day = day;
 
-            this.date.setText("" + this.day + " / " + this.month + " / " + this.year);
+            this.date.setText("" + this.day + " / " + (this.month+1) + " / " + this.year);
         }else {
             this.endYear = year;
             this.endMonth = month;
             this.endDay = day;
 
-            this.endDate.setText("" + this.endDay + " / " + this.endMonth + " / " + this.endYear);
+            this.endDate.setText("" + this.endDay + " / " + (this.endMonth+1) + " / " + this.endYear);
         }
     }
 
