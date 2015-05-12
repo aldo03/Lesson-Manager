@@ -10,6 +10,7 @@ import android.util.Log;
 import com.example.matteoaldini.lessonmanager.model.Lesson;
 import com.example.matteoaldini.lessonmanager.model.Student;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,7 +24,7 @@ import java.util.List;
 
 public class LessonManagerDatabase extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 3;
-    public static final String DATABASE_NAME = "LSSMdb";
+    public static final String DATABASE_NAME = "newDB";
     private static final String STUDENTS_TABLE = "students";
     private static final String LESSONS_TABLE = "lessons";
 
@@ -134,7 +135,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         long result;
         Calendar day;
         day = lesson.getDate();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
          Log.i("SUBJECT",lesson.getSubject());
         if(frequency==0){
             result = this.addSingleLesson(lesson, sdf.format(day.getTime()));
@@ -186,7 +187,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     public List<Lesson> getDateLessons(Calendar date) {
         List<Lesson> lessons = new ArrayList<>();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         String dateToFind = sdf.format(date.getTime());
         String query = "SELECT * FROM " + LESSONS_TABLE + " WHERE " + DATE_LESSON + "=?";
         SQLiteDatabase db = getReadableDatabase();
@@ -227,6 +228,64 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         }
 
         return lessons;
+    }
+
+    public Lesson getNextLesson(long idStud){
+        Lesson lesson;
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM " +LESSONS_TABLE+ " WHERE " +LESSON_STUDENT+ "=? AND " +DATE_LESSON+
+                " = (SELECT min(" +DATE_LESSON+") FROM " +LESSONS_TABLE+ " WHERE " +LESSON_STUDENT+ "=?)";
+
+        Cursor cursor = db.rawQuery(query, new String[]{""+idStud, ""+idStud});
+
+        if (cursor == null)
+            return null;
+
+        int indexDate = cursor.getColumnIndex(DATE_LESSON);
+        int indexHourStart = cursor.getColumnIndex(HOUR_START);
+        int indexMinStart = cursor.getColumnIndex(MIN_START);
+        int indexHourEnd = cursor.getColumnIndex(HOUR_END);
+        int indexMinEnd = cursor.getColumnIndex(MIN_END);
+        int indexFare = cursor.getColumnIndex(FARE);
+        int indexLocation = cursor.getColumnIndex(LOCATION);
+        int indexSubject = cursor.getColumnIndex(SUBJECT_LESSON);
+        int indexIdLesson = cursor.getColumnIndex(ID_LESSON);
+        int indexPresent = cursor.getColumnIndex(LESSON_PRESENT);
+        int indexPaid = cursor.getColumnIndex(LESSON_PAID);
+
+        if(!cursor.isAfterLast()){
+        cursor.moveToNext();
+        String date = cursor.getString(indexDate);
+        int hourStart = cursor.getInt(indexHourStart);
+        int minStart = cursor.getInt(indexMinStart);
+        int hourEnd = cursor.getInt(indexHourEnd);
+        int minEnd = cursor.getInt(indexMinEnd);
+        int fare = cursor.getInt(indexFare);
+        String location = cursor.getString(indexLocation);
+        String subject = cursor.getString(indexSubject);
+
+        long idLesson = cursor.getLong(indexIdLesson);
+        int present = cursor.getInt(indexPresent);
+        int paid = cursor.getInt(indexPaid);
+        Student student = this.getStudentByID(idStud);
+        lesson = new Lesson(student, getDateByString(date), hourStart, minStart, hourEnd, minEnd, fare, location, subject);
+        lesson.setIdLesson(idLesson);
+        return lesson;
+        }
+        else{
+            return null;
+        }
+    }
+
+    private Calendar getDateByString(String date){
+        Calendar retDate = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        try {
+            retDate.setTime(sdf.parse(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return retDate;
     }
 
     private Student getStudentByID(long id){
