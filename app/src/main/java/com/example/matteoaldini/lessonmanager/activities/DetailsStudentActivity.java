@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,6 +17,7 @@ import com.example.matteoaldini.lessonmanager.fragments.CardFragment;
 import com.example.matteoaldini.lessonmanager.model.ImageUtils;
 import com.example.matteoaldini.lessonmanager.model.Lesson;
 import com.example.matteoaldini.lessonmanager.model.Student;
+import com.melnykov.fab.FloatingActionButton;
 
 /**
  * Created by Famiglia Aldini on 09/05/2015.
@@ -30,7 +30,7 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
     private TextView phone;
     private RelativeLayout layout;
     private ImageView image;
-    private Button button;
+    private FloatingActionButton button;
     private Student student;
     private Lesson l;
     private CardFragment cardFragment;
@@ -54,7 +54,7 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
 
         setContentView(R.layout.details_student_layout);
         this.toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.tool_bar);
-        ImageUtils.setToolbarColor(this.toolbar, this.student.getColor(), getApplicationContext());
+        this.toolbar.setBackgroundColor(ImageUtils.getDarkColor(this.student.getColor(), getApplicationContext()));
         setSupportActionBar(this.toolbar);
         this.name = (TextView) findViewById(R.id.nameDetails);
         this.surname = (TextView) findViewById(R.id.surnameDetails);
@@ -62,9 +62,10 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
         this.phone = (TextView) findViewById(R.id.phoneDetails);
         this.layout = (RelativeLayout) findViewById(R.id.layoutColor);
         this.image = (ImageView) findViewById(R.id.imageDetail);
-        this.button = (Button) findViewById(R.id.addLessonBut);
-
-
+        this.button = (FloatingActionButton) findViewById(R.id.fab);
+        this.button.setColorNormal(ImageUtils.getDarkColor(this.student.getColor(), getApplicationContext()));
+        this.button.setColorPressed(ImageUtils.getDarkColor(this.student.getColor(), getApplicationContext()));
+        this.button.setColorRipple(ImageUtils.getDarkColor(this.student.getColor(), getApplicationContext()));
         this.name.setText(student.getName());
         this.surname.setText(student.getSurname());
         this.email.setText(student.getEmail());
