@@ -3,6 +3,7 @@ package com.example.matteoaldini.lessonmanager.model;
 import android.content.Context;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.support.v7.widget.Toolbar;
 
 import com.example.matteoaldini.lessonmanager.R;
 
@@ -113,7 +114,7 @@ public class ImageUtils {
         }
     }
 
-    public static void setColor(RelativeLayout l, int color, Context context){
+    public static void setLayoutColor(RelativeLayout l, int color, Context context){
         switch (color){
             case 0:
                 l.setBackgroundColor(context.getResources().getColor(R.color.blue));
@@ -160,6 +161,57 @@ public class ImageUtils {
                 break;
             case 14:
                 l.setBackgroundColor(context.getResources().getColor(R.color.sky_blue));
+                break;
+        }
+    }
+
+    public static void setToolbarColor(Toolbar toolbar, int color, Context context){
+        switch (color){
+            case 0:
+                toolbar.setBackgroundColor(context.getResources().getColor(R.color.blueDark));
+                break;
+            case 1:
+                toolbar.setBackgroundColor(context.getResources().getColor(R.color.light_blueDark));
+                break;
+            case 2:
+                toolbar.setBackgroundColor(context.getResources().getColor(R.color.cyanDark));
+                break;
+            case 3:
+                toolbar.setBackgroundColor(context.getResources().getColor(R.color.dark_greenDark));
+                break;
+            case 4:
+                toolbar.setBackgroundColor(context.getResources().getColor(R.color.greenDark));
+                break;
+            case 5:
+                toolbar.setBackgroundColor(context.getResources().getColor(R.color.magentaDark));
+                break;
+            case 6:
+                toolbar.setBackgroundColor(context.getResources().getColor(R.color.olive_greenDark));
+                break;
+            case 7:
+                toolbar.setBackgroundColor(context.getResources().getColor(R.color.orangeDark));
+                break;
+            case 8:
+                toolbar.setBackgroundColor(context.getResources().getColor(R.color.purpleDark));
+                break;
+            case 9:
+                toolbar.setBackgroundColor(context.getResources().getColor(R.color.redDark));
+                break;
+            case 10:
+                toolbar.setBackgroundColor(context.getResources().getColor(R.color.sandDark));
+                break;
+            case 11:
+                toolbar.setBackgroundColor(context.getResources().getColor(R.color.turquoiseDark));
+                break;
+            case 12:
+                toolbar.setBackgroundColor(context.getResources().getColor(R.color.violetDark));
+                break;
+            case 13:
+
+                toolbar.setBackgroundColor(context.getResources().getColor(R.color.yellowDark));
+                break;
+            case 14:
+                toolbar.setBackgroundColor(context.getResources().getColor(R.color.sky_blueDark));
                 break;
         }
     }

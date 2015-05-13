@@ -4,7 +4,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -55,6 +54,7 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
 
         setContentView(R.layout.details_student_layout);
         this.toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.tool_bar);
+        ImageUtils.setToolbarColor(this.toolbar, this.student.getColor(), getApplicationContext());
         setSupportActionBar(this.toolbar);
         this.name = (TextView) findViewById(R.id.nameDetails);
         this.surname = (TextView) findViewById(R.id.surnameDetails);
@@ -69,7 +69,7 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
         this.surname.setText(student.getSurname());
         this.email.setText(student.getEmail());
         this.phone.setText(student.getPhone());
-        ImageUtils.setColor(this.layout, student.getColor(),this);
+        ImageUtils.setLayoutColor(this.layout, student.getColor(), this);
         ImageUtils.setImageFromPosition(this.image, student.getColor());
         this.button.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -2,9 +2,12 @@
 <resources>
     <color name="ColorPrimary">#009688</color>
     <color name="ColorPrimaryLight">#e0f2f1</color>
+
     <color name="tabsScrollColor">#004d40</color>
+
     <color name="floatingButton">#009688</color>
     <color name="floatingButtonPressed">#004d40</color>
+
     <color name="blue">#0f00b0</color>
     <color name="cyan">#465974</color>
     <color name="dark_green">#569a4a</color>
@@ -21,4 +24,19 @@
     <color name="violet">#5400bc</color>
     <color name="yellow">#cbb81d</color>
 
+    <color name="blueDark">#ff0c0069</color>
+    <color name="cyanDark">#ff112d3b</color>
+    <color name="dark_greenDark">#ff285928</color>
+    <color name="greenDark">#ff2b7300</color>
+    <color name="light_blueDark">#ff00427a</color>
+    <color name="magentaDark">#ff71002a</color>
+    <color name="olive_greenDark">#ff3a7700</color>
+    <color name="orangeDark">#ff783500</color>
+    <color name="purpleDark">#ff770069</color>
+    <color name="redDark">#ff750500</color>
+    <color name="sandDark">#ff42392a</color>
+    <color name="sky_blueDark">#ff006a74</color>
+    <color name="turquoiseDark">#ff00775f</color>
+    <color name="violetDark">#ff350075</color>
+    <color name="yellowDark">#ff84711d</color>
 </resources>
