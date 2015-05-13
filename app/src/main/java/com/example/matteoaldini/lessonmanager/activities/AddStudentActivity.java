@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.matteoaldini.lessonmanager.R;
 import com.example.matteoaldini.lessonmanager.model.ImageUtils;
@@ -65,12 +66,19 @@ public class AddStudentActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.add_item_menu){
-            LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
-            Student s = db.addNewStudent(this.name.getText().toString(),this.surname.getText().toString(),
-                    this.phone.getText().toString(),this.email.getText().toString(), this.color);
-            Intent intent = new Intent();
-            setResult(RESULT_OK,intent);
-            finish();
+            if(this.name.getText().toString().equals("")||
+                    this.surname.getText().toString().equals("")||
+                        this.phone.getText().toString().equals("")||
+                            this.email.getText().toString().equals("")){
+                Toast.makeText(getApplicationContext(), R.string.field_missing, Toast.LENGTH_LONG).show();
+            }else {
+                LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
+                Student s = db.addNewStudent(this.name.getText().toString(), this.surname.getText().toString(),
+                        this.phone.getText().toString(), this.email.getText().toString(), this.color);
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
+                finish();
+            }
         }
         return super.onOptionsItemSelected(item);
     }

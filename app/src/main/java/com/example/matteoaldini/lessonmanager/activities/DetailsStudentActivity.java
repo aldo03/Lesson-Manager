@@ -1,5 +1,6 @@
 package com.example.matteoaldini.lessonmanager.activities;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -12,13 +13,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.matteoaldini.lessonmanager.R;
+import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
+import com.example.matteoaldini.lessonmanager.fragments.CardFragment;
 import com.example.matteoaldini.lessonmanager.model.ImageUtils;
+import com.example.matteoaldini.lessonmanager.model.Lesson;
 import com.example.matteoaldini.lessonmanager.model.Student;
 
 /**
  * Created by Famiglia Aldini on 09/05/2015.
  */
-public class DetailsStudentActivity extends ActionBarActivity {
+public class DetailsStudentActivity extends ActionBarActivity implements CardFragment.CardListener {
     private Toolbar toolbar;
     private TextView name;
     private TextView surname;
@@ -28,13 +32,29 @@ public class DetailsStudentActivity extends ActionBarActivity {
     private ImageView image;
     private Button button;
     private Student student;
+    private Lesson l;
+    private CardFragment cardFragment;
     private static final int ADD_LESSON_CODE = 6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        this.student = (Student) intent.getSerializableExtra("student");
+        LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
+        this.l = db.getNextLesson(student.getId());
+        if(l!=null){
+            this.l.getDate();
+            cardFragment = new CardFragment();
+            cardFragment.setLesson(l);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.layoutCard, cardFragment, "frag");
+            transaction.commit();
+        }
+
         setContentView(R.layout.details_student_layout);
         this.toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.tool_bar);
+        ImageUtils.setToolbarColor(this.toolbar, this.student.getColor(), getApplicationContext());
         setSupportActionBar(this.toolbar);
         this.name = (TextView) findViewById(R.id.nameDetails);
         this.surname = (TextView) findViewById(R.id.surnameDetails);
@@ -43,13 +63,13 @@ public class DetailsStudentActivity extends ActionBarActivity {
         this.layout = (RelativeLayout) findViewById(R.id.layoutColor);
         this.image = (ImageView) findViewById(R.id.imageDetail);
         this.button = (Button) findViewById(R.id.addLessonBut);
-        Intent intent = getIntent();
-        this.student = (Student) intent.getSerializableExtra("student");
+
+
         this.name.setText(student.getName());
         this.surname.setText(student.getSurname());
         this.email.setText(student.getEmail());
         this.phone.setText(student.getPhone());
-        ImageUtils.setColor(this.layout, student.getColor(),this);
+        ImageUtils.setLayoutColor(this.layout, student.getColor(), this);
         ImageUtils.setImageFromPosition(this.image, student.getColor());
         this.button.setOnClickListener(new View.OnClickListener() {
             @Override
