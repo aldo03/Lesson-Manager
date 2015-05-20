@@ -1,6 +1,8 @@
 package com.example.matteoaldini.lessonmanager.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -48,6 +50,7 @@ public class CalendarFragment extends Fragment {
     private View view;
     private MaterialCalendarView calendar;
     private LinearLayout layout;
+    private List<Lesson> list;
 
     @Nullable
     @Override
@@ -58,40 +61,31 @@ public class CalendarFragment extends Fragment {
         this.calendar.setOnDateChangedListener(new OnDateChangedListener() {
             @Override
             public void onDateChanged(MaterialCalendarView materialCalendarView, CalendarDay calendarDay) {
-                layout.removeAllViews();
-                View tempView;
-                TextView info;
-                TextView startHour;
-                TextView endHour;
-                CardView card;
-                ImageView imgSubject;
-                ImageView imgIconStudent;
-                Lesson l;
-                List<Lesson> list = listener.getLessons(calendar.getSelectedDate().getCalendar());
-                Iterator<Lesson> iterator = list.iterator();
-                while(iterator.hasNext()){
-                    tempView = inflater.inflate(R.layout.lesson_layout, null);
-                    info = (TextView)tempView.findViewById(R.id.student_info);
-                    startHour = (TextView)tempView.findViewById(R.id.hour_info);
-                    endHour = (TextView)tempView.findViewById(R.id.hour_info2);
-                    imgSubject = (ImageView)tempView.findViewById(R.id.imageView);
-                    imgIconStudent = (ImageView)tempView.findViewById(R.id.userImage);
-                    card = (CardView)tempView.findViewById(R.id.card_view);
-                    card.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Log.i("","asdasd");
-                        }
-                    });
-                    l = iterator.next();
-                    info.setText(l.getStudent().getName()+" "+l.getStudent().getSurname());
-                    startHour.setText(getHourFromInt(l.getHourStart())+":"+getHourFromInt(l.getMinStart()));
-                    endHour.setText(getHourFromInt(l.getHourEnd()) + ":" + getHourFromInt(l.getMinEnd()));
-                    ImageUtils.setImageSubject(imgSubject, l.getSubject());
-                    ImageUtils.setImageFromPosition(imgIconStudent, l.getStudent().getColor());
-                    layout.addView(tempView);
-                }
-                layout.invalidate();
+                new AsyncTask<Void, Void, Void>() {
+                    private ProgressDialog progressDialog;
+
+                    @Override
+                    protected Void doInBackground(Void... params) {
+                        list = listener.getLessons(calendar.getSelectedDate().getCalendar());
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        //super.onPostExecute(aVoid);
+                        createLessonCards(inflater);
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    protected void onPreExecute() {
+                        //super.onPreExecute();
+                        progressDialog = new ProgressDialog(getActivity());
+                        progressDialog.setCancelable(false);
+                        progressDialog.setMessage("Loading");
+                        progressDialog.show();
+                    }
+                }.execute();
             }
         });
 
@@ -104,56 +98,36 @@ public class CalendarFragment extends Fragment {
         }else return ""+time;
     }
 
-    private void setImage(ImageView img, String s){
-        switch (s){
-            case "Biology":
-                img.setImageResource(R.drawable.biology);
-                break;
-            case "Chemistry":
-                img.setImageResource(R.drawable.chemistry);
-                break;
-            case "Computer Science":
-                img.setImageResource(R.drawable.computerscience);
-                break;
-            case "Economy":
-                img.setImageResource(R.drawable.economy);
-                break;
-            case "English":
-                img.setImageResource(R.drawable.english);
-                break;
-            case "Geography":
-                img.setImageResource(R.drawable.geography);
-                break;
-            case "Greek":
-                img.setImageResource(R.drawable.greek);
-                break;
-            case "History":
-                img.setImageResource(R.drawable.history);
-                break;
-            case "Italian":
-                img.setImageResource(R.drawable.italian);
-                break;
-            case "Languages":
-                img.setImageResource(R.drawable.language);
-                break;
-            case "Latin":
-                img.setImageResource(R.drawable.latin);
-                break;
-            case "Law":
-                img.setImageResource(R.drawable.law);
-                break;
-            case "Maths":
-                img.setImageResource(R.drawable.maths);
-                break;
-            case "Music":
-                img.setImageResource(R.drawable.music);
-                break;
-            case "Physics":
-                img.setImageResource(R.drawable.physics);
-                break;
-            case "Science":
-                img.setImageResource(R.drawable.science);
-                break;
+    private void createLessonCards(LayoutInflater inflater){
+        layout.removeAllViews();
+        View tempView;
+        TextView info;
+        TextView startHour;
+        TextView endHour;
+        CardView card;
+        ImageView imgSubject;
+        ImageView imgIconStudent;
+        for(Lesson l : this.list){
+            tempView = inflater.inflate(R.layout.lesson_layout, null);
+            info = (TextView)tempView.findViewById(R.id.student_info);
+            startHour = (TextView)tempView.findViewById(R.id.hour_info);
+            endHour = (TextView)tempView.findViewById(R.id.hour_info2);
+            imgSubject = (ImageView)tempView.findViewById(R.id.imageView);
+            imgIconStudent = (ImageView)tempView.findViewById(R.id.userImage);
+            card = (CardView)tempView.findViewById(R.id.card_view);
+            card.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i("","asdasd");
+                }
+            });
+            info.setText(l.getStudent().getName()+" "+l.getStudent().getSurname());
+            startHour.setText(getHourFromInt(l.getHourStart())+":"+getHourFromInt(l.getMinStart()));
+            endHour.setText(getHourFromInt(l.getHourEnd()) + ":" + getHourFromInt(l.getMinEnd()));
+            ImageUtils.setImageSubject(imgSubject, l.getSubject());
+            ImageUtils.setImageFromPosition(imgIconStudent, l.getStudent().getColor());
+            layout.addView(tempView);
         }
+        layout.invalidate();
     }
 }
