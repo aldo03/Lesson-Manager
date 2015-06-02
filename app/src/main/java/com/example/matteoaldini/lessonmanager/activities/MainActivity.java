@@ -18,7 +18,6 @@ import com.example.matteoaldini.lessonmanager.adapters.TabAdapter;
 import com.example.matteoaldini.lessonmanager.fragments.StudentListFragment;
 import com.example.matteoaldini.lessonmanager.material_design.SlidingTabLayout;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -88,7 +87,7 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
 
     @Override
     public void addNewStudent() {
-        this.addStudentIntent = new Intent(this.getApplicationContext() ,AddStudentActivity.class);
+        this.addStudentIntent = new Intent(this.getApplicationContext() ,AddOrEditStudentActivity.class);
         startActivityForResult(addStudentIntent, ADD_STUDENT_CODE);
     }
 
