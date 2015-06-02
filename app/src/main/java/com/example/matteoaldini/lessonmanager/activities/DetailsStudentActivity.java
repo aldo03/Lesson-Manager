@@ -49,15 +49,6 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
         this.student = (Student) intent.getSerializableExtra(STUDENT_KEY);
         LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
         this.l = db.getNextLesson(student.getId());
-        if(l!=null){
-            this.l.getDate();
-            cardFragment = new CardFragment();
-            cardFragment.setLesson(l);
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.layoutCard, cardFragment, "frag");
-            transaction.commit();
-        }
-
         setContentView(R.layout.details_student_layout);
         this.toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(this.toolbar);
@@ -94,6 +85,7 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
             } else if(requestCode == EDIT_STUDENT_CODE){
                 Toast.makeText(getApplicationContext(), R.string.student_edited, Toast.LENGTH_SHORT).show();
                 this.student = (Student)data.getSerializableExtra(STUDENT_KEY);
+                this.l.setStudent(this.student);
                 this.initFields();
             }
         }
@@ -135,5 +127,13 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
         this.phone.setText(student.getPhone());
         ImageUtils.setLayoutColor(this.layout, student.getColor(), this);
         ImageUtils.setImageFromPosition(this.image, student.getColor());
+        if(l!=null){
+            this.l.getDate();
+            cardFragment = new CardFragment();
+            cardFragment.setLesson(l);
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.layoutCard, cardFragment, "frag");
+            transaction.commit();
+        }
     }
 }

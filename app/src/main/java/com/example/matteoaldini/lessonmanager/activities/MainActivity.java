@@ -64,6 +64,13 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
     }
 
     @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        this.tabAdapter = new TabAdapter(this.getSupportFragmentManager());
+        pager.setAdapter(this.tabAdapter);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);

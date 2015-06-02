@@ -51,11 +51,15 @@ public class CalendarFragment extends Fragment {
     private MaterialCalendarView calendar;
     private LinearLayout layout;
     private List<Lesson> list;
+    private LayoutInflater inflater;
+    private ViewGroup container;
 
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.view = inflater.inflate(R.layout.calendar_layout, container, false);
+        this.inflater=inflater;
+        this.container = container;
+        this.view = this.inflater.inflate(R.layout.calendar_layout, container, false);
         this.calendar = (MaterialCalendarView)this.view.findViewById(R.id.calendarView);
         this.layout = (LinearLayout)this.view.findViewById(R.id.linearLayout);
         this.calendar.setOnDateChangedListener(new OnDateChangedListener() {
@@ -73,7 +77,7 @@ public class CalendarFragment extends Fragment {
                     @Override
                     protected void onPostExecute(Void aVoid) {
                         //super.onPostExecute(aVoid);
-                        createLessonCards(inflater);
+                        createLessonCards();
                         progressDialog.dismiss();
                     }
 
@@ -92,13 +96,20 @@ public class CalendarFragment extends Fragment {
         return this.view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+
+
     private String getHourFromInt(int time){
         if(time<10){
             return "0"+time;
         }else return ""+time;
     }
 
-    private void createLessonCards(LayoutInflater inflater){
+    private void createLessonCards(){
         layout.removeAllViews();
         View tempView;
         TextView info;
@@ -108,7 +119,7 @@ public class CalendarFragment extends Fragment {
         ImageView imgSubject;
         ImageView imgIconStudent;
         for(Lesson l : this.list){
-            tempView = inflater.inflate(R.layout.lesson_layout, null);
+            tempView = this.inflater.inflate(R.layout.lesson_layout, null);
             info = (TextView)tempView.findViewById(R.id.student_info);
             startHour = (TextView)tempView.findViewById(R.id.hour_info);
             endHour = (TextView)tempView.findViewById(R.id.hour_info2);
