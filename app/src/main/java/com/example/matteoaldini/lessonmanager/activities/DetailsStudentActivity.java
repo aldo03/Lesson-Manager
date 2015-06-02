@@ -23,6 +23,8 @@ import com.example.matteoaldini.lessonmanager.model.Lesson;
 import com.example.matteoaldini.lessonmanager.model.Student;
 import com.melnykov.fab.FloatingActionButton;
 
+import java.util.Calendar;
+
 /**
  * Created by Famiglia Aldini on 09/05/2015.
  */
@@ -32,6 +34,7 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
     private TextView surname;
     private TextView email;
     private TextView phone;
+    private TextView payment;
     private RelativeLayout layout;
     private ImageView image;
     private FloatingActionButton button;
@@ -56,10 +59,22 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
         this.surname = (TextView) findViewById(R.id.surnameDetails);
         this.email = (TextView) findViewById(R.id.mailDetails);
         this.phone = (TextView) findViewById(R.id.phoneDetails);
+        this.payment = (TextView) findViewById(R.id.paymentDetails);
         this.layout = (RelativeLayout) findViewById(R.id.layoutColor);
         this.image = (ImageView) findViewById(R.id.imageDetail);
         this.button = (FloatingActionButton) findViewById(R.id.fab);
         this.initFields();
+        this.button.setColorNormal(ImageUtils.getDarkColor(this.student.getColor(), getApplicationContext()));
+        this.button.setColorPressed(ImageUtils.getDarkColor(this.student.getColor(), getApplicationContext()));
+        this.button.setColorRipple(ImageUtils.getDarkColor(this.student.getColor(), getApplicationContext()));
+        this.name.setText(student.getName());
+        this.surname.setText(student.getSurname());
+        this.email.setText(student.getEmail());
+        this.phone.setText(student.getPhone());
+        Calendar c = Calendar.getInstance();
+        this.payment.setText(""+db.getPayment(student.getId(), c, c.HOUR, c.MINUTE));
+        ImageUtils.setLayoutColor(this.layout, student.getColor(), this);
+        ImageUtils.setImageFromPosition(this.image, student.getColor());
         this.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

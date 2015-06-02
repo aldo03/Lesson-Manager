@@ -188,6 +188,24 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         return(db.insert(LESSONS_TABLE, null, values));
     }
 
+    public int getPayment(long idStudent, Calendar date, int hour, int min) {
+        int cash = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String dateToFind = sdf.format(date.getTime());
+        String query = "SELECT " + FARE + " FROM " + LESSONS_TABLE + " WHERE " + DATE_LESSON + "<=?" +
+                " AND " + LESSON_PAID + "= 0" + " AND " + HOUR_START + "<=?" + " AND " + MIN_START + "<=?" +
+                " AND " + LESSON_STUDENT + "=?";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{dateToFind, ""+hour, ""+min, ""+idStudent});
+        if(cursor==null)
+            return 0;
+        while(cursor.moveToNext()){
+            cash += cursor.getInt(0);
+            Log.i("payment:",""+cash);
+        }
+        return cash;
+    }
+
     public List<Lesson> getDateLessons(Calendar date) {
         List<Lesson> lessons = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
