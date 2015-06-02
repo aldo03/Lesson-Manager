@@ -1,11 +1,12 @@
 package com.example.matteoaldini.lessonmanager.model;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
  * Created by Filo on 05/05/2015.
  */
-public class Lesson {
+public class Lesson implements Serializable{
     private Student student;
     private Calendar date;
     private int hourStart;

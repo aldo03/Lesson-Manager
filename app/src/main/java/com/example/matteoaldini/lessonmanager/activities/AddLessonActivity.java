@@ -21,6 +21,7 @@ import com.example.matteoaldini.lessonmanager.model.Student;
 import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
 import com.example.matteoaldini.lessonmanager.fragments.DatePickerFragment;
 import com.example.matteoaldini.lessonmanager.fragments.TimePickerFragment;
+import com.example.matteoaldini.lessonmanager.model.TimeUtils;
 
 import java.util.Calendar;
 
@@ -56,6 +57,7 @@ public class AddLessonActivity extends ActionBarActivity implements DatePickerFr
     private int startMin;
     private int endHour;
     private int endMin;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,38 +160,12 @@ public class AddLessonActivity extends ActionBarActivity implements DatePickerFr
         if(startEnd){
             this.startHour = hour;
             this.startMin = minute;
-            this.setStartTime(this.startHour, this.startMin);
+            TimeUtils.setTime(this.startHour, this.startMin, this.startTime);
         }else {
             this.endHour = hour;
             this.endMin = minute;
-            this.setEndTime(this.endHour, this.endMin);
+            TimeUtils.setTime(this.endHour, this.endMin, this.endTime);
         }
-    }
-
-    private void setStartTime(int hour, int minute){
-        String h="";
-        String m="";
-        if(hour<10){
-            h="0";
-        }
-        if(minute<10){
-            m="0";
-        }
-
-        this.startTime.setText(h+hour+":"+m+minute);
-    }
-
-    private void setEndTime(int hour, int minute){
-        String h="";
-        String m="";
-        if(hour<10){
-            h="0";
-        }
-        if(minute<10){
-            m="0";
-        }
-
-        this.endTime.setText(h+hour+":"+m+minute);
     }
 
     private void addNewLesson(){

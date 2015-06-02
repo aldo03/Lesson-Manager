@@ -2,6 +2,7 @@ package com.example.matteoaldini.lessonmanager.fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.matteoaldini.lessonmanager.activities.DetailsLessonActivity;
 import com.example.matteoaldini.lessonmanager.model.ImageUtils;
 import com.example.matteoaldini.lessonmanager.model.Lesson;
 import com.example.matteoaldini.lessonmanager.R;
@@ -51,6 +53,8 @@ public class CalendarFragment extends Fragment {
     private MaterialCalendarView calendar;
     private LinearLayout layout;
     private List<Lesson> list;
+    private final static int DETAILS_LESSON_CODE = 10;
+    private Lesson lesson;
 
     @Nullable
     @Override
@@ -108,6 +112,7 @@ public class CalendarFragment extends Fragment {
         ImageView imgSubject;
         ImageView imgIconStudent;
         for(Lesson l : this.list){
+            lesson = l;
             tempView = inflater.inflate(R.layout.lesson_layout, null);
             info = (TextView)tempView.findViewById(R.id.student_info);
             startHour = (TextView)tempView.findViewById(R.id.hour_info);
@@ -118,7 +123,9 @@ public class CalendarFragment extends Fragment {
             card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.i("","asdasd");
+                    Intent intentDetailsLesson = new Intent(getActivity(), DetailsLessonActivity.class);
+                    intentDetailsLesson.putExtra("lesson", lesson);
+                    startActivityForResult(intentDetailsLesson, DETAILS_LESSON_CODE);
                 }
             });
             info.setText(l.getStudent().getName()+" "+l.getStudent().getSurname());
