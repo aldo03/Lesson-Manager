@@ -122,6 +122,10 @@ public class Lesson {
         return subject;
     }
 
+    public long getId() {
+        return idLesson;
+    }
+
     @Override
     public String toString() {
         return "Lesson{" +
@@ -139,4 +143,6 @@ public class Lesson {
                 ", idLesson=" + idLesson +
                 '}';
     }
+
+
 }

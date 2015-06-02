@@ -18,7 +18,7 @@
         </activity>
 
         <activity
-            android:name=".activities.AddStudentActivity"
+            android:name=".activities.AddOrEditStudentActivity"
             android:label="Add Student" >
         </activity>
 

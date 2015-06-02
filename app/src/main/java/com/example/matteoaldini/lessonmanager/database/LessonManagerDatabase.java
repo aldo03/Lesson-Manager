@@ -230,6 +230,44 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         return lessons;
     }
 
+    public void updateStudent(String name, String surname, String phone, String mail, int color, long id){
+        SQLiteDatabase db = getWritableDatabase();
+
+        String whereClause = ""+ ID_STUDENT +"=?";
+
+        ContentValues values = new ContentValues();
+        values.put(NAME, name);
+        values.put(SURNAME, surname);
+        values.put(PHONE, phone);
+        values.put(EMAIL, mail);
+        values.put(COLOR, color);
+
+        db.update(STUDENTS_TABLE, values, whereClause , new String[]{""+id});
+    }
+
+    public void updateLesson(Lesson modifiedLesson){
+        SQLiteDatabase db = getWritableDatabase();
+
+        String whereClause = "WHERE "+ ID_LESSON +"=?";
+
+        ContentValues values = new ContentValues();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        values.put(DATE_LESSON, sdf.format(modifiedLesson.getDate().getTime()));
+        values.put(HOUR_START, modifiedLesson.getHourStart());
+        values.put(MIN_START, modifiedLesson.getMinStart());
+        values.put(HOUR_END, modifiedLesson.getHourEnd());
+        values.put(MIN_END, modifiedLesson.getMinEnd());
+        values.put(FARE, modifiedLesson.getFare());
+        values.put(LOCATION, modifiedLesson.getLocation());
+        values.put(SUBJECT_LESSON, modifiedLesson.getSubject());
+        values.put(LESSON_STUDENT, modifiedLesson.getStudent().getId());
+        values.put(LESSON_PRESENT, modifiedLesson.isPresent());
+        values.put(LESSON_PAID, modifiedLesson.isPaid());
+
+        db.update(STUDENTS_TABLE, values, whereClause , new String[]{""+modifiedLesson.getId()});
+    }
+
     public Lesson getNextLesson(long idStud){
         Lesson lesson;
         SQLiteDatabase db = getReadableDatabase();
