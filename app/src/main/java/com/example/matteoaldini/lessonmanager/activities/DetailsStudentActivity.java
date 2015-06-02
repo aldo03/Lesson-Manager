@@ -1,6 +1,8 @@
 package com.example.matteoaldini.lessonmanager.activities;
 
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -103,6 +105,21 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
             Intent intentEditStudent = new Intent(getApplicationContext(), AddOrEditStudentActivity.class);
             intentEditStudent.putExtra(STUDENT_KEY, this.student);
             startActivityForResult(intentEditStudent, EDIT_STUDENT_CODE);
+        } else if(item.getItemId()==R.id.delete_item_menu){
+            new AlertDialog.Builder(this)
+                    .setTitle("Delete student")
+                    .setMessage("Are you sure you want to delete this student?")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
+                            db.deleteStudent(student.getId());
+                            Intent resIntent = new Intent();
+                            setResult(RESULT_OK, resIntent);
+                            finish();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
         }
         return super.onOptionsItemSelected(item);
     }

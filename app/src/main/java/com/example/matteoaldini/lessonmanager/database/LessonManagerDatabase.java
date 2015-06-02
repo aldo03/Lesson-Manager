@@ -24,7 +24,7 @@ import java.util.List;
 
 public class LessonManagerDatabase extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 3;
-    public static final String DATABASE_NAME = "newDB";
+    public static final String DATABASE_NAME = "newDB2";
     private static final String STUDENTS_TABLE = "students";
     private static final String LESSONS_TABLE = "lessons";
 
@@ -87,6 +87,8 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         Student s = new Student(name, surname, phone, mail, color);
         s.setId(result);
 
+        db.close();
+
         if (result == -1)
             return null;
         return s;
@@ -127,6 +129,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
             students.add(student);
             cursor.moveToNext();
         }
+        db.close();
         return students;
     }
 
@@ -227,6 +230,8 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
             Log.i("lesson:",lesson.toString());
         }
 
+        db.close();
+
         return lessons;
     }
 
@@ -243,6 +248,8 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         values.put(COLOR, color);
 
         db.update(STUDENTS_TABLE, values, whereClause , new String[]{""+id});
+
+        db.close();
     }
 
     public void updateLesson(Lesson modifiedLesson){
@@ -266,6 +273,32 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         values.put(LESSON_PAID, modifiedLesson.isPaid());
 
         db.update(STUDENTS_TABLE, values, whereClause , new String[]{""+modifiedLesson.getId()});
+
+        db.close();
+    }
+
+    public void deleteStudent(long id){
+        SQLiteDatabase db = getWritableDatabase();
+
+        String whereClause = ""+ ID_STUDENT +"=?";
+
+        db.delete(STUDENTS_TABLE,whereClause,new String[]{""+id});
+
+        whereClause = ""+ LESSON_STUDENT +"=?";
+
+        db.delete(LESSONS_TABLE,whereClause,new String[]{""+id});
+
+        db.close();
+    }
+
+    public void deleteLesson(long id){
+        SQLiteDatabase db = getWritableDatabase();
+
+        String whereClause = ""+ ID_LESSON +"=?";
+
+        db.delete(LESSONS_TABLE,whereClause,new String[]{""+id});
+
+        db.close();
     }
 
     public Lesson getNextLesson(long idStud){
@@ -308,6 +341,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         Student student = this.getStudentByID(idStud);
         lesson = new Lesson(student, getDateByString(date), hourStart, minStart, hourEnd, minEnd, fare, location, subject);
         lesson.setIdLesson(idLesson);
+        db.close();
         return lesson;
         }
         else{
