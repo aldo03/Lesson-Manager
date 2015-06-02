@@ -21,7 +21,7 @@ import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
 /**
  * Created by brando on 05/05/2015.
  */
-public class AddStudentActivity extends ActionBarActivity {
+public class AddOrEditStudentActivity extends ActionBarActivity {
     private Toolbar toolbar;
     private EditText name;
     private EditText surname;
@@ -30,6 +30,8 @@ public class AddStudentActivity extends ActionBarActivity {
     private Spinner spinner;
     private ImageView image;
     private int color;
+    private Student student;
+    private static final String STUDENT_KEY = "student";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,15 @@ public class AddStudentActivity extends ActionBarActivity {
         this.email = (EditText) findViewById(R.id.emailAdd);
         this.spinner = (Spinner) findViewById(R.id.colorSpinner);
         this.image = (ImageView) findViewById(R.id.imageIconStudent);
+        Intent intent = getIntent();
+        this.student = (Student)intent.getSerializableExtra(STUDENT_KEY);
+        if(this.student!=null){
+            this.name.setText(this.student.getName());
+            this.surname.setText(this.student.getSurname());
+            this.phone.setText(this.student.getPhone());
+            this.email.setText(this.student.getEmail());
+            this.spinner.setSelection(this.student.getColor());
+        }
         this.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -71,11 +82,22 @@ public class AddStudentActivity extends ActionBarActivity {
                         this.phone.getText().toString().equals("")||
                             this.email.getText().toString().equals("")){
                 Toast.makeText(getApplicationContext(), R.string.field_missing, Toast.LENGTH_LONG).show();
-            }else {
+            }else if(this.student==null){
                 LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
-                Student s = db.addNewStudent(this.name.getText().toString(), this.surname.getText().toString(),
+                db.addNewStudent(this.name.getText().toString(), this.surname.getText().toString(),
                         this.phone.getText().toString(), this.email.getText().toString(), this.color);
                 Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
+                finish();
+            }else {
+                LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
+                db.updateStudent(this.name.getText().toString(), this.surname.getText().toString(),
+                        this.phone.getText().toString(), this.email.getText().toString(), this.color, this.student.getId());
+                Student editedStudent = new Student(this.name.getText().toString(), this.surname.getText().toString(),
+                        this.phone.getText().toString(), this.email.getText().toString(), this.color);
+                editedStudent.setId(this.student.getId());
+                Intent intent = new Intent();
+                intent.putExtra(STUDENT_KEY, editedStudent);
                 setResult(RESULT_OK, intent);
                 finish();
             }

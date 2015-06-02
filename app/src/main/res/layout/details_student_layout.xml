@@ -6,13 +6,29 @@
     android:layout_height="match_parent"
     android:weightSum="1"
     android:background="@color/ColorPrimaryLight"
-    android:id="@+id/layout_student">
+    android:id="@+id/layoutRelative">
     <include
         android:id="@+id/tool_bar"
         layout="@layout/tool_bar"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         />
+
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        fab:fab_colorNormal="@color/floatingButton"
+        fab:fab_colorPressed="@color/floatingButtonPressed"
+        fab:fab_colorRipple="@color/floatingButton"
+        fab:fab_type="normal"
+        android:src="@drawable/ic_account_plus_white_24dp"
+        android:layout_alignWithParentIfMissing="false"
+        android:adjustViewBounds="false"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="180dp"
+        android:layout_marginRight="10dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -33,63 +49,71 @@
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Matteo"
-        android:id="@+id/nameDetails"
-        android:layout_below="@+id/layoutColor"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layoutColor"
+        android:fillViewport="false">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Aldini"
-        android:id="@+id/surnameDetails"
-        android:layout_below="@+id/nameDetails"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/layoutColor"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Matteo"
+                android:id="@+id/nameDetails"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="matteo.aldini03@gmail.com"
-        android:id="@+id/mailDetails"
-        android:layout_below="@+id/surnameDetails"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Aldini"
+                android:id="@+id/surnameDetails"
+                android:layout_below="@id/nameDetails"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="3337064464"
-        android:id="@+id/phoneDetails"
-        android:layout_below="@+id/mailDetails"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="matteo.aldini03@gmail.com"
+                android:id="@+id/mailDetails"
+                android:layout_below="@id/surnameDetails"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp" />
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:layout_below="@+id/phoneDetails"
-        android:id="@+id/layoutCard"
-        ></RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3337064464"
+                android:id="@+id/phoneDetails"
+                android:layout_below="@id/mailDetails"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp" />
 
-    <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        fab:fab_colorNormal="@color/floatingButton"
-        fab:fab_colorPressed="@color/floatingButtonPressed"
-        fab:fab_colorRipple="@color/floatingButton"
-        fab:fab_type="normal"
-        android:src="@drawable/ic_account_plus_white_24dp"
-        android:layout_alignBottom="@+id/nameDetails"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="19dp"
-        android:layout_marginEnd="19dp"
-        android:layout_marginBottom="18dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="50€"
+                android:id="@+id/paymentDetails"
+                android:layout_marginTop="30dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/phoneDetails" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:id="@+id/layoutCard"
+                android:layout_below="@+id/paymentDetails"></RelativeLayout>
+
+
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>
