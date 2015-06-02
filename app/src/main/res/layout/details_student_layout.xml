@@ -22,7 +22,7 @@
         fab:fab_colorPressed="@color/floatingButtonPressed"
         fab:fab_colorRipple="@color/floatingButton"
         fab:fab_type="normal"
-        android:src="@drawable/ic_account_plus_white_24dp"
+        android:src="@drawable/ic_book_open_grey600_48dp"
         android:layout_alignWithParentIfMissing="false"
         android:adjustViewBounds="false"
         android:layout_alignParentRight="true"
