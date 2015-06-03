@@ -100,7 +100,9 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
             } else if(requestCode == EDIT_STUDENT_CODE){
                 Toast.makeText(getApplicationContext(), R.string.student_edited, Toast.LENGTH_SHORT).show();
                 this.student = (Student)data.getSerializableExtra(STUDENT_KEY);
-                this.l.setStudent(this.student);
+                if(this.l!=null){
+                    this.l.setStudent(this.student);
+                }
                 this.initFields();
             }
         }

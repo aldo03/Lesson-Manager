@@ -54,7 +54,6 @@ public class CalendarFragment extends Fragment {
     private LinearLayout layout;
     private List<Lesson> list;
     private final static int DETAILS_LESSON_CODE = 10;
-    private Lesson lesson;
 
     @Nullable
     @Override
@@ -112,7 +111,7 @@ public class CalendarFragment extends Fragment {
         ImageView imgSubject;
         ImageView imgIconStudent;
         for(Lesson l : this.list){
-            lesson = l;
+            final Lesson lessonTemp = l;
             tempView = inflater.inflate(R.layout.lesson_layout, null);
             info = (TextView)tempView.findViewById(R.id.student_info);
             startHour = (TextView)tempView.findViewById(R.id.hour_info);
@@ -124,7 +123,7 @@ public class CalendarFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Intent intentDetailsLesson = new Intent(getActivity(), DetailsLessonActivity.class);
-                    intentDetailsLesson.putExtra("lesson", lesson);
+                    intentDetailsLesson.putExtra("lesson", lessonTemp);
                     startActivityForResult(intentDetailsLesson, DETAILS_LESSON_CODE);
                 }
             });
