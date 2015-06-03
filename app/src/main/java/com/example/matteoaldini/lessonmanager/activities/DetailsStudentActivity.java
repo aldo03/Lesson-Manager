@@ -96,7 +96,11 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
         super.onActivityResult(requestCode, resultCode, data);
         if(data!=null) {
             if (requestCode == ADD_LESSON_CODE) {
-                Toast.makeText(getApplicationContext(), R.string.lesson_added, Toast.LENGTH_SHORT).show();
+                if(data.getSerializableExtra("lesson")==null) {
+                    Toast.makeText(getApplicationContext(), R.string.lesson_added, Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getApplicationContext(), R.string.lesson_not_added, Toast.LENGTH_SHORT).show();
+                }
             } else if(requestCode == EDIT_STUDENT_CODE){
                 Toast.makeText(getApplicationContext(), R.string.student_edited, Toast.LENGTH_SHORT).show();
                 this.student = (Student)data.getSerializableExtra(STUDENT_KEY);

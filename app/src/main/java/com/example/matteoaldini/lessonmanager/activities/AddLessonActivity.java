@@ -193,10 +193,17 @@ public class AddLessonActivity extends ActionBarActivity implements DatePickerFr
                     finish();
                 }
             }else {
-                db.insertNewLesson(lesson, 0 ,endDay);
-                Intent intent = new Intent();
-                setResult(RESULT_OK,intent);
-                finish();
+                Lesson lessonRet = db.insertNewLesson(lesson, 0 ,endDay);
+                if(lessonRet==null) {
+                    Intent intent = new Intent();
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }else {
+                    Intent intent = new Intent();
+                    intent.putExtra("lesson",lessonRet);
+                    setResult(RESULT_CANCELED, intent);
+                    finish();
+                }
             }
         }
     }

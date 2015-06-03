@@ -133,7 +133,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         return students;
     }
 
-    public boolean insertNewLesson(Lesson lesson , int frequency, Calendar endDate){
+    public Lesson insertNewLesson(Lesson lesson , int frequency, Calendar endDate){
         int step = 0;
         long result;
         Calendar day;
@@ -141,11 +141,14 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
          Log.i("SUBJECT",lesson.getSubject());
         if(frequency==0){
+            Lesson lessonRet = this.checkLesson(lesson.getDate(), lesson.getHourStart(),
+                    lesson.getMinStart(), lesson.getHourEnd(), lesson.getMinEnd());
+            if(lessonRet!=null){
+                return lessonRet;
+            }
             result = this.addSingleLesson(lesson, sdf.format(day.getTime()));
             Log.i("", sdf.format(day.getTime())+"DAY OF WEEK:"+day.get(Calendar.DAY_OF_WEEK));
-            if (result == -1)
-                return false;
-            else return true;
+            return null;
         }
         switch (frequency){
             case 1:
@@ -163,12 +166,67 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         }
         while(day.compareTo(endDate)<0) {
             Log.i("", sdf.format(day.getTime())+"DAY OF WEEK:"+day.get(Calendar.DAY_OF_WEEK));
+            Lesson lessonRet = this.checkLesson(lesson.getDate(), lesson.getHourStart(),
+                    lesson.getMinStart(), lesson.getHourEnd(), lesson.getMinEnd());
+            if(lessonRet!=null){
+                return lessonRet;
+            }
             result = this.addSingleLesson(lesson, sdf.format(day.getTime()));
             day.add(Calendar.DAY_OF_MONTH,step);
-            if (result == -1)
-                return false;
         }
-        return true;
+        return null;
+    }
+
+    //checks if lesson to be put into database is in conflict with other lessons
+    private Lesson checkLesson(Calendar date, int hourStart, int minStart, int hourEnd, int minEnd){
+        Lesson lesson;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String dateToFind = sdf.format(date.getTime());
+        String query = "SELECT * FROM " + LESSONS_TABLE + " WHERE " + DATE_LESSON + "=?" +
+                " AND NOT ((" + HOUR_START + ">=?" + " AND " + MIN_START + ">=?)" +
+                " OR (" + HOUR_END + "<=?" + " AND " + MIN_END + "<=?))";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{dateToFind, ""+hourEnd, ""+minEnd, ""+hourStart, ""+minStart});
+        if(cursor==null)
+            return null;
+        else{
+            int indexDate = cursor.getColumnIndex(DATE_LESSON);
+            int indexHourStart = cursor.getColumnIndex(HOUR_START);
+            int indexMinStart = cursor.getColumnIndex(MIN_START);
+            int indexHourEnd = cursor.getColumnIndex(HOUR_END);
+            int indexMinEnd = cursor.getColumnIndex(MIN_END);
+            int indexFare = cursor.getColumnIndex(FARE);
+            int indexLocation = cursor.getColumnIndex(LOCATION);
+            int indexSubject = cursor.getColumnIndex(SUBJECT_LESSON);
+            int indexIdLesson = cursor.getColumnIndex(ID_LESSON);
+            int indexPresent = cursor.getColumnIndex(LESSON_PRESENT);
+            int indexPaid = cursor.getColumnIndex(LESSON_PAID);
+            int indexIdStud = cursor.getColumnIndex(LESSON_STUDENT);
+
+            if(!cursor.isAfterLast()){
+                cursor.moveToNext();
+                String dateL = cursor.getString(indexDate);
+                int hourStartL = cursor.getInt(indexHourStart);
+                int minStartL = cursor.getInt(indexMinStart);
+                int hourEndL = cursor.getInt(indexHourEnd);
+                int minEndL = cursor.getInt(indexMinEnd);
+                int fare = cursor.getInt(indexFare);
+                String location = cursor.getString(indexLocation);
+                String subject = cursor.getString(indexSubject);
+                long idLesson = cursor.getLong(indexIdLesson);
+                int present = cursor.getInt(indexPresent);
+                int paid = cursor.getInt(indexPaid);
+                long idStud = cursor.getLong(indexIdStud);
+                Student student = this.getStudentByID(idStud);
+                lesson = new Lesson(student, getDateByString(dateL), hourStartL, minStartL, hourEndL, minEndL, fare, location, subject);
+                lesson.setIdLesson(idLesson);
+                db.close();
+                return lesson;
+            }
+            else{
+                return null;
+            }
+        }
     }
 
     private long addSingleLesson(Lesson lesson, String date){
@@ -343,24 +401,24 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         int indexPaid = cursor.getColumnIndex(LESSON_PAID);
 
         if(!cursor.isAfterLast()){
-        cursor.moveToNext();
-        String date = cursor.getString(indexDate);
-        int hourStart = cursor.getInt(indexHourStart);
-        int minStart = cursor.getInt(indexMinStart);
-        int hourEnd = cursor.getInt(indexHourEnd);
-        int minEnd = cursor.getInt(indexMinEnd);
-        int fare = cursor.getInt(indexFare);
-        String location = cursor.getString(indexLocation);
-        String subject = cursor.getString(indexSubject);
+            cursor.moveToNext();
+            String date = cursor.getString(indexDate);
+            int hourStart = cursor.getInt(indexHourStart);
+            int minStart = cursor.getInt(indexMinStart);
+            int hourEnd = cursor.getInt(indexHourEnd);
+            int minEnd = cursor.getInt(indexMinEnd);
+            int fare = cursor.getInt(indexFare);
+            String location = cursor.getString(indexLocation);
+            String subject = cursor.getString(indexSubject);
 
-        long idLesson = cursor.getLong(indexIdLesson);
-        int present = cursor.getInt(indexPresent);
-        int paid = cursor.getInt(indexPaid);
-        Student student = this.getStudentByID(idStud);
-        lesson = new Lesson(student, getDateByString(date), hourStart, minStart, hourEnd, minEnd, fare, location, subject);
-        lesson.setIdLesson(idLesson);
-        db.close();
-        return lesson;
+            long idLesson = cursor.getLong(indexIdLesson);
+            int present = cursor.getInt(indexPresent);
+            int paid = cursor.getInt(indexPaid);
+            Student student = this.getStudentByID(idStud);
+            lesson = new Lesson(student, getDateByString(date), hourStart, minStart, hourEnd, minEnd, fare, location, subject);
+            lesson.setIdLesson(idLesson);
+            db.close();
+            return lesson;
         }
         else{
             return null;

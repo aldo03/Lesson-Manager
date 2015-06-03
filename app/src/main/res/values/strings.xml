@@ -10,5 +10,6 @@
     <string name="start_end_hour_wrong">Start Hour should not be greater then End Hour</string>
     <string name="wrong_end_date">End Date should be greater then Start Date</string>
     <string name="student_edited">Student edited successfully</string>
+    <string name="lesson_not_added">Lesson not added!!!</string>
 
 </resources>

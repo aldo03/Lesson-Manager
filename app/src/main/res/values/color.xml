@@ -2,8 +2,9 @@
 <resources>
     <color name="ColorPrimary">#009688</color>
     <color name="ColorPrimaryLight">#e0f2f1</color>
+    <color name="ColorPrimaryDark">#ff006255</color>
 
-    <color name="tabsScrollColor">#004d40</color>
+    <color name="tabsScrollColor">#ffffffff</color>
 
     <color name="floatingButton">#009688</color>
     <color name="floatingButtonPressed">#004d40</color>
@@ -39,4 +40,6 @@
     <color name="turquoiseDark">#ff00775f</color>
     <color name="violetDark">#ff350075</color>
     <color name="yellowDark">#ff84711d</color>
+
+    <color name="white">#ffffffff</color>
 </resources>

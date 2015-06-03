@@ -33,11 +33,20 @@ public class TabAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 6;
+        return 3;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return "Tabula rasa "+position;
+        switch (position){
+            case 0:
+                return "STUDENTS";
+            case 1:
+                return "LESSONS";
+            case 2:
+                return "CASH";
+            default:
+                return "";
+        }
     }
 }
