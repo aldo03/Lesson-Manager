@@ -123,7 +123,7 @@ public class EditLessonActivity extends ActionBarActivity implements DatePickerF
             this.year = year;
             this.month = month;
             this.day = day;
-            this.date.setText("" + this.day + " / " + (this.month) + " / " + this.year);
+            this.date.setText("" + this.day + " / " + (this.month+1) + " / " + this.year);
         }
     }
 
@@ -161,12 +161,19 @@ public class EditLessonActivity extends ActionBarActivity implements DatePickerF
                 LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
                 Lesson modifiedLesson = new Lesson(this.lesson.getStudent(), date, this.startHour, this.startMin, this.endHour, this.endMin,
                         Integer.parseInt(this.fare.getText().toString()), this.location.getText().toString(), this.subjects_spinner.getSelectedItem().toString());
+                modifiedLesson.setPresent(this.presence.isChecked());
+                modifiedLesson.setPaid(this.paid.isChecked());
                 modifiedLesson.setIdLesson(this.lesson.getId());
                 Lesson conflictLesson = db.updateLesson(modifiedLesson);
                 if (conflictLesson != null) {
-                    Toast.makeText(getApplicationContext(), R.string.lesson_not_edited, Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent();
+                    setResult(RESULT_CANCELED, intent);
+                    finish();
                 } else {
-                    Toast.makeText(getApplicationContext(), R.string.lesson_edited, Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent();
+                    intent.putExtra("lesson", modifiedLesson);
+                    setResult(RESULT_OK, intent);
+                    finish();
                 }
             }
         }
