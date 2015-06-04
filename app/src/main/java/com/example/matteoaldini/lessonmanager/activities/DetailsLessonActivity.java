@@ -1,5 +1,7 @@
 package com.example.matteoaldini.lessonmanager.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -48,7 +50,6 @@ public class DetailsLessonActivity extends ActionBarActivity  {
         this.toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.tool_bar);
         this.toolbar.setBackgroundColor(ImageUtils.getDarkColor(this.lesson.getStudent().getColor(), getApplicationContext()));
         setSupportActionBar(this.toolbar);
-        this.sdf = new SimpleDateFormat(DATE_FORMAT);
         this.initFields();
 
     }
@@ -110,7 +111,7 @@ public class DetailsLessonActivity extends ActionBarActivity  {
         this.name.setText(this.lesson.getStudent().getName() +" "+ lesson.getStudent().getSurname());
         TimeUtils.setTime(this.lesson.getHourStart(), this.lesson.getMinStart(), this.startTime);
         TimeUtils.setTime(this.lesson.getHourEnd(), this.lesson.getMinEnd(), this.endTime);
-        this.date.setText(sdf.format(this.lesson.getDate().getTime()));
+        this.date.setText(new SimpleDateFormat(DATE_FORMAT).format(this.lesson.getDate().getTime()));
         this.fare.setText(""+this.lesson.getFare());
         this.location.setText(this.lesson.getLocation());
         this.image = (ImageView) findViewById(R.id.lessonImage);
