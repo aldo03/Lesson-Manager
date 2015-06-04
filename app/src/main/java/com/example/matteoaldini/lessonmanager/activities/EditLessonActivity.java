@@ -68,9 +68,9 @@ public class EditLessonActivity extends ActionBarActivity implements DatePickerF
 
         this.date = (TextView) findViewById(R.id.dateLesson);
         this.startTime = (TextView) findViewById(R.id.startLesson);
-        this.startTime.setText("00:00");
+        TimeUtils.setTime(this.lesson.getHourStart(), this.lesson.getMinStart(), startTime);
         this.endTime = (TextView) findViewById(R.id.endLesson);
-        this.endTime.setText("00:00");
+        TimeUtils.setTime(this.lesson.getHourEnd(), this.lesson.getMinEnd(), endTime);
         this.fare = (EditText) findViewById(R.id.fareLesson);
         this.location = (EditText) findViewById(R.id.locationLesson);
         this.paid = (CheckBox) findViewById(R.id.paidCheckbox);
@@ -85,7 +85,7 @@ public class EditLessonActivity extends ActionBarActivity implements DatePickerF
         this.endMin = this.lesson.getMinEnd();
         this.location.setText(this.lesson.getLocation());
         this.fare.setText(""+this.lesson.getFare());
-        this.date.setText(""+this.day+" / "+(this.month+1)+" / "+this.year);
+        this.date.setText(""+this.day+" / "+(this.month)+" / "+this.year);
         this.datePicker = new DatePickerFragment();
         this.endDatePicker = new DatePickerFragment();
         this.startTimePicker = new TimePickerFragment();
@@ -123,8 +123,7 @@ public class EditLessonActivity extends ActionBarActivity implements DatePickerF
             this.year = year;
             this.month = month;
             this.day = day;
-
-            this.date.setText("" + this.day + " / " + (this.month+1) + " / " + this.year);
+            this.date.setText("" + this.day + " / " + (this.month) + " / " + this.year);
         }
     }
 
