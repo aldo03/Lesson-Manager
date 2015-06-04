@@ -50,8 +50,6 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         this.student = (Student) intent.getSerializableExtra(STUDENT_KEY);
-        LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
-        this.l = db.getNextLesson(student.getId());
         setContentView(R.layout.details_student_layout);
         this.toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(this.toolbar);
@@ -72,6 +70,7 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
         this.email.setText(student.getEmail());
         this.phone.setText(student.getPhone());
         Calendar c = Calendar.getInstance();
+        LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
         this.payment.setText(""+db.getPayment(student.getId(), c, c.HOUR, c.MINUTE));
         ImageUtils.setLayoutColor(this.layout, student.getColor(), this);
         ImageUtils.setImageFromPosition(this.image, student.getColor());
@@ -92,22 +91,38 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
     }
 
     @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        this.refreshCard();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(data!=null) {
             if (requestCode == ADD_LESSON_CODE) {
-                if(data.getSerializableExtra("lesson")==null) {
+                if(resultCode==RESULT_OK){
                     Toast.makeText(getApplicationContext(), R.string.lesson_added, Toast.LENGTH_SHORT).show();
+                }else if(resultCode==RESULT_CANCELED){
+                    if(data.getSerializableExtra("lesson")==null) {
+                        Toast.makeText(getApplicationContext(), R.string.some_lessons_not_added, Toast.LENGTH_SHORT).show();
+                        this.initFields();
+                    }else {
+                        Toast.makeText(getApplicationContext(), R.string.lesson_not_added, Toast.LENGTH_SHORT).show();
+                    }
+                }
+                /*if(data.getSerializableExtra("lesson")==null) {
+                    Toast.makeText(getApplicationContext(), R.string.lesson_added, Toast.LENGTH_SHORT).show();
+                    this.initFields();
                 }else {
                     Toast.makeText(getApplicationContext(), R.string.lesson_not_added, Toast.LENGTH_SHORT).show();
-                }
+                }*/
             } else if(requestCode == EDIT_STUDENT_CODE){
                 Toast.makeText(getApplicationContext(), R.string.student_edited, Toast.LENGTH_SHORT).show();
                 this.student = (Student)data.getSerializableExtra(STUDENT_KEY);
                 if(this.l!=null){
                     this.l.setStudent(this.student);
                 }
-                this.initFields();
             }
         }
     }
@@ -148,6 +163,12 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
         this.phone.setText(student.getPhone());
         ImageUtils.setLayoutColor(this.layout, student.getColor(), this);
         ImageUtils.setImageFromPosition(this.image, student.getColor());
+        this.refreshCard();
+    }
+
+    private void refreshCard(){
+        LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
+        this.l = db.getNextLesson(student.getId());
         if(l!=null){
             this.l.getDate();
             cardFragment = new CardFragment();
@@ -155,6 +176,9 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
             FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.layoutCard, cardFragment, "frag");
             transaction.commit();
+        }else {
+            RelativeLayout layout1 = (RelativeLayout)findViewById(R.id.layoutCard);
+            layout1.removeAllViews();
         }
     }
 }
