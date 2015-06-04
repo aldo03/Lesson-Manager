@@ -35,6 +35,12 @@
         <activity android:name=".activities.DetailsLessonActivity"
             android:label="Details Lesson">
         </activity>
+
+        <activity android:name=".activities.EditLessonActivity"
+            android:label="Edit Lesson">
+        </activity>
+
+
     </application>
 
 </manifest>

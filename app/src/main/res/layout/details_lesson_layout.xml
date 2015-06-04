@@ -37,31 +37,26 @@
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_alarm_grey600_48dp"
+            android:src="@drawable/ic_person_grey600_48dp"
             android:scaleType="centerCrop"
-            android:id="@+id/im1"
-
-            android:layout_marginLeft="57dp"
-            android:layout_marginStart="57dp"
+            android:id="@+id/imageView9"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="57dp"
+            android:layout_marginStart="57dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/startTime"
-            android:text="From:"
-            android:layout_alignTop="@+id/im1"
-            android:layout_centerHorizontal="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/endTime"
-            android:text="To:"
-            android:layout_alignBottom="@+id/im1"
-            android:layout_centerHorizontal="true" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Student"
+            android:id="@+id/name"
+            android:layout_toRightOf="@+id/imageView9"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="90dp"
+            android:layout_marginStart="90dp"/>
 
 
     </RelativeLayout>
@@ -92,10 +87,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Date"
             android:id="@+id/date"
-            android:text="Date:"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_toRightOf="@+id/im2"
+            android:layout_toEndOf="@+id/im2"
+            android:layout_marginLeft="90dp"
+            android:layout_marginStart="90dp" />
 
 
     </RelativeLayout>
@@ -127,10 +126,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/fare"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Fare"
+            android:id="@+id/fare"
+            android:layout_marginLeft="90dp"
+            android:layout_marginStart="90dp"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_toRightOf="@+id/im2"
+            android:layout_toEndOf="@+id/im2" />
 
 
     </RelativeLayout>
@@ -161,10 +164,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Location"
             android:id="@+id/address"
-            android:text="Address:"
+            android:layout_marginLeft="90dp"
+            android:layout_marginStart="90dp"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_toRightOf="@+id/im2"
+            android:layout_toEndOf="@+id/im2" />
 
 
     </RelativeLayout>
@@ -181,9 +188,10 @@
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_person_grey600_48dp"
+            android:src="@drawable/ic_alarm_grey600_48dp"
             android:scaleType="centerCrop"
-            android:id="@+id/imageView9"
+            android:id="@+id/im1"
+
             android:layout_marginLeft="57dp"
             android:layout_marginStart="57dp"
             android:layout_centerVertical="true"
@@ -193,13 +201,28 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/name"
-            android:text="Student"
-            android:layout_marginLeft="95dp"
-            android:layout_marginStart="95dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="From"
+            android:id="@+id/startTime"
+            android:layout_marginLeft="27dp"
+            android:layout_marginStart="27dp"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/imageView9"
-            android:layout_toEndOf="@+id/imageView9" />
+            android:layout_toRightOf="@+id/im1"
+            android:layout_toEndOf="@+id/im1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="To"
+            android:id="@+id/endTime"
+            android:layout_marginRight="101dp"
+            android:layout_marginEnd="101dp"
+            android:layout_alignTop="@+id/startTime"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+
     </RelativeLayout>
 
 </RelativeLayout>
