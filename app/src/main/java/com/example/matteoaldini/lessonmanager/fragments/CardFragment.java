@@ -2,6 +2,7 @@ package com.example.matteoaldini.lessonmanager.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.matteoaldini.lessonmanager.R;
+import com.example.matteoaldini.lessonmanager.activities.DetailsLessonActivity;
 import com.example.matteoaldini.lessonmanager.model.ImageUtils;
 import com.example.matteoaldini.lessonmanager.model.Lesson;
 
@@ -21,6 +23,7 @@ import com.example.matteoaldini.lessonmanager.model.Lesson;
 public class CardFragment extends Fragment {
     private Lesson l;
     private CardListener listener;
+    private final static int DETAILS_LESSON_CODE = 10;
 
     public interface CardListener {
 
@@ -50,6 +53,14 @@ public class CardFragment extends Fragment {
         imgSubject = (ImageView)view.findViewById(R.id.imageView);
         imgIconStudent = (ImageView)view.findViewById(R.id.userImage);
         card = (CardView)view.findViewById(R.id.card_view);
+        card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentDetailsLesson = new Intent(getActivity(), DetailsLessonActivity.class);
+                intentDetailsLesson.putExtra("lesson", l);
+                startActivityForResult(intentDetailsLesson, DETAILS_LESSON_CODE);
+            }
+        });
 
         info.setText(l.getStudent().getName()+" "+l.getStudent().getSurname());
         startHour.setText(getHourFromInt(l.getHourStart())+":"+getHourFromInt(l.getMinStart()));
