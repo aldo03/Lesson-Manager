@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.matteoaldini.lessonmanager.fragments.CalendarFragment;
+import com.example.matteoaldini.lessonmanager.fragments.CashGestureFragment;
 import com.example.matteoaldini.lessonmanager.fragments.StudentListFragment;
 
 /**
@@ -27,6 +28,10 @@ public class TabAdapter extends FragmentPagerAdapter {
                 CalendarFragment calFragment = new CalendarFragment();
                 f =  calFragment;
             break;
+            case 2:
+                CashGestureFragment cashFragment = new CashGestureFragment();
+                f = cashFragment;
+                break;
         }
         return f;
     }

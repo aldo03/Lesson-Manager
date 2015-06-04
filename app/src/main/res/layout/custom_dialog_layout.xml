@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_marginBottom="200dp"
+        android:id="@+id/relativeLayout9"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_currency_eur_grey600_48dp"
+            android:scaleType="centerCrop"
+            android:id="@+id/imageView10"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="10dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/editText"
+            android:layout_alignTop="@+id/imageView10"
+            android:layout_toRightOf="@+id/imageView10"
+            android:layout_toEndOf="@+id/imageView10" />
+
+    </RelativeLayout>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/personlist"
+        android:spinnerMode="dropdown"
+        android:layout_above="@+id/relativeLayout9"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="61dp" />
+
+    <com.gc.materialdesign.views.ButtonFlat
+        android:id="@+id/buttonflat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/ColorPrimary"
+        android:text="Pay"
+        android:layout_marginBottom="46dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <com.gc.materialdesign.views.ButtonFlat
+        android:id="@+id/buttonflat2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/ColorPrimary"
+        android:text="Back"
+        android:layout_alignTop="@+id/buttonflat"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+</RelativeLayout>

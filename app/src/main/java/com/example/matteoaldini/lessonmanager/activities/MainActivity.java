@@ -1,5 +1,6 @@
 package com.example.matteoaldini.lessonmanager.activities;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.example.matteoaldini.lessonmanager.R;
 import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
 import com.example.matteoaldini.lessonmanager.fragments.CalendarFragment;
+import com.example.matteoaldini.lessonmanager.fragments.CashGestureFragment;
 import com.example.matteoaldini.lessonmanager.model.Lesson;
 import com.example.matteoaldini.lessonmanager.model.Student;
 import com.example.matteoaldini.lessonmanager.adapters.TabAdapter;
@@ -22,7 +24,9 @@ import java.util.Calendar;
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity implements StudentListFragment.StudentListListener, CalendarFragment.CalendarListener {
+
+
+public class MainActivity extends ActionBarActivity implements StudentListFragment.StudentListListener, CalendarFragment.CalendarListener, CashGestureFragment.CashGestureListener {
     private static final int ADD_STUDENT_CODE = 9;
     private static final int DETAILS_STUDENT_CODE = 10;
     private static final String STUDENT_EXTRA = "student";
@@ -119,5 +123,13 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
     public List<Lesson> getLessons(Calendar date) {
         LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
         return db.getDateLessons(date);
+    }
+
+    @Override
+    public void payForSomeone() {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.custom_dialog_layout);
+        dialog.setTitle("Payment");
+        dialog.show();
     }
 }
