@@ -177,9 +177,9 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
             day.add(Calendar.DAY_OF_MONTH,step);
         }
         if(conflict==true){
-            return null;
-        }else {
             return new Lesson();
+        }else {
+            return null;
         }
     }
 
@@ -345,7 +345,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
 
-        String whereClause = "WHERE "+ ID_LESSON +"=?";
+        String whereClause = ""+ ID_LESSON +"=?";
 
         ContentValues values = new ContentValues();
 
@@ -361,7 +361,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         values.put(LESSON_PRESENT, modifiedLesson.isPresent());
         values.put(LESSON_PAID, modifiedLesson.isPaid());
 
-        db.update(STUDENTS_TABLE, values, whereClause , new String[]{""+modifiedLesson.getId()});
+        db.update(LESSONS_TABLE, values, whereClause , new String[]{""+modifiedLesson.getId()});
 
         db.close();
         return null;

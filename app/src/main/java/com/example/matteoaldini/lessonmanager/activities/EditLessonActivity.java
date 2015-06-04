@@ -160,7 +160,7 @@ public class EditLessonActivity extends ActionBarActivity implements DatePickerF
                 Calendar date = Calendar.getInstance();
                 date.set(this.year, this.month, this.day);
                 LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
-                Lesson modifiedLesson = new Lesson(this.student, date, this.startHour, this.startMin, this.endHour, this.endMin,
+                Lesson modifiedLesson = new Lesson(this.lesson.getStudent(), date, this.startHour, this.startMin, this.endHour, this.endMin,
                         Integer.parseInt(this.fare.getText().toString()), this.location.getText().toString(), this.subjects_spinner.getSelectedItem().toString());
                 modifiedLesson.setIdLesson(this.lesson.getId());
                 Lesson conflictLesson = db.updateLesson(modifiedLesson);
