@@ -99,46 +99,6 @@
             android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="120dp"
-        android:visibility="invisible"
-        android:id="@+id/layoutFrequency"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/imageView7"
-            android:src="@drawable/ic_calendar_check_grey600_48dp"
-            android:layout_alignTop="@+id/frequencyspinner"
-            android:layout_toLeftOf="@+id/frequencyspinner"
-            android:layout_toStartOf="@+id/frequencyspinner" />
-        <Spinner
-            android:layout_width="215dp"
-            android:layout_height="wrap_content"
-            android:entries="@array/frequencies"
-            android:id="@+id/frequencyspinner"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp">
-        </Spinner>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
-            android:id="@+id/endDateLesson"
-            android:layout_below="@id/frequencyspinner"
-            android:layout_alignLeft="@id/imageView7"
-            android:layout_alignStart="@id/imageView7"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="5dp"/>
-
-    </RelativeLayout>
-
     <Spinner
         android:layout_width="210dp"
         android:layout_height="wrap_content"
@@ -161,30 +121,41 @@
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:id="@+id/relativeLayout8"
-        android:layout_above="@+id/layoutFrequency"
         android:layout_centerHorizontal="true">
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:id="@+id/imageView10"
-            android:src="@drawable/ic_currency_eur_grey600_48dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="52dp"
-            android:layout_marginStart="52dp" />
-
-        <TextView
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Large Text"
-            android:id="@+id/textView"
+            android:text="New CheckBox"
+            android:id="@+id/checkBox"
+            android:layout_marginLeft="44dp"
+            android:layout_marginStart="44dp"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Paid"
+        android:id="@+id/paidCheckbox"
+        android:layout_below="@+id/subject_spinner"
+        android:layout_alignLeft="@+id/subject_spinner"
+        android:layout_alignStart="@+id/subject_spinner"
+        android:checked="false" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Presence"
+        android:id="@+id/presenceCheckbox"
+        android:layout_below="@+id/paidCheckbox"
+        android:layout_alignLeft="@+id/paidCheckbox"
+        android:layout_alignStart="@+id/paidCheckbox"
+        android:layout_marginTop="26dp"
+        android:checked="false" />
 
 
 </RelativeLayout>

@@ -7,6 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -21,15 +23,17 @@ import com.example.matteoaldini.lessonmanager.model.Lesson;
 import com.example.matteoaldini.lessonmanager.model.Student;
 import com.example.matteoaldini.lessonmanager.model.TimeUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
  * Created by brando on 04/06/2015.
  */
 public class EditLessonActivity extends ActionBarActivity implements DatePickerFragment.DatePickerObserver, TimePickerFragment.TimePickerObserver {
-    private static final String STUDENT_EXTRA = "student";
+    private static final String LESSON_EXTRA = "lesson";
+    private static final String DATE_FORMAT = "dd-MM-yyyy";
     private Toolbar toolbar;
-    private Student student;
+    private Lesson lesson;
     private TextView date;
     private TextView startTime;
     private TextView endTime;
@@ -37,22 +41,19 @@ public class EditLessonActivity extends ActionBarActivity implements DatePickerF
     private EditText location;
     private Calendar calendar;
     private Spinner subjects_spinner;
-    private RelativeLayout rLayout;
     private DatePickerFragment datePicker;
     private DatePickerFragment endDatePicker;
     private TimePickerFragment startTimePicker;
     private TimePickerFragment endTimePicker;
+    private CheckBox paid;
+    private CheckBox presence;
     private int year;
     private int month;
     private int day;
-    private int endYear;
-    private int endMonth;
-    private int endDay;
     private int startHour;
     private int startMin;
     private int endHour;
     private int endMin;
-    private Lesson lesson;
 
 
     @Override
@@ -63,7 +64,7 @@ public class EditLessonActivity extends ActionBarActivity implements DatePickerF
         setSupportActionBar(this.toolbar);
 
         Intent i = getIntent();
-        this.student = (Student)i.getSerializableExtra(STUDENT_EXTRA);
+        this.lesson = (Lesson)i.getSerializableExtra(LESSON_EXTRA);
 
         this.date = (TextView) findViewById(R.id.dateLesson);
         this.startTime = (TextView) findViewById(R.id.startLesson);
@@ -72,22 +73,25 @@ public class EditLessonActivity extends ActionBarActivity implements DatePickerF
         this.endTime.setText("00:00");
         this.fare = (EditText) findViewById(R.id.fareLesson);
         this.location = (EditText) findViewById(R.id.locationLesson);
-        this.calendar = Calendar.getInstance();
-        this.year = this.calendar.get(Calendar.YEAR);
-        this.month = this.calendar.get(Calendar.MONTH);
-        this.day = this.calendar.get(Calendar.DAY_OF_MONTH);
-        this.endYear = this.calendar.get(Calendar.YEAR);
-        this.endMonth = this.calendar.get(Calendar.MONTH);
-        this.endDay = this.calendar.get(Calendar.DAY_OF_MONTH);
-        this.startHour = 0;
-        this.startMin = 0;
-        this.endHour = 0;
-        this.endMin = 0;
+        this.paid = (CheckBox) findViewById(R.id.paidCheckbox);
+        this.presence = (CheckBox) findViewById(R.id.presenceCheckbox);
+        String[] s = (new SimpleDateFormat(DATE_FORMAT).format(this.lesson.getDate().getTime()).split("-"));
+        this.year = Integer.parseInt(s[2]);
+        this.month = Integer.parseInt(s[1]);
+        this.day = Integer.parseInt(s[0]);
+        this.startHour = this.lesson.getHourStart();
+        this.startMin = this.lesson.getMinStart();
+        this.endHour = this.lesson.getHourEnd();
+        this.endMin = this.lesson.getMinEnd();
+        this.location.setText(this.lesson.getLocation());
+        this.fare.setText(""+this.lesson.getFare());
         this.date.setText(""+this.day+" / "+(this.month+1)+" / "+this.year);
         this.datePicker = new DatePickerFragment();
         this.endDatePicker = new DatePickerFragment();
         this.startTimePicker = new TimePickerFragment();
         this.endTimePicker = new TimePickerFragment();
+        this.paid.setChecked(this.lesson.isPaid());
+        this.presence.setChecked(this.lesson.isPresent());
         this.date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +115,6 @@ public class EditLessonActivity extends ActionBarActivity implements DatePickerF
             }
         });
         this.subjects_spinner = (Spinner) findViewById(R.id.subject_spinner);
-        this.rLayout = (RelativeLayout) findViewById(R.id.layoutFrequency);
     }
 
     @Override
@@ -122,11 +125,6 @@ public class EditLessonActivity extends ActionBarActivity implements DatePickerF
             this.day = day;
 
             this.date.setText("" + this.day + " / " + (this.month+1) + " / " + this.year);
-        }else {
-            this.endYear = year;
-            this.endMonth = month;
-            this.endDay = day;
-
         }
     }
 
@@ -142,6 +140,9 @@ public class EditLessonActivity extends ActionBarActivity implements DatePickerF
             TimeUtils.setTime(this.endHour, this.endMin, this.endTime);
         }
     }
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_add_or_edit_item,menu);
