@@ -77,7 +77,7 @@ public class EditLessonActivity extends ActionBarActivity implements DatePickerF
         this.presence = (CheckBox) findViewById(R.id.presenceCheckbox);
         String[] s = (new SimpleDateFormat(DATE_FORMAT).format(this.lesson.getDate().getTime()).split("-"));
         this.year = Integer.parseInt(s[2]);
-        this.month = Integer.parseInt(s[1]);
+        this.month = Integer.parseInt(s[1])-1;
         this.day = Integer.parseInt(s[0]);
         this.startHour = this.lesson.getHourStart();
         this.startMin = this.lesson.getMinStart();
@@ -85,7 +85,7 @@ public class EditLessonActivity extends ActionBarActivity implements DatePickerF
         this.endMin = this.lesson.getMinEnd();
         this.location.setText(this.lesson.getLocation());
         this.fare.setText(""+this.lesson.getFare());
-        this.date.setText(""+this.day+" / "+(this.month)+" / "+this.year);
+        this.date.setText(""+this.day+" / "+(this.month+1)+" / "+this.year);
         this.datePicker = new DatePickerFragment();
         this.endDatePicker = new DatePickerFragment();
         this.startTimePicker = new TimePickerFragment();
