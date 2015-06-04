@@ -393,12 +393,19 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     public Lesson getNextLesson(long idStud){
         Lesson lesson;
+
+        Calendar day = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT * FROM " +LESSONS_TABLE+ " WHERE " +LESSON_STUDENT+ "=? AND " +DATE_LESSON+
-                " = (SELECT min(" +DATE_LESSON+") FROM " +LESSONS_TABLE+ " WHERE " +LESSON_STUDENT+ "=?)";
+                " = (SELECT min(" +DATE_LESSON+") FROM " +LESSONS_TABLE+ " WHERE " +LESSON_STUDENT+ "=? AND( "+DATE_LESSON+">? OR("
+                +DATE_LESSON+"=? AND "+HOUR_START+">=? OR("+DATE_LESSON+"=? AND "+HOUR_START+"=? AND "+MIN_START+">=?))))";
+        Cursor cursor = db.rawQuery(query, new String[]{""+idStud, ""+idStud, sdf.format(day.getTime()),sdf.format(day.getTime()),
+                ""+day.get(Calendar.HOUR),sdf.format(day.getTime()),""+day.get(Calendar.HOUR), ""+day.get(Calendar.MINUTE) });
 
-        Cursor cursor = db.rawQuery(query, new String[]{""+idStud, ""+idStud});
-
+        Log.i("",""+day.get(Calendar.HOUR));
+        Log.i("",""+day.get(Calendar.MINUTE));
         if (cursor == null)
             return null;
 
@@ -414,11 +421,18 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         int indexPresent = cursor.getColumnIndex(LESSON_PRESENT);
         int indexPaid = cursor.getColumnIndex(LESSON_PAID);
 
-        if(!cursor.isAfterLast()){
+        int hourMin=24;
+        int minuteMin=61;
+        Lesson nextLesson = new Lesson();
+        boolean found = false;
+
+        while(!(cursor.isLast()||cursor.isAfterLast())){
             cursor.moveToNext();
+            Log.i("","iiii");
             String date = cursor.getString(indexDate);
             int hourStart = cursor.getInt(indexHourStart);
             int minStart = cursor.getInt(indexMinStart);
+
             int hourEnd = cursor.getInt(indexHourEnd);
             int minEnd = cursor.getInt(indexMinEnd);
             int fare = cursor.getInt(indexFare);
@@ -431,12 +445,30 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
             Student student = this.getStudentByID(idStud);
             lesson = new Lesson(student, getDateByString(date), hourStart, minStart, hourEnd, minEnd, fare, location, subject);
             lesson.setIdLesson(idLesson);
-            db.close();
-            return lesson;
+            if(!date.equals(sdf.format(day.getTime()))||hourStart>=day.get(Calendar.HOUR)||hourStart==day.get(Calendar.HOUR)&&minStart>=day.get(Calendar.MINUTE)) {
+                if (hourStart < hourMin) {
+                    hourMin = hourStart;
+                    minuteMin = minStart;
+                    nextLesson = lesson;
+                    found = true;
+                } else if (hourStart == hourMin) {
+                    if (minStart < minuteMin) {
+                        hourMin = hourStart;
+                        minuteMin = minStart;
+                        nextLesson = lesson;
+                        found = true;
+                    }
+                }
+            }
+
         }
-        else{
+        db.close();
+        if(found){
+            return nextLesson;
+        }else{
             return null;
         }
+
     }
 
     private Calendar getDateByString(String date){
