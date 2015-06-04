@@ -25,6 +25,8 @@ import java.text.SimpleDateFormat;
  */
 public class DetailsLessonActivity extends ActionBarActivity  {
     private static final String DATE_FORMAT = "dd-MM-yyyy";
+    private static final String LESSON_EXTRA = "lesson";
+    private static final int EDIT_LESSON_CODE = 5;
     private Toolbar toolbar;
     private Lesson lesson;
     private ImageView image;
@@ -71,6 +73,11 @@ public class DetailsLessonActivity extends ActionBarActivity  {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==R.id.edit_item_menu){
+            Intent intentEditStudent = new Intent(getApplicationContext(), EditLessonActivity.class);
+            intentEditStudent.putExtra(LESSON_EXTRA, this.lesson);
+            startActivityForResult(intentEditStudent, EDIT_LESSON_CODE);
+        }
         return super.onOptionsItemSelected(item);
     }
 }

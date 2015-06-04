@@ -7,8 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -54,6 +52,7 @@ public class EditLessonActivity extends ActionBarActivity implements DatePickerF
     private int startMin;
     private int endHour;
     private int endMin;
+    private Lesson lesson;
 
 
     @Override
@@ -143,57 +142,33 @@ public class EditLessonActivity extends ActionBarActivity implements DatePickerF
             TimeUtils.setTime(this.endHour, this.endMin, this.endTime);
         }
     }
-
-    /*private void addNewLesson(){
-        Lesson lesson;
-        Calendar day = Calendar.getInstance();
-        day.set(this.year, this.month, this.day);
-        Calendar endDay = Calendar.getInstance();
-        endDay.set(this.endYear, this.endMonth, this.endDay);
-
-        LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
-        if(this.location.getText().toString().equals("")||this.fare.getText().toString().equals("")){
-            Toast.makeText(getApplicationContext(), R.string.field_missing, Toast.LENGTH_LONG).show();
-        }else if((this.startHour*60+this.startMin)>=(this.endHour*60+this.endMin)){
-            Toast.makeText(getApplicationContext(), R.string.start_end_hour_wrong, Toast.LENGTH_LONG).show();
-        }else {
-            lesson = new Lesson(this.student, day, this.startHour, this.startMin, this.endHour, this.endMin,
-                    Integer.parseInt(this.fare.getText().toString()), this.location.getText().toString(),this.subjects_spinner.getSelectedItem().toString());
-            if(this.checkBox.isChecked()){
-                if(day.compareTo(endDay)>=0){
-                    Toast.makeText(getApplicationContext(), R.string.wrong_end_date, Toast.LENGTH_LONG).show();
-                }else {
-                    db.insertNewLesson(lesson, this.frequency_spinner.getSelectedItemPosition() + 1,endDay);
-                    Intent intent = new Intent();
-                    setResult(RESULT_OK,intent);
-                    finish();
-                }
-            }else {
-                Lesson lessonRet = db.insertNewLesson(lesson, 0 ,endDay);
-                if(lessonRet==null) {
-                    Intent intent = new Intent();
-                    setResult(RESULT_OK, intent);
-                    finish();
-                }else {
-                    Intent intent = new Intent();
-                    intent.putExtra("lesson",lessonRet);
-                    setResult(RESULT_CANCELED, intent);
-                    finish();
-                }
-            }
-        }
-    }*/
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_add_item,menu);
+        getMenuInflater().inflate(R.menu.menu_add_or_edit_item,menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==R.id.add_item_menu){
-            //this.addNewLesson();
+        if(item.getItemId()==R.id.add_or_edit_item_menu){
+            if(this.location.getText().toString().equals("")||this.fare.getText().toString().equals("")){
+                Toast.makeText(getApplicationContext(), R.string.field_missing, Toast.LENGTH_LONG).show();
+            }else if((this.startHour*60+this.startMin)>=(this.endHour*60+this.endMin)){
+                Toast.makeText(getApplicationContext(), R.string.start_end_hour_wrong, Toast.LENGTH_LONG).show();
+            }else {
+                Calendar date = Calendar.getInstance();
+                date.set(this.year, this.month, this.day);
+                LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
+                Lesson modifiedLesson = new Lesson(this.student, date, this.startHour, this.startMin, this.endHour, this.endMin,
+                        Integer.parseInt(this.fare.getText().toString()), this.location.getText().toString(), this.subjects_spinner.getSelectedItem().toString());
+                modifiedLesson.setIdLesson(this.lesson.getId());
+                Lesson conflictLesson = db.updateLesson(modifiedLesson);
+                if (conflictLesson != null) {
+                    Toast.makeText(getApplicationContext(), R.string.lesson_not_edited, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.lesson_edited, Toast.LENGTH_LONG).show();
+                }
+            }
         }
         return super.onOptionsItemSelected(item);
     }

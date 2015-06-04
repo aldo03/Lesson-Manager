@@ -11,5 +11,7 @@
     <string name="wrong_end_date">End Date should be greater then Start Date</string>
     <string name="student_edited">Student edited successfully</string>
     <string name="lesson_not_added">Lesson not added!!!</string>
+    <string name="lesson_not_edited">Lesson not edited! Conflict!</string>
+    <string name="lesson_edited">Lesson edited successfully!</string>
 
 </resources>
