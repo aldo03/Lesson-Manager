@@ -66,8 +66,10 @@
                 android:layout_height="wrap_content"
                 android:text="Matteo"
                 android:id="@+id/nameDetails"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginTop="47dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -76,6 +78,7 @@
                 android:id="@+id/surnameDetails"
                 android:layout_below="@id/nameDetails"
                 android:layout_centerHorizontal="true"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_marginTop="30dp" />
 
             <TextView
@@ -85,6 +88,7 @@
                 android:id="@+id/mailDetails"
                 android:layout_below="@id/surnameDetails"
                 android:layout_centerHorizontal="true"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_marginTop="30dp" />
 
             <TextView
@@ -94,16 +98,17 @@
                 android:id="@+id/phoneDetails"
                 android:layout_below="@id/mailDetails"
                 android:layout_centerHorizontal="true"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_marginTop="30dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="50€"
                 android:id="@+id/paymentDetails"
                 android:layout_marginTop="30dp"
                 android:layout_centerHorizontal="true"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_below="@+id/phoneDetails" />
 
             <RelativeLayout

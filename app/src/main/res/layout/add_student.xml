@@ -16,7 +16,7 @@
         android:orientation="horizontal"
         android:weightSum="1"
         android:paddingBottom="10dp"
-        android:paddingTop="10dp"
+        android:layout_marginTop="30dp"
         android:paddingLeft="30dp">
 
         <ImageView
@@ -26,7 +26,7 @@
             android:scaleType="centerCrop"
             android:id="@+id/imageView"
 
-            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
@@ -38,7 +38,10 @@
             android:id="@+id/nameAdd"
             android:hint="Name"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_toRightOf="@+id/imageView"
+            android:layout_toEndOf="@+id/imageView"
+            android:layout_marginLeft="36dp"
+            android:layout_marginStart="36dp" />
 
 
     </RelativeLayout>
@@ -71,7 +74,10 @@
             android:id="@+id/surnameAdd"
             android:hint="Surname"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_toRightOf="@+id/imageView2"
+            android:layout_toEndOf="@+id/imageView2"
+            android:layout_marginLeft="36dp"
+            android:layout_marginStart="36dp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -100,7 +106,11 @@
         android:ems="10"
         android:id="@+id/emailAdd"
         android:hint="E-Mail"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/imageView3"
+        android:layout_toEndOf="@+id/imageView3"
+        android:layout_marginLeft="36dp"
+        android:layout_marginStart="36dp" />
 </RelativeLayout>
 
     <RelativeLayout
@@ -130,7 +140,10 @@
             android:id="@+id/phoneAdd"
             android:hint="Phone"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_toRightOf="@+id/imageView4"
+            android:layout_toEndOf="@+id/imageView4"
+            android:layout_marginLeft="36dp"
+            android:layout_marginStart="36dp" />
 
     </RelativeLayout>
     <RelativeLayout
@@ -148,7 +161,11 @@
             android:id="@+id/colorSpinner"
             android:entries="@array/colorsStudent"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@+id/imageIconStudent"
+            android:layout_toEndOf="@+id/imageIconStudent"
+            android:layout_marginLeft="36dp"
+            android:layout_marginStart="36dp"/>
 
         <ImageView
             android:layout_width="40dp"

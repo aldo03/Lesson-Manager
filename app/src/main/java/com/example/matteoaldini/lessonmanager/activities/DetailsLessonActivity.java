@@ -36,7 +36,6 @@ public class DetailsLessonActivity extends ActionBarActivity  {
     private TextView date;
     private TextView location;
     private TextView fare;
-    private SimpleDateFormat sdf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +43,6 @@ public class DetailsLessonActivity extends ActionBarActivity  {
         Intent intent = getIntent();
         this.lesson = (Lesson) intent.getSerializableExtra("lesson");
         setContentView(R.layout.details_lesson_layout);
-        this.sdf = new SimpleDateFormat(DATE_FORMAT);
         this.toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.tool_bar);
         this.toolbar.setBackgroundColor(ImageUtils.getDarkColor(this.lesson.getStudent().getColor(), getApplicationContext()));
         setSupportActionBar(this.toolbar);
@@ -57,7 +55,7 @@ public class DetailsLessonActivity extends ActionBarActivity  {
         this.name.setText(this.lesson.getStudent().getName() +" "+ lesson.getStudent().getSurname());
         TimeUtils.setTime(this.lesson.getHourStart(), this.lesson.getMinStart(), this.startTime);
         TimeUtils.setTime(this.lesson.getHourEnd(), this.lesson.getMinEnd(), this.endTime);
-        this.date.setText(sdf.format(this.lesson.getDate().getTime()));
+        this.date.setText(new SimpleDateFormat(DATE_FORMAT).format(this.lesson.getDate().getTime()));
         this.fare.setText(""+this.lesson.getFare());
         this.location.setText(this.lesson.getLocation());
         this.image = (ImageView) findViewById(R.id.lessonImage);

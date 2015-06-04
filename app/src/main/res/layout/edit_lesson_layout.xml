@@ -141,10 +141,10 @@
         android:layout_height="wrap_content"
         android:text="Paid"
         android:id="@+id/paidCheckbox"
+        android:checked="false"
         android:layout_below="@+id/subject_spinner"
         android:layout_alignLeft="@+id/subject_spinner"
-        android:layout_alignStart="@+id/subject_spinner"
-        android:checked="false" />
+        android:layout_alignStart="@+id/subject_spinner" />
 
     <CheckBox
         android:layout_width="wrap_content"
