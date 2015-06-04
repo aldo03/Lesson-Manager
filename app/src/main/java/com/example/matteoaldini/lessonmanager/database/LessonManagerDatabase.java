@@ -139,10 +139,10 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         Calendar day;
         day = lesson.getDate();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-         Log.i("SUBJECT",lesson.getSubject());
+        Log.i("SUBJECT",lesson.getSubject());
         if(frequency==0){
             Lesson lessonRet = this.checkLesson(lesson.getDate(), lesson.getHourStart(),
-                    lesson.getMinStart(), lesson.getHourEnd(), lesson.getMinEnd());
+                    lesson.getMinStart(), lesson.getHourEnd(), lesson.getMinEnd(), -1);
             if(lessonRet!=null){
                 return lessonRet;
             }
@@ -167,7 +167,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         while(day.compareTo(endDate)<0) {
             Log.i("", sdf.format(day.getTime())+"DAY OF WEEK:"+day.get(Calendar.DAY_OF_WEEK));
             Lesson lessonRet = this.checkLesson(lesson.getDate(), lesson.getHourStart(),
-                    lesson.getMinStart(), lesson.getHourEnd(), lesson.getMinEnd());
+                    lesson.getMinStart(), lesson.getHourEnd(), lesson.getMinEnd(), -1);
             if(lessonRet!=null){
                 return lessonRet;
             }
@@ -178,15 +178,16 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
     }
 
     //checks if lesson to be put into database is in conflict with other lessons
-    private Lesson checkLesson(Calendar date, int hourStart, int minStart, int hourEnd, int minEnd){
+    private Lesson checkLesson(Calendar date, int hourStart, int minStart, int hourEnd, int minEnd, long id){
         Lesson lesson;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         String dateToFind = sdf.format(date.getTime());
         String query = "SELECT * FROM " + LESSONS_TABLE + " WHERE " + DATE_LESSON + "=?" +
                 " AND NOT ((" + HOUR_START + ">=?" + " AND " + MIN_START + ">=?)" +
-                " OR (" + HOUR_END + "<=?" + " AND " + MIN_END + "<=?))";
+                " OR (" + HOUR_END + "<=?" + " AND " + MIN_END + "<=?))" +
+                " AND "+ID_LESSON+"!=?";
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, new String[]{dateToFind, ""+hourEnd, ""+minEnd, ""+hourStart, ""+minStart});
+        Cursor cursor = db.rawQuery(query, new String[]{dateToFind, ""+hourEnd, ""+minEnd, ""+hourStart, ""+minStart, ""+id});
         if(cursor==null)
             return null;
         else{
@@ -328,7 +329,14 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void updateLesson(Lesson modifiedLesson){
+    public Lesson updateLesson(Lesson modifiedLesson){
+        Lesson lessonRet = this.checkLesson(modifiedLesson.getDate(), modifiedLesson.getHourStart(),
+                modifiedLesson.getMinStart(), modifiedLesson.getHourEnd(), modifiedLesson.getMinEnd(), modifiedLesson.getId());
+        if(lessonRet!=null){
+            if(lessonRet.getId()!=modifiedLesson.getId())
+                return lessonRet;
+        }
+
         SQLiteDatabase db = getWritableDatabase();
 
         String whereClause = "WHERE "+ ID_LESSON +"=?";
@@ -344,13 +352,13 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         values.put(FARE, modifiedLesson.getFare());
         values.put(LOCATION, modifiedLesson.getLocation());
         values.put(SUBJECT_LESSON, modifiedLesson.getSubject());
-        values.put(LESSON_STUDENT, modifiedLesson.getStudent().getId());
         values.put(LESSON_PRESENT, modifiedLesson.isPresent());
         values.put(LESSON_PAID, modifiedLesson.isPaid());
 
         db.update(STUDENTS_TABLE, values, whereClause , new String[]{""+modifiedLesson.getId()});
 
         db.close();
+        return null;
     }
 
     public void deleteStudent(long id){
