@@ -20,6 +20,10 @@ public class Lesson implements Serializable{
     private boolean paid;
     private long idLesson;
 
+    public Lesson(){
+
+    }
+
     public Lesson(Student student, Calendar date, int hourStart, int minStart, int hourEnd, int minEnd,
                   int fare, String location, String subject) {
         this.student = student;

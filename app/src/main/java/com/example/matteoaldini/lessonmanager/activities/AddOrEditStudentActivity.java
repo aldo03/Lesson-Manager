@@ -70,13 +70,13 @@ public class AddOrEditStudentActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_add_item,menu);
+        getMenuInflater().inflate(R.menu.menu_add_or_edit_item,menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==R.id.add_item_menu){
+        if(item.getItemId()==R.id.add_or_edit_item_menu){
             if(this.name.getText().toString().equals("")||
                     this.surname.getText().toString().equals("")||
                         this.phone.getText().toString().equals("")||

@@ -164,17 +164,23 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
                 step = 28;
                 break;
         }
+        boolean conflict = false;  //if there are conflicts, lesson is not added but method doesn't stop
         while(day.compareTo(endDate)<0) {
             Log.i("", sdf.format(day.getTime())+"DAY OF WEEK:"+day.get(Calendar.DAY_OF_WEEK));
-            Lesson lessonRet = this.checkLesson(lesson.getDate(), lesson.getHourStart(),
+            Lesson lessonRet = this.checkLesson(day, lesson.getHourStart(),
                     lesson.getMinStart(), lesson.getHourEnd(), lesson.getMinEnd(), -1);
             if(lessonRet!=null){
-                return lessonRet;
+                conflict = true;
+            }else {
+                result = this.addSingleLesson(lesson, sdf.format(day.getTime()));
             }
-            result = this.addSingleLesson(lesson, sdf.format(day.getTime()));
             day.add(Calendar.DAY_OF_MONTH,step);
         }
-        return null;
+        if(conflict==true){
+            return new Lesson();
+        }else {
+            return null;
+        }
     }
 
     //checks if lesson to be put into database is in conflict with other lessons
@@ -339,7 +345,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
 
-        String whereClause = "WHERE "+ ID_LESSON +"=?";
+        String whereClause = ""+ ID_LESSON +"=?";
 
         ContentValues values = new ContentValues();
 
@@ -355,7 +361,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         values.put(LESSON_PRESENT, modifiedLesson.isPresent());
         values.put(LESSON_PAID, modifiedLesson.isPaid());
 
-        db.update(STUDENTS_TABLE, values, whereClause , new String[]{""+modifiedLesson.getId()});
+        db.update(LESSONS_TABLE, values, whereClause , new String[]{""+modifiedLesson.getId()});
 
         db.close();
         return null;

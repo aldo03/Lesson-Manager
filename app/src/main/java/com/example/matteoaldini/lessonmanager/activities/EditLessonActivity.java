@@ -144,14 +144,31 @@ public class EditLessonActivity extends ActionBarActivity implements DatePickerF
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_add_item,menu);
+        getMenuInflater().inflate(R.menu.menu_add_or_edit_item,menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==R.id.add_item_menu){
-            //this.addNewLesson();
+        if(item.getItemId()==R.id.add_or_edit_item_menu){
+            if(this.location.getText().toString().equals("")||this.fare.getText().toString().equals("")){
+                Toast.makeText(getApplicationContext(), R.string.field_missing, Toast.LENGTH_LONG).show();
+            }else if((this.startHour*60+this.startMin)>=(this.endHour*60+this.endMin)){
+                Toast.makeText(getApplicationContext(), R.string.start_end_hour_wrong, Toast.LENGTH_LONG).show();
+            }else {
+                Calendar date = Calendar.getInstance();
+                date.set(this.year, this.month, this.day);
+                LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
+                Lesson modifiedLesson = new Lesson(this.lesson.getStudent(), date, this.startHour, this.startMin, this.endHour, this.endMin,
+                        Integer.parseInt(this.fare.getText().toString()), this.location.getText().toString(), this.subjects_spinner.getSelectedItem().toString());
+                modifiedLesson.setIdLesson(this.lesson.getId());
+                Lesson conflictLesson = db.updateLesson(modifiedLesson);
+                if (conflictLesson != null) {
+                    Toast.makeText(getApplicationContext(), R.string.lesson_not_edited, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.lesson_edited, Toast.LENGTH_LONG).show();
+                }
+            }
         }
         return super.onOptionsItemSelected(item);
     }
