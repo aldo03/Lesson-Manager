@@ -36,7 +36,7 @@ public class CalendarFragment extends Fragment {
 
     public interface CalendarListener{
 
-        public List<Lesson> getLessons(Calendar date);
+        List<Lesson> getLessons(Calendar date);
 
     }
 
@@ -65,7 +65,6 @@ public class CalendarFragment extends Fragment {
             @Override
             public void onDateChanged(MaterialCalendarView materialCalendarView, CalendarDay calendarDay) {
                 new AsyncTask<Void, Void, Void>() {
-                    private ProgressDialog progressDialog;
 
                     @Override
                     protected Void doInBackground(Void... params) {
@@ -77,16 +76,11 @@ public class CalendarFragment extends Fragment {
                     protected void onPostExecute(Void aVoid) {
                         //super.onPostExecute(aVoid);
                         createLessonCards(inflater);
-                        progressDialog.dismiss();
                     }
 
                     @Override
                     protected void onPreExecute() {
                         //super.onPreExecute();
-                        progressDialog = new ProgressDialog(getActivity());
-                        progressDialog.setCancelable(false);
-                        progressDialog.setMessage("Loading");
-                        progressDialog.show();
                     }
                 }.execute();
             }

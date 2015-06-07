@@ -258,8 +258,8 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         String dateToFind = sdf.format(date.getTime());
         String query = "SELECT " + FARE + " FROM " + LESSONS_TABLE + " WHERE " + DATE_LESSON + "<=?" +
-                " AND " + LESSON_PAID + "= 0" + " AND " + HOUR_START + "<=?" + " AND " + MIN_START + "<=?" +
-                " AND " + LESSON_STUDENT + "=?";
+                " AND " + LESSON_PAID + "= 0" + " AND " + LESSON_PRESENT + "= 1" + " AND " + HOUR_START + "<=?" +
+                " AND " + MIN_START + "<=?" + " AND " + LESSON_STUDENT + "=?";
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(query, new String[]{dateToFind, ""+hour, ""+min, ""+idStudent});
         if(cursor==null)

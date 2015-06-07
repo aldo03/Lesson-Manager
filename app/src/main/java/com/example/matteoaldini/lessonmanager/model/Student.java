@@ -69,4 +69,8 @@ public class Student implements Serializable {
     public void setColor(int color) {
         this.color = color;
     }
+
+    public String toString(){
+        return this.name + " " + this.surname;
+    }
 }

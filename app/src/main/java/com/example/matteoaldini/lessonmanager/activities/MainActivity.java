@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.matteoaldini.lessonmanager.R;
@@ -19,6 +22,7 @@ import com.example.matteoaldini.lessonmanager.model.Student;
 import com.example.matteoaldini.lessonmanager.adapters.TabAdapter;
 import com.example.matteoaldini.lessonmanager.fragments.StudentListFragment;
 import com.example.matteoaldini.lessonmanager.material_design.SlidingTabLayout;
+import com.gc.materialdesign.views.ButtonFlat;
 
 import java.util.Calendar;
 import java.util.List;
@@ -130,6 +134,27 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_layout);
         dialog.setTitle("Payment");
+        Spinner spinner = (Spinner)dialog.findViewById(R.id.personlist);
+        EditText payment = (EditText)dialog.findViewById(R.id.payment_editText);
+        ButtonFlat pay = (ButtonFlat)dialog.findViewById(R.id.pay_button);
+        ButtonFlat back = (ButtonFlat)dialog.findViewById(R.id.back_button);
+        LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
+        List<Student> students = db.getStudents();
+        String[] studentArray = this.toStringArray(students);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, studentArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
         dialog.show();
+
+    }
+
+    private String[] toStringArray(List<Student> list){
+        String[] array = new String[list.size()];
+        int i = 0;
+        for(Student s: list){
+            array[i] = s.toString();
+            i++;
+        }
+        return array;
     }
 }
