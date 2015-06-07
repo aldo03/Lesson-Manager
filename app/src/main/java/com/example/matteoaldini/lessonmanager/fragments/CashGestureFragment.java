@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import com.example.matteoaldini.lessonmanager.R;
 import com.melnykov.fab.FloatingActionButton;
 
+import java.text.ParseException;
+
 /**
  * Created by Filo on 04/06/2015.
  */
@@ -17,7 +19,7 @@ public class CashGestureFragment extends Fragment {
 
     public interface CashGestureListener {
 
-        void payForSomeone();
+        void payForSomeone() throws ParseException;
 
     }
 
@@ -39,7 +41,11 @@ public class CashGestureFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                     listener.payForSomeone();
+                try {
+                    listener.payForSomeone();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
         return this.view;

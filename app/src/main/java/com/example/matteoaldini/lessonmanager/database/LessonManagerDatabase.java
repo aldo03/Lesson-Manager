@@ -308,7 +308,59 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
             int paid = cursor.getInt(indexPaid);
             Student student = this.getStudentByID(idStud);
             Lesson lesson = new Lesson(student, date, hourStart, minStart, hourEnd, minEnd, fare, location, subject);
+            lesson.setPaid(getBooleanByInt(paid));
+            lesson.setPresent(getBooleanByInt(present));
             lesson.setIdLesson(idLesson);
+            lessons.add(lesson);
+            Log.i("lesson:",lesson.toString());
+        }
+
+        db.close();
+
+        return lessons;
+    }
+
+    public List<Lesson> getStudentLessons(long idStud) throws ParseException {
+        List<Lesson> lessons = new ArrayList<>();
+        String query = "SELECT * FROM " + LESSONS_TABLE + " WHERE " + LESSON_STUDENT + "=?" + " AND " +
+                LESSON_PAID + "=0" + " AND " + LESSON_PRESENT + "=1" + " ORDER BY date(" + DATE_LESSON + ")";
+        SQLiteDatabase db = getReadableDatabase();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        Calendar calendar = Calendar.getInstance();
+        Cursor cursor = db.rawQuery(query, new String[]{""+idStud});
+
+        if (cursor == null)
+            return null;
+        int indexHourStart = cursor.getColumnIndex(HOUR_START);
+        int indexMinStart = cursor.getColumnIndex(MIN_START);
+        int indexHourEnd = cursor.getColumnIndex(HOUR_END);
+        int indexMinEnd = cursor.getColumnIndex(MIN_END);
+        int indexFare = cursor.getColumnIndex(FARE);
+        int indexLocation = cursor.getColumnIndex(LOCATION);
+        int indexSubject = cursor.getColumnIndex(SUBJECT_LESSON);
+        int indexIdLesson = cursor.getColumnIndex(ID_LESSON);
+        int indexDate = cursor.getColumnIndex(DATE_LESSON);
+        int indexPresent = cursor.getColumnIndex(LESSON_PRESENT);
+        int indexPaid = cursor.getColumnIndex(LESSON_PAID);
+
+        while(cursor.moveToNext()){
+            int hourStart = cursor.getInt(indexHourStart);
+            int minStart = cursor.getInt(indexMinStart);
+            int hourEnd = cursor.getInt(indexHourEnd);
+            int minEnd = cursor.getInt(indexMinEnd);
+            int fare = cursor.getInt(indexFare);
+            String location = cursor.getString(indexLocation);
+            String subject = cursor.getString(indexSubject);
+            String date = cursor.getString(indexDate);
+            calendar.setTime(sdf.parse(date));
+            long idLesson = cursor.getLong(indexIdLesson);
+            int present = cursor.getInt(indexPresent);
+            int paid = cursor.getInt(indexPaid);
+            Student student = this.getStudentByID(idStud);
+            Lesson lesson = new Lesson(student, calendar , hourStart, minStart, hourEnd, minEnd, fare, location, subject);
+            lesson.setIdLesson(idLesson);
+            lesson.setPaid(getBooleanByInt(paid));
+            lesson.setPresent(getBooleanByInt(present));
             lessons.add(lesson);
             Log.i("lesson:",lesson.toString());
         }
@@ -445,6 +497,8 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
             Student student = this.getStudentByID(idStud);
             lesson = new Lesson(student, getDateByString(date), hourStart, minStart, hourEnd, minEnd, fare, location, subject);
             lesson.setIdLesson(idLesson);
+            lesson.setPaid(getBooleanByInt(paid));
+            lesson.setPresent(getBooleanByInt(present));
             if(!date.equals(sdf.format(day.getTime()))||hourStart>=day.get(Calendar.HOUR)||hourStart==day.get(Calendar.HOUR)&&minStart>=day.get(Calendar.MINUTE)) {
                 if (hourStart < hourMin) {
                     hourMin = hourStart;
@@ -505,5 +559,9 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         Student student = new Student(name,surname,phone,email, color);
         student.setId(id);
         return student;
+    }
+
+    private boolean getBooleanByInt(int i){
+        return i==0 ? false : true;
     }
 }

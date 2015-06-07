@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -24,6 +25,7 @@ import com.example.matteoaldini.lessonmanager.fragments.StudentListFragment;
 import com.example.matteoaldini.lessonmanager.material_design.SlidingTabLayout;
 import com.gc.materialdesign.views.ButtonFlat;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.List;
 
@@ -130,21 +132,51 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
     }
 
     @Override
-    public void payForSomeone() {
-        Dialog dialog = new Dialog(this);
+    public void payForSomeone() throws ParseException {
+        final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_layout);
         dialog.setTitle("Payment");
-        Spinner spinner = (Spinner)dialog.findViewById(R.id.personlist);
-        EditText payment = (EditText)dialog.findViewById(R.id.payment_editText);
+        final Spinner spinner = (Spinner)dialog.findViewById(R.id.personlist);
+        final EditText payment = (EditText)dialog.findViewById(R.id.payment_editText);
         ButtonFlat pay = (ButtonFlat)dialog.findViewById(R.id.pay_button);
         ButtonFlat back = (ButtonFlat)dialog.findViewById(R.id.back_button);
-        LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
-        List<Student> students = db.getStudents();
+        final LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
+        final List<Student> students = db.getStudents();
         String[] studentArray = this.toStringArray(students);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, studentArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         dialog.show();
+
+        pay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Student stud = null;
+                for(Student s: students){
+                    if(spinner.getSelectedItem().equals(s.toString())){
+                        stud = s;
+                    }
+                }
+                int cash = Integer.parseInt(payment.getText().toString());
+                List<Lesson> lessons = null;
+                try {
+                    lessons = db.getStudentLessons(stud.getId());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                for(Lesson l: lessons){
+                    if(cash-l.getFare()>0){
+                        l.setPaid(true);
+                        db.updateLesson(l);
+                        cash -= l.getFare();
+                    }
+                    else{
+                        break;
+                    }
+                }
+                dialog.cancel();
+            }
+        });
 
     }
 
@@ -157,4 +189,5 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
         }
         return array;
     }
+
 }
