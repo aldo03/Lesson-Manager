@@ -1,14 +1,19 @@
 package com.example.matteoaldini.lessonmanager.activities;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.method.CharacterPickerDialog;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -26,6 +31,7 @@ import com.example.matteoaldini.lessonmanager.material_design.SlidingTabLayout;
 import com.gc.materialdesign.views.ButtonFlat;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -42,6 +48,8 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
     private SlidingTabLayout tabs;
     private Intent addStudentIntent;
     private Intent detailsStudentIntent;
+    private List<Student> studentsPayment;
+    private List<Lesson> lessonsPayment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +79,9 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
 
         // Setting the ViewPager For the SlidingTabsLayout
         this.tabs.setViewPager(pager);
+
+        this.studentsPayment = new ArrayList<>();
+        this.lessonsPayment = new ArrayList<>();
     }
 
     @Override
@@ -132,49 +143,73 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
     }
 
     @Override
-    public void payForSomeone() throws ParseException {
+    public void payForSomeone(final List<Student> students, List<Lesson> lessons) throws ParseException {
+        this.studentsPayment = students;
+        this.lessonsPayment = lessons;
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_layout);
         dialog.setTitle("Payment");
-        final Spinner spinner = (Spinner)dialog.findViewById(R.id.personlist);
-        final EditText payment = (EditText)dialog.findViewById(R.id.payment_editText);
+        final Spinner spinnerStudents = (Spinner)dialog.findViewById(R.id.personlist);
+        final Spinner spinnerLessons = (Spinner)dialog.findViewById(R.id.numberLessons);
         ButtonFlat pay = (ButtonFlat)dialog.findViewById(R.id.pay_button);
         ButtonFlat back = (ButtonFlat)dialog.findViewById(R.id.back_button);
-        final LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
-        final List<Student> students = db.getStudents();
-        String[] studentArray = this.toStringArray(students);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, studentArray);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        dialog.show();
 
-        pay.setOnClickListener(new View.OnClickListener() {
+        String[] studentArray = this.toStringArray(students);
+        ArrayAdapter<String> adapterStudent = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, studentArray);
+        adapterStudent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerStudents.setAdapter(adapterStudent);
+        spinnerStudents.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                Student stud = null;
-                for(Student s: students){
-                    if(spinner.getSelectedItem().equals(s.toString())){
-                        stud = s;
-                    }
-                }
-                int cash = Integer.parseInt(payment.getText().toString());
-                List<Lesson> lessons = null;
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
                 try {
-                    lessons = db.getStudentLessons(stud.getId());
+                    lessonsPayment = db.getStudentLessons(studentsPayment.get(position).getId());
+                    String[] lessonArray = generateLessonsArray(lessonsPayment.size());
+                    ArrayAdapter<String> adapterLesson = new ArrayAdapter<>(getApplication(), android.R.layout.simple_spinner_item, lessonArray);
+                    adapterLesson.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerLessons.setAdapter(adapterLesson);
+                    Log.i("","stamp");
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                for(Lesson l: lessons){
-                    if(cash-l.getFare()>0){
-                        l.setPaid(true);
-                        db.updateLesson(l);
-                        cash -= l.getFare();
-                    }
-                    else{
-                        break;
-                    }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        final String[] lessonArray = this.generateLessonsArray(lessons.size());
+        ArrayAdapter<String> adapterLesson = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, lessonArray);
+        adapterLesson.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerLessons.setAdapter(adapterLesson);
+
+        dialog.show();
+        pay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int moneyToPay = 0;
+                final int lessonsToBePaid = spinnerLessons.getSelectedItemPosition()+1;
+                for(int i = 0; i<lessonsToBePaid; i++){
+                    moneyToPay += lessonsPayment.get(i).getFare();
                 }
                 dialog.cancel();
+                new AlertDialog.Builder(getApplicationContext())
+                        .setTitle("Pay Lessons")
+                        .setMessage("These lessons cost "+moneyToPay+"$, confirm?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
+                                for(int i = 0; i<lessonsToBePaid; i++){
+                                    Lesson l = lessonsPayment.get(i);
+                                    l.setPaid(true);
+                                    db.updateLesson(l);
+                                }
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
             }
         });
 
@@ -190,4 +225,11 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
         return array;
     }
 
+    private String[] generateLessonsArray(int num){
+        String[] values = new String[num];
+        for(int i=0; i<num; i++){
+            values[i]=""+(i+1);
+        }
+        return values;
+    }
 }

@@ -89,6 +89,11 @@ public class CalendarFragment extends Fragment {
         return this.view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     private String getHourFromInt(int time){
         if(time<10){
             return "0"+time;

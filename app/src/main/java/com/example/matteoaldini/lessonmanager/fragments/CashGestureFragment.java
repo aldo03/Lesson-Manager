@@ -8,9 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.matteoaldini.lessonmanager.R;
+import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
+import com.example.matteoaldini.lessonmanager.model.Lesson;
+import com.example.matteoaldini.lessonmanager.model.Student;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.text.ParseException;
+import java.util.List;
 
 /**
  * Created by Filo on 04/06/2015.
@@ -19,7 +23,7 @@ public class CashGestureFragment extends Fragment {
 
     public interface CashGestureListener {
 
-        void payForSomeone() throws ParseException;
+        void payForSomeone(List<Student> students, List<Lesson> lessons) throws ParseException;
 
     }
 
@@ -35,14 +39,17 @@ public class CashGestureFragment extends Fragment {
     private View view;
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.cash_gesture_layout, container, false);
         FloatingActionButton fab = (FloatingActionButton)this.view.findViewById(R.id.fab2);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    listener.payForSomeone();
+                    LessonManagerDatabase db = new LessonManagerDatabase(inflater.getContext());
+                    List<Student> students = db.getStudents();
+                    List<Lesson> lessons = db.getStudentLessons(students.get(0).getId());
+                    listener.payForSomeone(students, lessons);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
