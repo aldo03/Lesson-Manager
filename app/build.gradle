@@ -34,5 +34,10 @@ dependencies {
     //material cards
     compile 'com.android.support:cardview-v7:21.0.+'
     compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
+    compile 'com.github.PhilJay:MPAndroidChart:v2.1.0'
 
+}
+
+repositories {
+    maven { url "https://jitpack.io" }
 }

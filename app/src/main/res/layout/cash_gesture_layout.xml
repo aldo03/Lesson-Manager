@@ -13,12 +13,98 @@
         fab:fab_colorPressed="@color/floatingButtonPressed"
         fab:fab_colorRipple="@color/floatingButton"
         fab:fab_type="normal"
-        android:src="@drawable/ic_cash_usd_white_24dp"
+        android:src="@drawable/ic_cash_usd_white_48dp"
         android:layout_marginRight="26dp"
         android:layout_marginEnd="26dp"
         android:layout_marginBottom="28dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:id="@+id/imageView11"
+        android:src="@drawable/ic_cash_multiple_grey600_48dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="34dp"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="35dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Overall Earnings"
+        android:id="@+id/textView2"
+        android:layout_alignBottom="@+id/imageView11"
+        android:layout_toRightOf="@+id/imageView11"
+        android:layout_toEndOf="@+id/imageView11"
+        android:layout_marginLeft="45dp"
+        android:layout_marginStart="45dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Total"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/textView2"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_marginTop="29dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Amount"
+        android:id="@+id/textView4"
+        android:textSize="35dp"
+        android:layout_below="@+id/textView3"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_alignStart="@+id/textView3" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/chart1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@+id/spinner"
+        android:layout_alignStart="@+id/spinner" />
+
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:id="@+id/imageView12"
+        android:src="@drawable/ic_cash_multiple_grey600_48dp"
+        android:layout_marginTop="91dp"
+        android:layout_below="@+id/textView4"
+        android:layout_alignLeft="@+id/imageView11"
+        android:layout_alignStart="@+id/imageView11" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Earnings per student"
+        android:id="@+id/textView5"
+        android:textStyle="bold"
+        android:layout_alignBottom="@+id/imageView12"
+        android:layout_alignLeft="@+id/textView4"
+        android:layout_alignStart="@+id/textView4" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_below="@+id/imageView12"
+        android:layout_alignRight="@+id/textView4"
+        android:layout_alignEnd="@+id/textView4"
+        android:layout_marginTop="25dp"
+        android:layout_alignLeft="@+id/textView5"
+        android:layout_alignStart="@+id/textView5" />
 
 </RelativeLayout>

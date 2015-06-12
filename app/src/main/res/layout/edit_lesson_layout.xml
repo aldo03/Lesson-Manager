@@ -143,6 +143,7 @@
         android:id="@+id/paidCheckbox"
         android:checked="false"
         android:layout_below="@+id/subject_spinner"
+        android:layout_marginTop="15dp"
         android:layout_alignLeft="@+id/subject_spinner"
         android:layout_alignStart="@+id/subject_spinner" />
 
