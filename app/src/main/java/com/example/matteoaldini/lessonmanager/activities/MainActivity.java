@@ -81,7 +81,6 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
         this.tabs.setViewPager(pager);
 
         this.studentsPayment = new ArrayList<>();
-        this.lessonsPayment = new ArrayList<>();
     }
 
     @Override
@@ -162,13 +161,12 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
-                try {
-                    lessonsPayment = db.getStudentLessons(studentsPayment.get(position).getId());
-                    String[] lessonArray = generateLessonsArray(lessonsPayment.size());
-                    ArrayAdapter<String> adapterLesson = new ArrayAdapter<>(getApplication(), android.R.layout.simple_spinner_item, lessonArray);
-                    adapterLesson.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinnerLessons.setAdapter(adapterLesson);
-                    Log.i("","stamp");
+                    try {
+                        lessonsPayment = db.getStudentLessons(studentsPayment.get(position).getId());
+                        String[] lessonArray = generateLessonsArray(lessonsPayment.size());
+                        ArrayAdapter<String> adapterLesson = new ArrayAdapter<>(getApplication(), android.R.layout.simple_spinner_item, lessonArray);
+                        adapterLesson.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinnerLessons.setAdapter(adapterLesson);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -194,8 +192,7 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
                 for(int i = 0; i<lessonsToBePaid; i++){
                     moneyToPay += lessonsPayment.get(i).getFare();
                 }
-                dialog.cancel();
-                new AlertDialog.Builder(getApplicationContext())
+                new AlertDialog.Builder(MainActivity.this)
                         .setTitle("Pay Lessons")
                         .setMessage("These lessons cost "+moneyToPay+"$, confirm?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -205,11 +202,21 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
                                     Lesson l = lessonsPayment.get(i);
                                     l.setPaid(true);
                                     db.updateLesson(l);
+                                    Toast.makeText(getApplicationContext(), R.string.lessons_paid, Toast.LENGTH_LONG).show();
+                                    dialog.cancel();
                                 }
                             }
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
+                        .create()
                         .show();
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
             }
         });
 
