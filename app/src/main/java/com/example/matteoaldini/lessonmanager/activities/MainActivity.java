@@ -152,7 +152,7 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
         ButtonFlat pay = (ButtonFlat)dialogPayment.findViewById(R.id.pay_button);
         ButtonFlat back = (ButtonFlat)dialogPayment.findViewById(R.id.back_button);
 
-        String[] studentArray = StringUtils.toStringArray(students);
+        String[] studentArray = StringUtils.toStringArrayStudents(students, false);
         ArrayAdapter<String> adapterStudent = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, studentArray);
         adapterStudent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerStudents.setAdapter(adapterStudent);
@@ -160,12 +160,12 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
-                    try {
-                        lessonsPayment = db.getStudentLessons(studentsPayment.get(position).getId());
-                        String[] lessonArray = generateLessonsArray(lessonsPayment.size());
-                        ArrayAdapter<String> adapterLesson = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, lessonArray);
-                        adapterLesson.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinnerLessons.setAdapter(adapterLesson);
+                try {
+                    lessonsPayment = db.getStudentLessons(studentsPayment.get(position).getId());
+                    String[] lessonArray = StringUtils.generateLessonsArray(lessonsPayment.size());
+                    ArrayAdapter<String> adapterLesson = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, lessonArray);
+                    adapterLesson.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerLessons.setAdapter(adapterLesson);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -177,7 +177,7 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
             }
         });
 
-        final String[] lessonArray = this.generateLessonsArray(lessons.size());
+        final String[] lessonArray = StringUtils.generateLessonsArray(lessons.size());
         ArrayAdapter<String> adapterLesson = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, lessonArray);
         adapterLesson.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerLessons.setAdapter(adapterLesson);
@@ -222,11 +222,5 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
 
 
 
-    private String[] generateLessonsArray(int num){
-        String[] values = new String[num];
-        for(int i=0; i<num; i++){
-            values[i]=""+(i+1);
-        }
-        return values;
-    }
+
 }

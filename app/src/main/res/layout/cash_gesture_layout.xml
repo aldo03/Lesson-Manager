@@ -23,18 +23,6 @@
         android:layout_alignParentEnd="true" />
 
 
-    <com.github.mikephil.charting.charts.HorizontalBarChart
-        android:id="@+id/chart1"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@android:color/white"
-        android:backgroundTint="@color/ColorPrimaryLight"
-        android:layout_below="@+id/list_student_spinner"
-        android:layout_alignRight="@+id/date_end_graphic"
-        android:layout_alignEnd="@+id/date_end_graphic" />
-
-
-
     <Spinner
         android:layout_width="100dp"
         android:layout_height="wrap_content"
@@ -96,5 +84,35 @@
         android:layout_alignEnd="@+id/date_end_graphic"
         android:layout_alignTop="@+id/textView7"
         android:layout_marginRight="40dp" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView2"
+        android:layout_below="@+id/list_student_spinner"
+        android:layout_alignRight="@+id/date_end_graphic"
+        android:layout_alignEnd="@+id/date_end_graphic">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+        <com.github.mikephil.charting.charts.HorizontalBarChart
+            android:id="@+id/chart1"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@android:color/white"
+            android:backgroundTint="@color/ColorPrimaryLight"
+            />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart2"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@id/chart1" />
+        </RelativeLayout>
+
+    </ScrollView>
+
+
 
 </RelativeLayout>
