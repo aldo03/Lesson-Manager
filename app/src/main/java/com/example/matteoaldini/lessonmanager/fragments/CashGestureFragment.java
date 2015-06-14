@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.matteoaldini.lessonmanager.R;
 import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
@@ -38,15 +39,23 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
     @Override
     public void dateChanged(int year, int month, int day, boolean startEnd) {
         if(startEnd) {
-            this.yearStart = year;
-            this.monthStart = month;
-            this.dayStart = day;
-            this.dateStart.setText("" + this.dayStart + " / " + (this.monthStart+1) + " / " + this.yearStart);
+            if(year>yearEnd||(year==yearEnd&&month>monthEnd)||(year==yearEnd&&month==monthEnd&&day>=dayEnd)){
+                Toast.makeText(getActivity(), R.string.wrong_end_date,Toast.LENGTH_LONG).show();
+            }else {
+                this.yearStart = year;
+                this.monthStart = month;
+                this.dayStart = day;
+                this.dateStart.setText("" + this.dayStart + " / " + (this.monthStart+1) + " / " + this.yearStart);
+            }
         }else {
-            this.yearEnd = year;
-            this.monthEnd = month;
-            this.dayEnd = day;
-            this.dateEnd.setText("" + this.dayEnd + " / " + (this.monthEnd+1) + " / " + this.yearEnd);
+            if(year<yearStart||(year==yearStart&&month<monthStart)||(year==yearStart&&month==monthStart&&day<=dayStart)){
+                Toast.makeText(getActivity(), R.string.wrong_end_date,Toast.LENGTH_LONG).show();
+            }else {
+                this.yearEnd = year;
+                this.monthEnd = month;
+                this.dayEnd = day;
+                this.dateEnd.setText("" + this.dayEnd + " / " + (this.monthEnd+1) + " / " + this.yearEnd);
+            }
         }
     }
 
