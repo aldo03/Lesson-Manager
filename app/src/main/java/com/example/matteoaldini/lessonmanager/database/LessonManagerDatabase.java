@@ -526,7 +526,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     }
 
-    public int getOverallEarningsOrCredits(Calendar dateStart, Calendar dateEnd, int creditOrEarning){  //0=E, 1=C
+    public int getOverallEarningsOrCredits(Calendar dateStart, Calendar dateEnd, int creditOrEarning){  //1=E, 0=C
         int tot = 0;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         String dateStartToFind = sdf.format(dateStart.getTime());
