@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.widget.DatePicker;
 
 import java.util.Calendar;
@@ -27,6 +28,12 @@ public class DatePickerFragment extends DialogFragment
         super.onAttach(activity);
         if(activity instanceof DatePickerObserver){
             this.listener = (DatePickerObserver) activity;
+        }
+    }
+
+    public void manuallyAttachObserver(Fragment fragment){
+        if(fragment instanceof DatePickerObserver){
+            this.listener = (DatePickerObserver) fragment;
         }
     }
 
