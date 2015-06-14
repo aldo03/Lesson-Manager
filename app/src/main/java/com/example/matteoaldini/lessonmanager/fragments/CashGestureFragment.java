@@ -87,7 +87,7 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
     }
 
     private CashGestureListener listener;
-    protected HorizontalBarChart horizontalPieChart;
+    protected HorizontalBarChart horizontalBarChart;
     private View view;
     private Spinner studentSpinner;
     private List<Student> students;
@@ -137,35 +137,34 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
         this.dateStart.setText(""+this.dayStart+" / "+this.monthStart+" / "+this.yearStart);
         this.dateEnd.setText("" + this.dayEnd + " / " + this.monthEnd + " / " + this.yearEnd);
 
-        this.horizontalPieChart = (HorizontalBarChart)this.view.findViewById(R.id.chart1);
-        this.horizontalPieChart.setDrawBarShadow(false);
+        this.horizontalBarChart = (HorizontalBarChart)this.view.findViewById(R.id.chart1);
+        this.horizontalBarChart.setDrawBarShadow(false);
 
-        this.horizontalPieChart.setDrawValueAboveBar(true);
+        this.horizontalBarChart.setDrawValueAboveBar(true);
 
-        this.horizontalPieChart.setDescription("");
+        this.horizontalBarChart.setDescription("");
 
         // scaling can now only be done on x- and y-axis separately
-        this.horizontalPieChart.setPinchZoom(false);
+        this.horizontalBarChart.setPinchZoom(false);
 
-        this.horizontalPieChart.setDrawGridBackground(false);
-        XAxis xl = this.horizontalPieChart.getXAxis();
+        this.horizontalBarChart.setDrawGridBackground(false);
+        XAxis xl = this.horizontalBarChart.getXAxis();
         xl.setPosition(XAxis.XAxisPosition.BOTTOM);
         xl.setDrawAxisLine(true);
         xl.setDrawGridLines(true);
         xl.setGridLineWidth(0.3f);
 
-        YAxis yl = this.horizontalPieChart.getAxisLeft();
+        YAxis yl = this.horizontalBarChart.getAxisLeft();
         yl.setDrawAxisLine(true);
         yl.setDrawGridLines(true);
         yl.setGridLineWidth(0.3f);
 
-        YAxis yr = this.horizontalPieChart.getAxisRight();
+        YAxis yr = this.horizontalBarChart.getAxisRight();
         yr.setDrawAxisLine(true);
         yr.setDrawGridLines(false);
 
-        this.horizontalPieChart.setOnDragListener(null);
-        this.horizontalPieChart.animateY(2500);
-        Legend l = this.horizontalPieChart.getLegend();
+        this.horizontalBarChart.animateY(2500);
+        Legend l = this.horizontalBarChart.getLegend();
         l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
         l.setFormSize(8f);
         l.setXEntrySpace(4f);
@@ -186,9 +185,7 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
 
         this.pieChart.setDrawCenterText(true);
 
-        this.pieChart.setRotationAngle(0);
-        // enable rotation of the chart by touch
-        this.pieChart.setRotationEnabled(true);
+        this.pieChart.setRotationEnabled(false);
 
 
         this.pieChart.setCenterText("Subject earnings");
@@ -260,10 +257,10 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
         data.setValueTextSize(10f);
         int max = earnings > credits ? earnings : credits;
         max += 10;
-        this.horizontalPieChart.setMaxVisibleValueCount(max);
+        this.horizontalBarChart.setMaxVisibleValueCount(max);
 
-        this.horizontalPieChart.setData(data);
-        this.horizontalPieChart.invalidate();
+        this.horizontalBarChart.setData(data);
+        this.horizontalBarChart.invalidate();
     }
 
     private void setPieData() {
@@ -303,14 +300,13 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
             colors.add(c);
         for (int c : ColorTemplate.PASTEL_COLORS)
             colors.add(c);
-
         colors.add(ColorTemplate.getHoloBlue());
 
         dataSet.setColors(colors);
 
         PieData data = new PieData(xVals, dataSet);
         data.setValueFormatter(new PercentFormatter());
-        data.setValueTextSize(11f);
+        data.setValueTextSize(10f);
         data.setValueTextColor(Color.WHITE);
         this.pieChart.setData(data);
 
@@ -333,8 +329,15 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
             earnings = this.db.getOverAllEarningsOrCredits(dateBegin, dateEnd, 1, this.students.get(this.studentSpinner.getSelectedItemPosition()-1).getId());
             credits = this.db.getOverAllEarningsOrCredits(dateBegin, dateEnd, 0, this.students.get(this.studentSpinner.getSelectedItemPosition()-1).getId());
         }
-        this.horizontalPieChart.animateY(2500);
+        this.horizontalBarChart.animateY(2500);
         setData(earnings, credits);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.updateChart();
+        this.pieChart.animateY(1500, Easing.EasingOption.EaseInOutQuad);
+        this.setPieData();
+    }
 }
