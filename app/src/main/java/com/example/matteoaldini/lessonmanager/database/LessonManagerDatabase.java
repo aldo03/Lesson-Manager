@@ -455,9 +455,9 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
                 " = (SELECT min(" +DATE_LESSON+") FROM " +LESSONS_TABLE+ " WHERE " +LESSON_STUDENT+ "=? AND( "+DATE_LESSON+">? OR("
                 +DATE_LESSON+"=? AND "+HOUR_START+">=? OR("+DATE_LESSON+"=? AND "+HOUR_START+"=? AND "+MIN_START+">=?))))";
         Cursor cursor = db.rawQuery(query, new String[]{""+idStud, ""+idStud, sdf.format(day.getTime()),sdf.format(day.getTime()),
-                ""+day.get(Calendar.HOUR),sdf.format(day.getTime()),""+day.get(Calendar.HOUR), ""+day.get(Calendar.MINUTE) });
+                ""+day.get(Calendar.HOUR_OF_DAY),sdf.format(day.getTime()),""+day.get(Calendar.HOUR_OF_DAY), ""+day.get(Calendar.MINUTE) });
 
-        Log.i("",""+day.get(Calendar.HOUR));
+        Log.i("",""+day.get(Calendar.HOUR_OF_DAY));
         Log.i("",""+day.get(Calendar.MINUTE));
         if (cursor == null)
             return null;

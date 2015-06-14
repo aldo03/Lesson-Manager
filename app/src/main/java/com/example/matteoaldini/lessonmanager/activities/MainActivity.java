@@ -201,8 +201,8 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
                                     Lesson l = lessonsPayment.get(i);
                                     l.setPaid(true);
                                     db.updateLesson(l);
-                                    Toast.makeText(getApplicationContext(), R.string.lessons_paid, Toast.LENGTH_LONG).show();
                                 }
+                                Toast.makeText(getApplicationContext(), R.string.lessons_paid, Toast.LENGTH_LONG).show();
                                 dialogPayment.cancel();
                             }
                         })
