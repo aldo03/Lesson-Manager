@@ -24,6 +24,7 @@ import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
 import com.example.matteoaldini.lessonmanager.fragments.CalendarFragment;
 import com.example.matteoaldini.lessonmanager.fragments.CashGestureFragment;
 import com.example.matteoaldini.lessonmanager.model.Lesson;
+import com.example.matteoaldini.lessonmanager.model.StringUtils;
 import com.example.matteoaldini.lessonmanager.model.Student;
 import com.example.matteoaldini.lessonmanager.adapters.TabAdapter;
 import com.example.matteoaldini.lessonmanager.fragments.StudentListFragment;
@@ -153,7 +154,7 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
         ButtonFlat pay = (ButtonFlat)dialog.findViewById(R.id.pay_button);
         ButtonFlat back = (ButtonFlat)dialog.findViewById(R.id.back_button);
 
-        String[] studentArray = this.toStringArray(students);
+        String[] studentArray = StringUtils.toStringArray(students);
         ArrayAdapter<String> adapterStudent = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, studentArray);
         adapterStudent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerStudents.setAdapter(adapterStudent);
@@ -219,18 +220,9 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
                 dialog.cancel();
             }
         });
-
     }
 
-    private String[] toStringArray(List<Student> list){
-        String[] array = new String[list.size()];
-        int i = 0;
-        for(Student s: list){
-            array[i] = s.toString();
-            i++;
-        }
-        return array;
-    }
+
 
     private String[] generateLessonsArray(int num){
         String[] values = new String[num];

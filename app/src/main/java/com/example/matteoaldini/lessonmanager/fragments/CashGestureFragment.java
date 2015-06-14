@@ -11,9 +11,17 @@ import com.example.matteoaldini.lessonmanager.R;
 import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
 import com.example.matteoaldini.lessonmanager.model.Lesson;
 import com.example.matteoaldini.lessonmanager.model.Student;
+import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,11 +44,48 @@ public class CashGestureFragment extends Fragment {
     }
 
     private CashGestureListener listener;
+    protected HorizontalBarChart mChart;
     private View view;
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.cash_gesture_layout, container, false);
+        this.mChart = (HorizontalBarChart)this.view.findViewById(R.id.chart1);
+        this.mChart.setDrawBarShadow(false);
+
+        this.mChart.setDrawValueAboveBar(true);
+
+        this.mChart.setDescription("");
+        this.mChart.setMaxVisibleValueCount(60);
+
+        // scaling can now only be done on x- and y-axis separately
+        this.mChart.setPinchZoom(false);
+
+
+        this.mChart.setDrawGridBackground(false);
+        XAxis xl = this.mChart.getXAxis();
+        xl.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xl.setDrawAxisLine(true);
+        xl.setDrawGridLines(true);
+        xl.setGridLineWidth(0.3f);
+
+        YAxis yl = this.mChart.getAxisLeft();
+        yl.setDrawAxisLine(true);
+        yl.setDrawGridLines(true);
+        yl.setGridLineWidth(0.3f);
+
+        YAxis yr = this.mChart.getAxisRight();
+        yr.setDrawAxisLine(true);
+        yr.setDrawGridLines(false);
+
+        this.mChart.setOnDragListener(null);
+        setData(12,50);
+        this.mChart.animateY(2500);
+        Legend l = this.mChart.getLegend();
+        l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
+        l.setFormSize(8f);
+        l.setXEntrySpace(4f);
+
         FloatingActionButton fab = (FloatingActionButton)this.view.findViewById(R.id.fab2);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,5 +101,27 @@ public class CashGestureFragment extends Fragment {
             }
         });
         return this.view;
+    }
+
+    private void setData(int earnings, int credits) {
+
+        ArrayList<String> xVals = new ArrayList<String>();
+        xVals.add("Earnings");
+        xVals.add("Credits");
+        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+
+        yVals1.add(new BarEntry(earnings,0));
+        yVals1.add(new BarEntry(credits,1));
+
+        BarDataSet set1 = new BarDataSet(yVals1, "Cash");
+        set1.setBarSpacePercent(35f);
+
+        ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
+        dataSets.add(set1);
+
+        BarData data = new BarData(xVals, dataSets);
+        data.setValueTextSize(10f);
+
+        this.mChart.setData(data);
     }
 }
