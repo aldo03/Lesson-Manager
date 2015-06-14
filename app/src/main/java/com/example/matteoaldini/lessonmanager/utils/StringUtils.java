@@ -10,10 +10,15 @@ import java.util.List;
 public class StringUtils {
     public static  String[] toStringArrayStudents(List<Student> list, boolean all){
         int i = all? 1 : 0;
-        String[] array = new String[list.size()+i];
-        for(Student s: list){
-            array[i] = s.toString();
-            i++;
+        String[] array;
+        if (list!=null){
+            array = new String[list.size()+i];
+            for(Student s: list){
+                array[i] = s.toString();
+                i++;
+            }
+        }else {
+            array = new String[1];
         }
         return array;
     }
