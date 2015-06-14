@@ -49,6 +49,8 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
     private static final String LESSON_PRESENT = "lesson_present";
     private static final String LESSON_PAID = "lesson_paid";
 
+    private static final String DATE_FORMAT = "yyyy/MM/dd";
+
 
 
     private static final String CREATE_STUDENTS_TABLE =
@@ -186,7 +188,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
     //checks if lesson to be put into database is in conflict with other lessons
     private Lesson checkLesson(Calendar date, int hourStart, int minStart, int hourEnd, int minEnd, long id){
         Lesson lesson;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         String dateToFind = sdf.format(date.getTime());
         String query = "SELECT * FROM " + LESSONS_TABLE + " WHERE " + DATE_LESSON + "=?" +
                 " AND NOT ((" + HOUR_START + ">=?" + " AND " + MIN_START + ">=?)" +
@@ -257,7 +259,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     public int getPayment(long idStudent, Calendar date, int hour, int min) {
         int cash = 0;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         String dateToFind = sdf.format(date.getTime());
         String query = "SELECT " + FARE + " FROM " + LESSONS_TABLE + " WHERE " + DATE_LESSON + "<=?" +
                 " AND " + LESSON_PAID + "= 0" + " AND " + LESSON_PRESENT + "= 1" + " AND " + HOUR_START + "<=?" +
@@ -275,9 +277,9 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     public List<Lesson> getDateLessons(Calendar date) {
         List<Lesson> lessons = new ArrayList<>();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         String dateToFind = sdf.format(date.getTime());
-        String query = "SELECT * FROM " + LESSONS_TABLE + " WHERE " + DATE_LESSON + "=?";
+        String query = "SELECT * FROM " + LESSONS_TABLE + " WHERE " + DATE_LESSON + "=? ORDER BY "+HOUR_START;
         SQLiteDatabase db = getReadableDatabase();
 
         Cursor cursor = db.rawQuery(query, new String[]{dateToFind});
@@ -324,9 +326,9 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     public List<Lesson> getStudentLessons(long idStud) throws ParseException {
         List<Lesson> lessons = new ArrayList<>();
-        String query = "SELECT * FROM " + LESSONS_TABLE + " WHERE " + LESSON_STUDENT + "=? AND " + LESSON_PRESENT + "=1" + " ORDER BY date(" + DATE_LESSON + ")";
+        String query = "SELECT * FROM " + LESSONS_TABLE + " WHERE " + LESSON_STUDENT + "=? AND " + LESSON_PRESENT + "=1" + " ORDER BY date(" + DATE_LESSON + ") ASC";
         SQLiteDatabase db = getReadableDatabase();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         Cursor cursor = db.rawQuery(query, new String[]{""+idStud});
 
         if (cursor == null)
@@ -495,7 +497,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         Lesson lesson;
 
         Calendar day = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT * FROM " +LESSONS_TABLE+ " WHERE " +LESSON_STUDENT+ "=? AND " +DATE_LESSON+
@@ -503,9 +505,6 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
                 +DATE_LESSON+"=? AND "+HOUR_START+">=? OR("+DATE_LESSON+"=? AND "+HOUR_START+"=? AND "+MIN_START+">=?))))";
         Cursor cursor = db.rawQuery(query, new String[]{""+idStud, ""+idStud, sdf.format(day.getTime()),sdf.format(day.getTime()),
                 ""+day.get(Calendar.HOUR_OF_DAY),sdf.format(day.getTime()),""+day.get(Calendar.HOUR_OF_DAY), ""+day.get(Calendar.MINUTE) });
-
-        Log.i("",""+day.get(Calendar.HOUR_OF_DAY));
-        Log.i("",""+day.get(Calendar.MINUTE));
         if (cursor == null)
             return null;
 
@@ -528,7 +527,6 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
         while(!(cursor.isLast()||cursor.isAfterLast())){
             cursor.moveToNext();
-            Log.i("","iiii");
             String date = cursor.getString(indexDate);
             int hourStart = cursor.getInt(indexHourStart);
             int minStart = cursor.getInt(indexMinStart);
@@ -575,7 +573,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     public int getOverallEarningsOrCredits(Calendar dateStart, Calendar dateEnd, int creditOrEarning){  //1=E, 0=C
         int tot = 0;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         String dateStartToFind = sdf.format(dateStart.getTime());
         String dateEndToFind = sdf.format(dateEnd.getTime());
 
@@ -592,7 +590,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     public int getOverAllEarningsOrCredits(Calendar dateStart, Calendar dateEnd, int creditOrEarning, long idStud){
         int tot = 0;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         String dateStartToFind = sdf.format(dateStart.getTime());
         String dateEndToFind = sdf.format(dateEnd.getTime());
 
@@ -609,7 +607,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     public int getOverAllEarningsOrCredits(Calendar dateStart, Calendar dateEnd, int creditOrEarning, String subject){
         int tot = 0;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         String dateStartToFind = sdf.format(dateStart.getTime());
         String dateEndToFind = sdf.format(dateEnd.getTime());
 
@@ -626,7 +624,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     private Calendar getDateByString(String date){
         Calendar retDate = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         try {
             retDate.setTime(sdf.parse(date));
         } catch (ParseException e) {
