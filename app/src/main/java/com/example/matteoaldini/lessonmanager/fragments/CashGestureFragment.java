@@ -7,10 +7,14 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
 import com.example.matteoaldini.lessonmanager.R;
 import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
 import com.example.matteoaldini.lessonmanager.model.Lesson;
 import com.example.matteoaldini.lessonmanager.model.Student;
+import com.example.matteoaldini.lessonmanager.utils.StringUtils;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -46,21 +50,30 @@ public class CashGestureFragment extends Fragment {
     private CashGestureListener listener;
     protected HorizontalBarChart mChart;
     private View view;
+    private Spinner studentSpinner;
+    private List<Student> students;
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        LessonManagerDatabase db = new LessonManagerDatabase(getActivity());
+        this.students = db.getStudents();
         this.view = inflater.inflate(R.layout.cash_gesture_layout, container, false);
+
+        this.studentSpinner = (Spinner)this.view.findViewById(R.id.list_student_spinner);
+        String[] studentArray = StringUtils.toStringArrayStudents(students);
+        ArrayAdapter<String> adapterStudent = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, studentArray);
+        adapterStudent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.studentSpinner.setAdapter(adapterStudent);
+
         this.mChart = (HorizontalBarChart)this.view.findViewById(R.id.chart1);
         this.mChart.setDrawBarShadow(false);
 
         this.mChart.setDrawValueAboveBar(true);
 
         this.mChart.setDescription("");
-        this.mChart.setMaxVisibleValueCount(60);
 
         // scaling can now only be done on x- and y-axis separately
         this.mChart.setPinchZoom(false);
-
 
         this.mChart.setDrawGridBackground(false);
         XAxis xl = this.mChart.getXAxis();
@@ -105,10 +118,10 @@ public class CashGestureFragment extends Fragment {
 
     private void setData(int earnings, int credits) {
 
-        ArrayList<String> xVals = new ArrayList<String>();
+        ArrayList<String> xVals = new ArrayList<>();
         xVals.add("Earnings");
         xVals.add("Credits");
-        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> yVals1 = new ArrayList<>();
 
         yVals1.add(new BarEntry(earnings,0));
         yVals1.add(new BarEntry(credits,1));
@@ -116,12 +129,16 @@ public class CashGestureFragment extends Fragment {
         BarDataSet set1 = new BarDataSet(yVals1, "Cash");
         set1.setBarSpacePercent(35f);
 
-        ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
+        ArrayList<BarDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1);
 
         BarData data = new BarData(xVals, dataSets);
         data.setValueTextSize(10f);
+        int max = earnings > credits ? earnings : credits;
+        max += 10;
+        this.mChart.setMaxVisibleValueCount(max);
 
         this.mChart.setData(data);
     }
+
 }
