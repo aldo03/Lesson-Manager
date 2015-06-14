@@ -526,34 +526,55 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     }
 
-    public int getOverallEarnings(){
-        int earnings = 0;
+    public int getOverallEarningsOrCredits(Calendar dateStart, Calendar dateEnd, int creditOrEarning){  //0=E, 1=C
+        int tot = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String dateStartToFind = sdf.format(dateStart.getTime());
+        String dateEndToFind = sdf.format(dateEnd.getTime());
 
-        String query = "SELECT sum("+FARE+") FROM "+LESSONS_TABLE+" WHERE "+LESSON_PAID+"=1";
+        String query = "SELECT sum("+FARE+") FROM "+LESSONS_TABLE+" WHERE "+LESSON_PAID+"=? AND "+DATE_LESSON+">? AND "+DATE_LESSON+"<?";
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[]{""+creditOrEarning, dateStartToFind, dateEndToFind});
         if(cursor==null)
             return 0;
         cursor.moveToNext();
-        earnings = cursor.getInt(0);
+        tot = cursor.getInt(0);
         db.close();
-        Log.i("EARNINGS", ""+earnings);
-        return earnings;
+        return tot;
     }
 
-    public int getTotalCredits(){
-        int credits = 0;
+    public int getOverAllEarningsOrCredits(Calendar dateStart, Calendar dateEnd, int creditOrEarning, long idStud){
+        int tot = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String dateStartToFind = sdf.format(dateStart.getTime());
+        String dateEndToFind = sdf.format(dateEnd.getTime());
 
-        String query = "SELECT sum("+FARE+") FROM "+LESSONS_TABLE+" WHERE "+LESSON_PAID+"=0";
+        String query = "SELECT sum("+FARE+") FROM "+LESSONS_TABLE+" WHERE "+LESSON_PAID+"=? AND "+DATE_LESSON+">? AND "+DATE_LESSON+"<? AND "+LESSON_STUDENT+"=?";
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[]{""+creditOrEarning, dateStartToFind, dateEndToFind, ""+idStud});
         if(cursor==null)
             return 0;
         cursor.moveToNext();
-        credits = cursor.getInt(0);
+        tot = cursor.getInt(0);
         db.close();
-        Log.i("CREDITS", ""+credits);
-        return credits;
+        return tot;
+    }
+
+    public int getOverAllEarningsOrCredits(Calendar dateStart, Calendar dateEnd, int creditOrEarning, String subject){
+        int tot = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String dateStartToFind = sdf.format(dateStart.getTime());
+        String dateEndToFind = sdf.format(dateEnd.getTime());
+
+        String query = "SELECT sum("+FARE+") FROM "+LESSONS_TABLE+" WHERE "+LESSON_PAID+"=? AND "+DATE_LESSON+">? AND "+DATE_LESSON+"<? AND "+SUBJECT_LESSON+"=?";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{""+creditOrEarning, dateStartToFind, dateEndToFind, subject});
+        if(cursor==null)
+            return 0;
+        cursor.moveToNext();
+        tot = cursor.getInt(0);
+        db.close();
+        return tot;
     }
 
     private Calendar getDateByString(String date){
