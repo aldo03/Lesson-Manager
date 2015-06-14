@@ -37,7 +37,6 @@ import com.github.mikephil.charting.utils.PercentFormatter;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -88,7 +87,7 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
     }
 
     private CashGestureListener listener;
-    protected HorizontalBarChart mChart;
+    protected HorizontalBarChart horizontalPieChart;
     private View view;
     private Spinner studentSpinner;
     private List<Student> students;
@@ -138,35 +137,35 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
         this.dateStart.setText(""+this.dayStart+" / "+this.monthStart+" / "+this.yearStart);
         this.dateEnd.setText("" + this.dayEnd + " / " + this.monthEnd + " / " + this.yearEnd);
 
-        this.mChart = (HorizontalBarChart)this.view.findViewById(R.id.chart1);
-        this.mChart.setDrawBarShadow(false);
+        this.horizontalPieChart = (HorizontalBarChart)this.view.findViewById(R.id.chart1);
+        this.horizontalPieChart.setDrawBarShadow(false);
 
-        this.mChart.setDrawValueAboveBar(true);
+        this.horizontalPieChart.setDrawValueAboveBar(true);
 
-        this.mChart.setDescription("");
+        this.horizontalPieChart.setDescription("");
 
         // scaling can now only be done on x- and y-axis separately
-        this.mChart.setPinchZoom(false);
+        this.horizontalPieChart.setPinchZoom(false);
 
-        this.mChart.setDrawGridBackground(false);
-        XAxis xl = this.mChart.getXAxis();
+        this.horizontalPieChart.setDrawGridBackground(false);
+        XAxis xl = this.horizontalPieChart.getXAxis();
         xl.setPosition(XAxis.XAxisPosition.BOTTOM);
         xl.setDrawAxisLine(true);
         xl.setDrawGridLines(true);
         xl.setGridLineWidth(0.3f);
 
-        YAxis yl = this.mChart.getAxisLeft();
+        YAxis yl = this.horizontalPieChart.getAxisLeft();
         yl.setDrawAxisLine(true);
         yl.setDrawGridLines(true);
         yl.setGridLineWidth(0.3f);
 
-        YAxis yr = this.mChart.getAxisRight();
+        YAxis yr = this.horizontalPieChart.getAxisRight();
         yr.setDrawAxisLine(true);
         yr.setDrawGridLines(false);
 
-        this.mChart.setOnDragListener(null);
-        this.mChart.animateY(2500);
-        Legend l = this.mChart.getLegend();
+        this.horizontalPieChart.setOnDragListener(null);
+        this.horizontalPieChart.animateY(2500);
+        Legend l = this.horizontalPieChart.getLegend();
         l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
         l.setFormSize(8f);
         l.setXEntrySpace(4f);
@@ -230,6 +229,9 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
                 try {
                     List<Lesson> lessons = db.getStudentLessons(students.get(0).getId());
                     listener.payForSomeone(students, lessons);
+                    updateChart();
+                    pieChart.animateY(1500, Easing.EasingOption.EaseInOutQuad);
+                    setPieData();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -258,10 +260,10 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
         data.setValueTextSize(10f);
         int max = earnings > credits ? earnings : credits;
         max += 10;
-        this.mChart.setMaxVisibleValueCount(max);
+        this.horizontalPieChart.setMaxVisibleValueCount(max);
 
-        this.mChart.setData(data);
-        this.mChart.invalidate();
+        this.horizontalPieChart.setData(data);
+        this.horizontalPieChart.invalidate();
     }
 
     private void setPieData() {
@@ -331,7 +333,7 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
             earnings = this.db.getOverAllEarningsOrCredits(dateBegin, dateEnd, 1, this.students.get(this.studentSpinner.getSelectedItemPosition()-1).getId());
             credits = this.db.getOverAllEarningsOrCredits(dateBegin, dateEnd, 0, this.students.get(this.studentSpinner.getSelectedItemPosition()-1).getId());
         }
-        this.mChart.animateY(2500);
+        this.horizontalPieChart.animateY(2500);
         setData(earnings, credits);
     }
 
