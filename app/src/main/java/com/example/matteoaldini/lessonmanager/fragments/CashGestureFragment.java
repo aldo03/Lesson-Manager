@@ -277,7 +277,7 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
             int earned = db.getOverAllEarningsOrCredits(dateBegin,dateEnd,1,str);
             if(earned!=0){
                 yVals.add(new Entry((float) earned,i));
-                xVals.add(i,str);
+                xVals.add(str);
                 i++;
             }
         }
@@ -307,7 +307,7 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
         PieData data = new PieData(xVals, dataSet);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(10f);
-        data.setValueTextColor(Color.WHITE);
+        data.setValueTextColor(Color.BLACK);
         this.pieChart.setData(data);
 
         // undo all highlights
