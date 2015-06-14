@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import com.example.matteoaldini.lessonmanager.R;
 import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
 import com.example.matteoaldini.lessonmanager.model.Lesson;
@@ -27,7 +29,22 @@ import java.util.List;
 /**
  * Created by Filo on 04/06/2015.
  */
-public class CashGestureFragment extends Fragment {
+public class CashGestureFragment extends Fragment implements DatePickerFragment.DatePickerObserver{
+
+    @Override
+    public void dateChanged(int year, int month, int day, boolean startEnd) {
+        if(startEnd) {
+            this.yearStart = year;
+            this.monthStart = month;
+            this.dayStart = day;
+            this.dateStart.setText("" + this.dayStart + " / " + (this.monthStart+1) + " / " + this.yearStart);
+        }else {
+            this.yearEnd = year;
+            this.monthEnd = month;
+            this.dayEnd = day;
+            this.dateEnd.setText("" + this.dayEnd + " / " + (this.monthEnd+1) + " / " + this.yearEnd);
+        }
+    }
 
     public interface CashGestureListener {
 
@@ -46,10 +63,60 @@ public class CashGestureFragment extends Fragment {
     private CashGestureListener listener;
     protected HorizontalBarChart mChart;
     private View view;
+    private DatePickerFragment dateStartPicker;
+    private DatePickerFragment dateEndPicker;
+    private TextView dateStart;
+    private TextView dateEnd;
+    private int yearStart;
+    private int monthStart;
+    private int dayStart;
+    private int yearEnd;
+    private int monthEnd;
+    private int dayEnd;
+
     @Nullable
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.cash_gesture_layout, container, false);
+
+
+
+        this.dateStart = (TextView)this.view.findViewById(R.id.date_start_graphic);
+        this.dateEnd = (TextView)this.view.findViewById(R.id.date_end_graphic);
+        this.dateStartPicker = new DatePickerFragment();
+        this.dateEndPicker = new DatePickerFragment();
+        this.dateStartPicker.manuallyAttachObserver(this);
+        this.dateEndPicker.manuallyAttachObserver(this);
+
+        this.yearStart = 2010;
+        this.monthStart = 1;
+        this.dayStart = 1;
+
+        this.yearEnd = 2016;
+        this.monthEnd = 1;
+        this.dayEnd = 1;
+
+        this.dateStart.setText(""+this.dayStart+" / "+this.monthStart+" / "+this.yearStart);
+        this.dateEnd.setText(""+this.dayEnd+" / "+this.monthEnd+" / "+this.yearEnd);
+
+        this.dateStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dateStartPicker.show(getFragmentManager(), "datePicker");
+                dateStartPicker.setStart(true);
+            }
+        });
+
+        this.dateEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dateEndPicker.show(getFragmentManager(), "datePicker");
+                dateEndPicker.setStart(false);
+            }
+        });
+
+
+
         this.mChart = (HorizontalBarChart)this.view.findViewById(R.id.chart1);
         this.mChart.setDrawBarShadow(false);
 
