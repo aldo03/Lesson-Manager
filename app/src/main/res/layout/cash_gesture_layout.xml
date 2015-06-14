@@ -68,13 +68,6 @@
         android:layout_alignLeft="@+id/textView3"
         android:layout_alignStart="@+id/textView3" />
 
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/chart1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignLeft="@+id/spinner"
-        android:layout_alignStart="@+id/spinner" />
-
     <ImageView
         android:layout_width="25dp"
         android:layout_height="25dp"
@@ -106,5 +99,13 @@
         android:layout_marginTop="25dp"
         android:layout_alignLeft="@+id/textView5"
         android:layout_alignStart="@+id/textView5" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner2"
+        android:layout_above="@+id/textView3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

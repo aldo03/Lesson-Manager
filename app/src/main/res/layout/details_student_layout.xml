@@ -79,7 +79,7 @@
                 android:layout_below="@id/nameDetails"
                 android:layout_centerHorizontal="true"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_marginTop="30dp" />
+                android:layout_marginTop="20dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -89,7 +89,7 @@
                 android:layout_below="@id/surnameDetails"
                 android:layout_centerHorizontal="true"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_marginTop="30dp" />
+                android:layout_marginTop="20dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -99,23 +99,33 @@
                 android:layout_below="@id/mailDetails"
                 android:layout_centerHorizontal="true"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_marginTop="30dp" />
+                android:layout_marginTop="20dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="50€"
                 android:id="@+id/paymentDetails"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:layout_centerHorizontal="true"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_below="@+id/phoneDetails" />
+
+            <com.gc.materialdesign.views.ButtonFlat
+                android:id="@+id/show_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/ColorPrimary"
+                android:text="SHOW LESSONS"
+                android:layout_marginTop="30dp"
+                android:layout_below="@+id/paymentDetails"
+                android:layout_centerHorizontal="true"/>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
                 android:id="@+id/layoutCard"
-                android:layout_below="@+id/paymentDetails"></RelativeLayout>
+                android:layout_below="@+id/show_button"></RelativeLayout>
 
 
         </RelativeLayout>
