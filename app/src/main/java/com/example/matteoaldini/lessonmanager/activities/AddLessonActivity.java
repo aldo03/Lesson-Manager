@@ -21,7 +21,7 @@ import com.example.matteoaldini.lessonmanager.model.Student;
 import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
 import com.example.matteoaldini.lessonmanager.fragments.DatePickerFragment;
 import com.example.matteoaldini.lessonmanager.fragments.TimePickerFragment;
-import com.example.matteoaldini.lessonmanager.model.TimeUtils;
+import com.example.matteoaldini.lessonmanager.utils.TimeUtils;
 
 import java.util.Calendar;
 

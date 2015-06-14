@@ -1,4 +1,4 @@
-package com.example.matteoaldini.lessonmanager.model;
+package com.example.matteoaldini.lessonmanager.utils;
 
 import android.widget.TextView;
 

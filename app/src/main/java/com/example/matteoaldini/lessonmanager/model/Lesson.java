@@ -136,6 +136,7 @@ public class Lesson implements Serializable{
         return "Lesson{" +
                 "student=" + student +
                 ", date=" + date +
+                "QUIII"+ date.get(Calendar.DAY_OF_MONTH)+
                 ", hourStart=" + hourStart +
                 ", minStart=" + minStart +
                 ", hourEnd=" + hourEnd +
@@ -149,5 +150,8 @@ public class Lesson implements Serializable{
                 '}';
     }
 
+    public String dateToString() {
+        return ""+date.get(Calendar.DAY_OF_MONTH);
+    }
 
 }

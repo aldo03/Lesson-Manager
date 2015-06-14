@@ -227,6 +227,8 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
                 Student student = this.getStudentByID(idStud);
                 lesson = new Lesson(student, getDateByString(dateL), hourStartL, minStartL, hourEndL, minEndL, fare, location, subject);
                 lesson.setIdLesson(idLesson);
+                lesson.setPaid(this.getBooleanByInt(paid));
+                lesson.setPresent(this.getBooleanByInt(present));
                 db.close();
                 return lesson;
             }
@@ -326,7 +328,6 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
                 LESSON_PAID + "=0" + " AND " + LESSON_PRESENT + "=1" + " ORDER BY date(" + DATE_LESSON + ")";
         SQLiteDatabase db = getReadableDatabase();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        Calendar calendar = Calendar.getInstance();
         Cursor cursor = db.rawQuery(query, new String[]{""+idStud});
 
         if (cursor == null)
@@ -352,6 +353,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
             String location = cursor.getString(indexLocation);
             String subject = cursor.getString(indexSubject);
             String date = cursor.getString(indexDate);
+            Calendar calendar = Calendar.getInstance();
             calendar.setTime(sdf.parse(date));
             long idLesson = cursor.getLong(indexIdLesson);
             int present = cursor.getInt(indexPresent);
@@ -362,11 +364,9 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
             lesson.setPaid(getBooleanByInt(paid));
             lesson.setPresent(getBooleanByInt(present));
             lessons.add(lesson);
-            Log.i("lesson:",lesson.toString());
         }
 
         db.close();
-
         return lessons;
     }
 
@@ -392,6 +392,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
                 modifiedLesson.getMinStart(), modifiedLesson.getHourEnd(), modifiedLesson.getMinEnd(), modifiedLesson.getId());
         if(lessonRet!=null){
             if(lessonRet.getId()!=modifiedLesson.getId())
+                Log.i("","BUG");
                 return lessonRet;
         }
 
@@ -523,6 +524,57 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
             return null;
         }
 
+    }
+
+    public int getOverallEarningsOrCredits(Calendar dateStart, Calendar dateEnd, int creditOrEarning){  //0=E, 1=C
+        int tot = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String dateStartToFind = sdf.format(dateStart.getTime());
+        String dateEndToFind = sdf.format(dateEnd.getTime());
+
+        String query = "SELECT sum("+FARE+") FROM "+LESSONS_TABLE+" WHERE "+LESSON_PAID+"=? AND "+DATE_LESSON+">? AND "+DATE_LESSON+"<?";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{""+creditOrEarning, dateStartToFind, dateEndToFind});
+        if(cursor==null)
+            return 0;
+        cursor.moveToNext();
+        tot = cursor.getInt(0);
+        db.close();
+        return tot;
+    }
+
+    public int getOverAllEarningsOrCredits(Calendar dateStart, Calendar dateEnd, int creditOrEarning, long idStud){
+        int tot = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String dateStartToFind = sdf.format(dateStart.getTime());
+        String dateEndToFind = sdf.format(dateEnd.getTime());
+
+        String query = "SELECT sum("+FARE+") FROM "+LESSONS_TABLE+" WHERE "+LESSON_PAID+"=? AND "+DATE_LESSON+">? AND "+DATE_LESSON+"<? AND "+LESSON_STUDENT+"=?";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{""+creditOrEarning, dateStartToFind, dateEndToFind, ""+idStud});
+        if(cursor==null)
+            return 0;
+        cursor.moveToNext();
+        tot = cursor.getInt(0);
+        db.close();
+        return tot;
+    }
+
+    public int getOverAllEarningsOrCredits(Calendar dateStart, Calendar dateEnd, int creditOrEarning, String subject){
+        int tot = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String dateStartToFind = sdf.format(dateStart.getTime());
+        String dateEndToFind = sdf.format(dateEnd.getTime());
+
+        String query = "SELECT sum("+FARE+") FROM "+LESSONS_TABLE+" WHERE "+LESSON_PAID+"=? AND "+DATE_LESSON+">? AND "+DATE_LESSON+"<? AND "+SUBJECT_LESSON+"=?";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{""+creditOrEarning, dateStartToFind, dateEndToFind, subject});
+        if(cursor==null)
+            return 0;
+        cursor.moveToNext();
+        tot = cursor.getInt(0);
+        db.close();
+        return tot;
     }
 
     private Calendar getDateByString(String date){

@@ -8,19 +8,15 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.matteoaldini.lessonmanager.R;
 import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
-import com.example.matteoaldini.lessonmanager.model.ImageUtils;
+import com.example.matteoaldini.lessonmanager.utils.ImageUtils;
 import com.example.matteoaldini.lessonmanager.model.Lesson;
-import com.example.matteoaldini.lessonmanager.model.Student;
-import com.example.matteoaldini.lessonmanager.model.TimeUtils;
-import com.melnykov.fab.FloatingActionButton;
+import com.example.matteoaldini.lessonmanager.utils.TimeUtils;
 
 import java.text.SimpleDateFormat;
 

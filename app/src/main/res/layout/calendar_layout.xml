@@ -3,7 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/scrollView"
-    android:layout_gravity="center_horizontal" >
+    android:layout_gravity="center_horizontal"
+    android:fillViewport="false"
+    android:background="@color/ColorPrimaryLight">
+
     <LinearLayout
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent"
