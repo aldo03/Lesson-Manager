@@ -47,7 +47,8 @@
         android:text="Pay for"
         android:id="@+id/textView2"
         android:layout_above="@+id/numberLessons"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp" />
 
     <TextView
         android:layout_width="wrap_content"

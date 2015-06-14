@@ -526,6 +526,57 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
 
     }
 
+    public int getOverallEarningsOrCredits(Calendar dateStart, Calendar dateEnd, int creditOrEarning){  //0=E, 1=C
+        int tot = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String dateStartToFind = sdf.format(dateStart.getTime());
+        String dateEndToFind = sdf.format(dateEnd.getTime());
+
+        String query = "SELECT sum("+FARE+") FROM "+LESSONS_TABLE+" WHERE "+LESSON_PAID+"=? AND "+DATE_LESSON+">? AND "+DATE_LESSON+"<?";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{""+creditOrEarning, dateStartToFind, dateEndToFind});
+        if(cursor==null)
+            return 0;
+        cursor.moveToNext();
+        tot = cursor.getInt(0);
+        db.close();
+        return tot;
+    }
+
+    public int getOverAllEarningsOrCredits(Calendar dateStart, Calendar dateEnd, int creditOrEarning, long idStud){
+        int tot = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String dateStartToFind = sdf.format(dateStart.getTime());
+        String dateEndToFind = sdf.format(dateEnd.getTime());
+
+        String query = "SELECT sum("+FARE+") FROM "+LESSONS_TABLE+" WHERE "+LESSON_PAID+"=? AND "+DATE_LESSON+">? AND "+DATE_LESSON+"<? AND "+LESSON_STUDENT+"=?";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{""+creditOrEarning, dateStartToFind, dateEndToFind, ""+idStud});
+        if(cursor==null)
+            return 0;
+        cursor.moveToNext();
+        tot = cursor.getInt(0);
+        db.close();
+        return tot;
+    }
+
+    public int getOverAllEarningsOrCredits(Calendar dateStart, Calendar dateEnd, int creditOrEarning, String subject){
+        int tot = 0;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String dateStartToFind = sdf.format(dateStart.getTime());
+        String dateEndToFind = sdf.format(dateEnd.getTime());
+
+        String query = "SELECT sum("+FARE+") FROM "+LESSONS_TABLE+" WHERE "+LESSON_PAID+"=? AND "+DATE_LESSON+">? AND "+DATE_LESSON+"<? AND "+SUBJECT_LESSON+"=?";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{""+creditOrEarning, dateStartToFind, dateEndToFind, subject});
+        if(cursor==null)
+            return 0;
+        cursor.moveToNext();
+        tot = cursor.getInt(0);
+        db.close();
+        return tot;
+    }
+
     private Calendar getDateByString(String date){
         Calendar retDate = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
