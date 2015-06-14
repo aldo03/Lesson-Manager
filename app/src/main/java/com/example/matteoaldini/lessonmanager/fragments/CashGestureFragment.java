@@ -161,7 +161,6 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
         l.setFormSize(8f);
         l.setXEntrySpace(4f);
 
-        this.updateChart();
 
         this.dateStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,9 +177,14 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
                 dateEndPicker.setStart(false);
             }
         });
-        this.studentSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        this.studentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                updateChart();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
                 updateChart();
             }
         });
@@ -223,6 +227,7 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
         this.mChart.setMaxVisibleValueCount(max);
 
         this.mChart.setData(data);
+        this.mChart.invalidate();
     }
 
     private void updateChart(){
@@ -236,9 +241,10 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
             earnings = this.db.getOverallEarningsOrCredits(dateBegin, dateEnd, 1);
             credits = this.db.getOverallEarningsOrCredits(dateBegin, dateEnd, 0);
         }else{
-            earnings = this.db.getOverAllEarningsOrCredits(dateBegin, dateEnd, 1, this.students.get(this.studentSpinner.getSelectedItemPosition()).getId());
-            credits = this.db.getOverAllEarningsOrCredits(dateBegin, dateEnd, 0, this.students.get(this.studentSpinner.getSelectedItemPosition()).getId());
+            earnings = this.db.getOverAllEarningsOrCredits(dateBegin, dateEnd, 1, this.students.get(this.studentSpinner.getSelectedItemPosition()-1).getId());
+            credits = this.db.getOverAllEarningsOrCredits(dateBegin, dateEnd, 0, this.students.get(this.studentSpinner.getSelectedItemPosition()-1).getId());
         }
+        this.mChart.animateY(2500);
         setData(earnings, credits);
     }
 

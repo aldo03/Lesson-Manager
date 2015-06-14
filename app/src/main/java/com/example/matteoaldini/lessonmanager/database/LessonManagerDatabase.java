@@ -532,7 +532,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         String dateStartToFind = sdf.format(dateStart.getTime());
         String dateEndToFind = sdf.format(dateEnd.getTime());
 
-        String query = "SELECT sum("+FARE+") FROM "+LESSONS_TABLE+" WHERE "+LESSON_PAID+"=? AND "+DATE_LESSON+">? AND "+DATE_LESSON+"<?";
+        String query = "SELECT sum("+FARE+") FROM "+LESSONS_TABLE+" WHERE "+LESSON_PAID+"=? AND "+DATE_LESSON+">=? AND "+DATE_LESSON+"<=?";
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(query, new String[]{""+creditOrEarning, dateStartToFind, dateEndToFind});
         if(cursor==null)
@@ -549,7 +549,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         String dateStartToFind = sdf.format(dateStart.getTime());
         String dateEndToFind = sdf.format(dateEnd.getTime());
 
-        String query = "SELECT sum("+FARE+") FROM "+LESSONS_TABLE+" WHERE "+LESSON_PAID+"=? AND "+DATE_LESSON+">? AND "+DATE_LESSON+"<? AND "+LESSON_STUDENT+"=?";
+        String query = "SELECT sum("+FARE+") FROM "+LESSONS_TABLE+" WHERE "+LESSON_PAID+"=? AND "+DATE_LESSON+">=? AND "+DATE_LESSON+"<=? AND "+LESSON_STUDENT+"=?";
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(query, new String[]{""+creditOrEarning, dateStartToFind, dateEndToFind, ""+idStud});
         if(cursor==null)
@@ -566,7 +566,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
         String dateStartToFind = sdf.format(dateStart.getTime());
         String dateEndToFind = sdf.format(dateEnd.getTime());
 
-        String query = "SELECT sum("+FARE+") FROM "+LESSONS_TABLE+" WHERE "+LESSON_PAID+"=? AND "+DATE_LESSON+">? AND "+DATE_LESSON+"<? AND "+SUBJECT_LESSON+"=?";
+        String query = "SELECT sum("+FARE+") FROM "+LESSONS_TABLE+" WHERE "+LESSON_PAID+"=? AND "+DATE_LESSON+">=? AND "+DATE_LESSON+"<=? AND "+SUBJECT_LESSON+"=?";
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(query, new String[]{""+creditOrEarning, dateStartToFind, dateEndToFind, subject});
         if(cursor==null)
