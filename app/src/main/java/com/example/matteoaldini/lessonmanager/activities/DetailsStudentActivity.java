@@ -21,6 +21,7 @@ import com.example.matteoaldini.lessonmanager.fragments.CardFragment;
 import com.example.matteoaldini.lessonmanager.utils.ImageUtils;
 import com.example.matteoaldini.lessonmanager.model.Lesson;
 import com.example.matteoaldini.lessonmanager.model.Student;
+import com.gc.materialdesign.views.ButtonFlat;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.Calendar;
@@ -38,11 +39,13 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
     private RelativeLayout layout;
     private ImageView image;
     private FloatingActionButton button;
+    private ButtonFlat showButton;
     private Student student;
     private Lesson l;
     private CardFragment cardFragment;
     private static final int ADD_LESSON_CODE = 6;
     private static final int EDIT_STUDENT_CODE = 7;
+    private static final int SHOW_LESSONS_CODE = 8;
     private static final String STUDENT_KEY = "student";
 
     @Override
@@ -61,10 +64,12 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
         this.layout = (RelativeLayout) findViewById(R.id.layoutColor);
         this.image = (ImageView) findViewById(R.id.imageDetail);
         this.button = (FloatingActionButton) findViewById(R.id.fab);
+        this.showButton = (ButtonFlat) findViewById(R.id.show_button);
         this.initFields();
         this.button.setColorNormal(ImageUtils.getDarkColor(this.student.getColor(), getApplicationContext()));
         this.button.setColorPressed(ImageUtils.getDarkColor(this.student.getColor(), getApplicationContext()));
         this.button.setColorRipple(ImageUtils.getDarkColor(this.student.getColor(), getApplicationContext()));
+
         this.name.setText(student.getName());
         this.surname.setText(student.getSurname());
         this.email.setText(student.getEmail());
@@ -80,6 +85,14 @@ public class DetailsStudentActivity extends ActionBarActivity implements CardFra
                 Intent intentAddLesson = new Intent(getApplicationContext(), AddLessonActivity.class);
                 intentAddLesson.putExtra(STUDENT_KEY, student);
                 startActivityForResult(intentAddLesson, ADD_LESSON_CODE);
+            }
+        });
+        this.showButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentShowLessons = new Intent(getApplicationContext(), ShowLessonsActivity.class);
+                intentShowLessons.putExtra(STUDENT_KEY, student);
+                startActivityForResult(intentShowLessons, SHOW_LESSONS_CODE);
             }
         });
     }

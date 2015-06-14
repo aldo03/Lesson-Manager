@@ -40,6 +40,11 @@
             android:label="Edit Lesson">
         </activity>
 
+        <activity android:name=".activities.ShowLessonsActivity"
+            android:label="Lessons">
+        </activity>
+
+
 
     </application>
 

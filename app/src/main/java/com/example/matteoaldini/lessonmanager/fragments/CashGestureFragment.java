@@ -1,6 +1,7 @@
 package com.example.matteoaldini.lessonmanager.fragments;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,17 +20,23 @@ import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
 import com.example.matteoaldini.lessonmanager.model.Lesson;
 import com.example.matteoaldini.lessonmanager.model.Student;
 import com.example.matteoaldini.lessonmanager.utils.StringUtils;
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.PercentFormatter;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -60,7 +67,9 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
                 this.dateEnd.setText("" + this.dayEnd + " / " + (this.monthEnd+1) + " / " + this.yearEnd);
             }
         }
-        updateChart();
+        this.updateChart();
+        this.pieChart.animateY(1500, Easing.EasingOption.EaseInOutQuad);
+        this.setPieData();
     }
 
     public interface CashGestureListener {
@@ -78,7 +87,7 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
     }
 
     private CashGestureListener listener;
-    protected HorizontalBarChart mChart;
+    protected HorizontalBarChart horizontalPieChart;
     private View view;
     private Spinner studentSpinner;
     private List<Student> students;
@@ -93,14 +102,14 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
     private int monthEnd;
     private int dayEnd;
     private LessonManagerDatabase db;
+    private PieChart pieChart;
 
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        int earnings = 0;
-        int credits = 0;
         db = new LessonManagerDatabase(getActivity());
         this.students = db.getStudents();
+
         this.view = inflater.inflate(R.layout.cash_gesture_layout, container, false);
 
         this.studentSpinner = (Spinner)this.view.findViewById(R.id.list_student_spinner);
@@ -128,39 +137,63 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
         this.dateStart.setText(""+this.dayStart+" / "+this.monthStart+" / "+this.yearStart);
         this.dateEnd.setText("" + this.dayEnd + " / " + this.monthEnd + " / " + this.yearEnd);
 
-        this.mChart = (HorizontalBarChart)this.view.findViewById(R.id.chart1);
-        this.mChart.setDrawBarShadow(false);
+        this.horizontalPieChart = (HorizontalBarChart)this.view.findViewById(R.id.chart1);
+        this.horizontalPieChart.setDrawBarShadow(false);
 
-        this.mChart.setDrawValueAboveBar(true);
+        this.horizontalPieChart.setDrawValueAboveBar(true);
 
-        this.mChart.setDescription("");
+        this.horizontalPieChart.setDescription("");
 
         // scaling can now only be done on x- and y-axis separately
-        this.mChart.setPinchZoom(false);
+        this.horizontalPieChart.setPinchZoom(false);
 
-        this.mChart.setDrawGridBackground(false);
-        XAxis xl = this.mChart.getXAxis();
+        this.horizontalPieChart.setDrawGridBackground(false);
+        XAxis xl = this.horizontalPieChart.getXAxis();
         xl.setPosition(XAxis.XAxisPosition.BOTTOM);
         xl.setDrawAxisLine(true);
         xl.setDrawGridLines(true);
         xl.setGridLineWidth(0.3f);
 
-        YAxis yl = this.mChart.getAxisLeft();
+        YAxis yl = this.horizontalPieChart.getAxisLeft();
         yl.setDrawAxisLine(true);
         yl.setDrawGridLines(true);
         yl.setGridLineWidth(0.3f);
 
-        YAxis yr = this.mChart.getAxisRight();
+        YAxis yr = this.horizontalPieChart.getAxisRight();
         yr.setDrawAxisLine(true);
         yr.setDrawGridLines(false);
 
-        this.mChart.setOnDragListener(null);
-        this.mChart.animateY(2500);
-        Legend l = this.mChart.getLegend();
+        this.horizontalPieChart.setOnDragListener(null);
+        this.horizontalPieChart.animateY(2500);
+        Legend l = this.horizontalPieChart.getLegend();
         l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
         l.setFormSize(8f);
         l.setXEntrySpace(4f);
 
+        this.pieChart = (PieChart) this.view.findViewById(R.id.chart2);
+        this.pieChart.setUsePercentValues(true);
+        this.pieChart.setDescription("");
+
+        this.pieChart.setDragDecelerationFrictionCoef(0.95f);
+
+        this.pieChart.setDrawHoleEnabled(true);
+        this.pieChart.setHoleColorTransparent(true);
+
+        this.pieChart.setTransparentCircleColor(Color.WHITE);
+
+        this.pieChart.setHoleRadius(58f);
+        this.pieChart.setTransparentCircleRadius(61f);
+
+        this.pieChart.setDrawCenterText(true);
+
+        this.pieChart.setRotationAngle(0);
+        // enable rotation of the chart by touch
+        this.pieChart.setRotationEnabled(true);
+
+
+        this.pieChart.setCenterText("Subject earnings");
+        this.pieChart.animateY(1500, Easing.EasingOption.EaseInOutQuad);
+        this.setPieData();
 
         this.dateStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,6 +229,9 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
                 try {
                     List<Lesson> lessons = db.getStudentLessons(students.get(0).getId());
                     listener.payForSomeone(students, lessons);
+                    updateChart();
+                    pieChart.animateY(1500, Easing.EasingOption.EaseInOutQuad);
+                    setPieData();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -224,10 +260,63 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
         data.setValueTextSize(10f);
         int max = earnings > credits ? earnings : credits;
         max += 10;
-        this.mChart.setMaxVisibleValueCount(max);
+        this.horizontalPieChart.setMaxVisibleValueCount(max);
 
-        this.mChart.setData(data);
-        this.mChart.invalidate();
+        this.horizontalPieChart.setData(data);
+        this.horizontalPieChart.invalidate();
+    }
+
+    private void setPieData() {
+        Calendar dateBegin = Calendar.getInstance();
+        Calendar dateEnd = Calendar.getInstance();
+        dateBegin.set(this.yearStart, this.monthStart, this.dayStart);
+        dateEnd.set(this.yearEnd, this.monthEnd, this.dayEnd);
+        String[] subjects = getResources().getStringArray(R.array.subjects);
+        ArrayList<Entry> yVals = new ArrayList<>();
+        ArrayList<String> xVals = new ArrayList<>();
+
+        for(String str: subjects){
+            int i = 0;
+            int earned = db.getOverAllEarningsOrCredits(dateBegin,dateEnd,1,str);
+            if(earned!=0){
+                yVals.add(new Entry((float) earned,i));
+                xVals.add(i,str);
+                i++;
+            }
+        }
+
+        PieDataSet dataSet = new PieDataSet(yVals, "Cash Percentual");
+        dataSet.setSliceSpace(3f);
+        dataSet.setSelectionShift(5f);
+
+        // add a lot of colors
+
+        ArrayList<Integer> colors = new ArrayList<>();
+
+        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+            colors.add(c);
+        for (int c : ColorTemplate.JOYFUL_COLORS)
+            colors.add(c);
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors.add(c);
+        for (int c : ColorTemplate.LIBERTY_COLORS)
+            colors.add(c);
+        for (int c : ColorTemplate.PASTEL_COLORS)
+            colors.add(c);
+
+        colors.add(ColorTemplate.getHoloBlue());
+
+        dataSet.setColors(colors);
+
+        PieData data = new PieData(xVals, dataSet);
+        data.setValueFormatter(new PercentFormatter());
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.WHITE);
+        this.pieChart.setData(data);
+
+        // undo all highlights
+        this.pieChart.highlightValues(null);
+        this.pieChart.invalidate();
     }
 
     private void updateChart(){
@@ -244,7 +333,7 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
             earnings = this.db.getOverAllEarningsOrCredits(dateBegin, dateEnd, 1, this.students.get(this.studentSpinner.getSelectedItemPosition()-1).getId());
             credits = this.db.getOverAllEarningsOrCredits(dateBegin, dateEnd, 0, this.students.get(this.studentSpinner.getSelectedItemPosition()-1).getId());
         }
-        this.mChart.animateY(2500);
+        this.horizontalPieChart.animateY(2500);
         setData(earnings, credits);
     }
 
