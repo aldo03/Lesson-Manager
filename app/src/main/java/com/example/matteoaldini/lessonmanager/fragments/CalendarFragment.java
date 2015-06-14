@@ -53,11 +53,13 @@ public class CalendarFragment extends Fragment {
     private MaterialCalendarView calendar;
     private LinearLayout layout;
     private List<Lesson> list;
+    private LayoutInflater inflater;
     private final static int DETAILS_LESSON_CODE = 10;
 
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.inflater = inflater;
         this.view = inflater.inflate(R.layout.calendar_layout, container, false);
         this.calendar = (MaterialCalendarView)this.view.findViewById(R.id.calendarView);
         this.layout = (LinearLayout)this.view.findViewById(R.id.linearLayout);
@@ -92,6 +94,27 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if(calendar.getSelectedDate()!=null){
+            new AsyncTask<Void, Void, Void>() {
+
+                @Override
+                protected Void doInBackground(Void... params) {
+                    list = listener.getLessons(calendar.getSelectedDate().getCalendar());
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    //super.onPostExecute(aVoid);
+                    createLessonCards(inflater);
+                }
+
+                @Override
+                protected void onPreExecute() {
+                    //super.onPreExecute();
+                }
+            }.execute();
+        }
     }
 
     private String getHourFromInt(int time){

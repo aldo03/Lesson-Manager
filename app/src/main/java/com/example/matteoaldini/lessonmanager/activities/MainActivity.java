@@ -86,8 +86,8 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        this.tabAdapter = new TabAdapter(this.getSupportFragmentManager());
-        pager.setAdapter(this.tabAdapter);
+        /*this.tabAdapter = new TabAdapter(this.getSupportFragmentManager());
+        pager.setAdapter(this.tabAdapter);*/
     }
 
     @Override
@@ -143,15 +143,18 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
 
     @Override
     public void payForSomeone(final List<Student> students, List<Lesson> lessons) throws ParseException {
+        LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
+        db.getOverallEarnings();
+        db.getTotalCredits();
         this.studentsPayment = students;
         this.lessonsPayment = lessons;
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.custom_dialog_layout);
-        dialog.setTitle("Payment");
-        final Spinner spinnerStudents = (Spinner)dialog.findViewById(R.id.personlist);
-        final Spinner spinnerLessons = (Spinner)dialog.findViewById(R.id.numberLessons);
-        ButtonFlat pay = (ButtonFlat)dialog.findViewById(R.id.pay_button);
-        ButtonFlat back = (ButtonFlat)dialog.findViewById(R.id.back_button);
+        final Dialog dialogPayment = new Dialog(this);
+        dialogPayment.setContentView(R.layout.custom_dialog_layout);
+        dialogPayment.setTitle("Payment");
+        final Spinner spinnerStudents = (Spinner)dialogPayment.findViewById(R.id.personlist);
+        final Spinner spinnerLessons = (Spinner)dialogPayment.findViewById(R.id.numberLessons);
+        ButtonFlat pay = (ButtonFlat)dialogPayment.findViewById(R.id.pay_button);
+        ButtonFlat back = (ButtonFlat)dialogPayment.findViewById(R.id.back_button);
 
         String[] studentArray = this.toStringArray(students);
         ArrayAdapter<String> adapterStudent = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, studentArray);
@@ -164,7 +167,7 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
                     try {
                         lessonsPayment = db.getStudentLessons(studentsPayment.get(position).getId());
                         String[] lessonArray = generateLessonsArray(lessonsPayment.size());
-                        ArrayAdapter<String> adapterLesson = new ArrayAdapter<>(getApplication(), android.R.layout.simple_spinner_item, lessonArray);
+                        ArrayAdapter<String> adapterLesson = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, lessonArray);
                         adapterLesson.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spinnerLessons.setAdapter(adapterLesson);
                 } catch (ParseException e) {
@@ -183,7 +186,7 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
         adapterLesson.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerLessons.setAdapter(adapterLesson);
 
-        dialog.show();
+        dialogPayment.show();
         pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,8 +206,8 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
                                     l.setPaid(true);
                                     db.updateLesson(l);
                                     Toast.makeText(getApplicationContext(), R.string.lessons_paid, Toast.LENGTH_LONG).show();
-                                    dialog.cancel();
                                 }
+                                dialogPayment.cancel();
                             }
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
@@ -216,7 +219,7 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.cancel();
+                dialogPayment.cancel();
             }
         });
 
