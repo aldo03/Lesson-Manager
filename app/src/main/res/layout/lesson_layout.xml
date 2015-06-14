@@ -38,7 +38,7 @@
                     android:layout_width="25dp"
                     android:layout_height="28dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="5dp"
                     android:src="@drawable/person" />
 
                 <TextView
@@ -47,25 +47,65 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@id/userImage"
-                    android:text="student" />
+                    android:text="student"
+                    android:layout_marginTop="5dp" />
 
                 <TextView
                     android:id="@+id/hour_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="23dp"
+                    android:text="time"
+                    android:layout_alignTop="@+id/student_info"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="15dp"
-                    android:text="time"/>
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="23dp" />
 
                 <TextView
                     android:id="@+id/hour_info2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_below="@id/hour_info"
-                    android:text="time"/>
+                    android:text="time"
+                    android:layout_below="@+id/userImage"
+                    android:layout_alignLeft="@+id/hour_info"
+                    android:layout_alignStart="@+id/hour_info" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="date"
+                    android:id="@+id/dateTextView"
+                    android:layout_below="@+id/userImage"
+                    android:layout_alignLeft="@+id/student_info"
+                    android:layout_alignStart="@+id/student_info"
+                    android:layout_marginTop="5dp" />
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:id="@+id/imageView10"
+                    android:src="@drawable/ic_calendar_grey600_48dp"
+                    android:layout_below="@+id/userImage"
+                    android:layout_alignLeft="@+id/userImage"
+                    android:layout_alignStart="@+id/userImage" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/imageView11"
+                    android:src="@drawable/ic_alarm_grey600_48dp"
+                    android:layout_alignBottom="@+id/dateTextView"
+                    android:layout_toLeftOf="@+id/hour_info2"
+                    android:layout_toStartOf="@+id/hour_info2"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginRight="10dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/checkImg"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true" />
 
             </RelativeLayout>
 

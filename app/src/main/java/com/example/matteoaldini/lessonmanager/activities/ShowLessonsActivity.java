@@ -22,6 +22,7 @@ import com.example.matteoaldini.lessonmanager.utils.ImageUtils;
 import com.example.matteoaldini.lessonmanager.utils.TimeUtils;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -35,6 +36,8 @@ public class ShowLessonsActivity extends ActionBarActivity {
     private View view;
     private Toolbar toolbar;
     private static final int DETAILS_LESSON_CODE = 8;
+    private static final String DATE_FORMAT = "dd-MM-yyyy";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,17 +79,21 @@ public class ShowLessonsActivity extends ActionBarActivity {
         TextView info;
         TextView startHour;
         TextView endHour;
+        TextView date;
         CardView card;
         ImageView imgSubject;
         ImageView imgIconStudent;
+        ImageView checkImg;
         for(Lesson l : this.list){
             final Lesson lessonTemp = l;
             tempView = getLayoutInflater().inflate(R.layout.lesson_layout, null);
             info = (TextView)tempView.findViewById(R.id.student_info);
             startHour = (TextView)tempView.findViewById(R.id.hour_info);
             endHour = (TextView)tempView.findViewById(R.id.hour_info2);
+            date = (TextView)tempView.findViewById(R.id.dateTextView);
             imgSubject = (ImageView)tempView.findViewById(R.id.imageView);
             imgIconStudent = (ImageView)tempView.findViewById(R.id.userImage);
+            checkImg = (ImageView) tempView.findViewById(R.id.checkImg);
             card = (CardView)tempView.findViewById(R.id.card_view);
             card.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -99,8 +106,12 @@ public class ShowLessonsActivity extends ActionBarActivity {
             info.setText(l.getStudent().getName()+" "+l.getStudent().getSurname());
             TimeUtils.setTime(l.getHourStart(), l.getMinStart(), startHour);
             TimeUtils.setTime(l.getHourEnd(), l.getMinEnd(), endHour);
+            date.setText(new SimpleDateFormat(DATE_FORMAT).format(l.getDate().getTime()));
             ImageUtils.setImageSubject(imgSubject, l.getSubject());
             ImageUtils.setImageFromPosition(imgIconStudent, l.getStudent().getColor());
+            if(l.isPaid()){
+                checkImg.setImageResource(R.drawable.ic_cash_multiple_grey600_small);
+            }
             layout.addView(tempView);
         }
         layout.invalidate();
