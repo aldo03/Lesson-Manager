@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.example.matteoaldini.lessonmanager.R;
 import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
 import com.example.matteoaldini.lessonmanager.fragments.CardFragment;
-import com.example.matteoaldini.lessonmanager.model.ImageUtils;
+import com.example.matteoaldini.lessonmanager.utils.ImageUtils;
 import com.example.matteoaldini.lessonmanager.model.Lesson;
 import com.example.matteoaldini.lessonmanager.model.Student;
 import com.melnykov.fab.FloatingActionButton;

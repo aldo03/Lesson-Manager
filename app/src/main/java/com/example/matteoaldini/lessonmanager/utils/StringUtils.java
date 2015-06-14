@@ -1,4 +1,6 @@
-package com.example.matteoaldini.lessonmanager.model;
+package com.example.matteoaldini.lessonmanager.utils;
+
+import com.example.matteoaldini.lessonmanager.model.Student;
 
 import java.util.List;
 

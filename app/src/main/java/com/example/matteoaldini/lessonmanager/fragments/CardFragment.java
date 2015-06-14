@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.example.matteoaldini.lessonmanager.R;
 import com.example.matteoaldini.lessonmanager.activities.DetailsLessonActivity;
-import com.example.matteoaldini.lessonmanager.model.ImageUtils;
+import com.example.matteoaldini.lessonmanager.utils.ImageUtils;
 import com.example.matteoaldini.lessonmanager.model.Lesson;
 
 /**
