@@ -161,7 +161,7 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
                 try {
-                    lessonsPayment = db.getStudentLessons(studentsPayment.get(position).getId());
+                    lessonsPayment = db.getStudentLessonsPaid(studentsPayment.get(position).getId());
                     String[] lessonArray = StringUtils.generateLessonsArray(lessonsPayment.size());
                     ArrayAdapter<String> adapterLesson = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, lessonArray);
                     adapterLesson.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
