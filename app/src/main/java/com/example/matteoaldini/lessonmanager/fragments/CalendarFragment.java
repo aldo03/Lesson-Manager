@@ -18,6 +18,7 @@ import com.example.matteoaldini.lessonmanager.activities.DetailsLessonActivity;
 import com.example.matteoaldini.lessonmanager.utils.ImageUtils;
 import com.example.matteoaldini.lessonmanager.model.Lesson;
 import com.example.matteoaldini.lessonmanager.R;
+import com.example.matteoaldini.lessonmanager.utils.TimeUtils;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateChangedListener;
@@ -113,12 +114,6 @@ public class CalendarFragment extends Fragment {
         }
     }
 
-    private String getHourFromInt(int time){
-        if(time<10){
-            return "0"+time;
-        }else return ""+time;
-    }
-
     private void createLessonCards(LayoutInflater inflater){
         layout.removeAllViews();
         View tempView;
@@ -146,8 +141,8 @@ public class CalendarFragment extends Fragment {
                 }
             });
             info.setText(l.getStudent().getName()+" "+l.getStudent().getSurname());
-            startHour.setText(getHourFromInt(l.getHourStart())+":"+getHourFromInt(l.getMinStart()));
-            endHour.setText(getHourFromInt(l.getHourEnd()) + ":" + getHourFromInt(l.getMinEnd()));
+            TimeUtils.setTime(l.getHourStart(), l.getMinStart(), startHour);
+            TimeUtils.setTime(l.getHourEnd(), l.getMinEnd(), endHour);
             ImageUtils.setImageSubject(imgSubject, l.getSubject());
             ImageUtils.setImageFromPosition(imgIconStudent, l.getStudent().getColor());
             layout.addView(tempView);
