@@ -8,9 +8,9 @@ import java.util.List;
  * Created by Filo on 14/06/2015.
  */
 public class StringUtils {
-    public static  String[] toStringArrayStudents(List<Student> list){
+    public static  String[] toStringArrayStudents(List<Student> list, boolean all){
         String[] array = new String[list.size()];
-        int i = 0;
+        int i = all? 1 : 0;
         for(Student s: list){
             array[i] = s.toString();
             i++;

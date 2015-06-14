@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import android.widget.ArrayAdapter;
@@ -27,7 +28,9 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -48,6 +51,7 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
             this.dayEnd = day;
             this.dateEnd.setText("" + this.dayEnd + " / " + (this.monthEnd+1) + " / " + this.yearEnd);
         }
+        updateChart();
     }
 
     public interface CashGestureListener {
@@ -79,22 +83,23 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
     private int yearEnd;
     private int monthEnd;
     private int dayEnd;
+    private LessonManagerDatabase db;
 
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        LessonManagerDatabase db = new LessonManagerDatabase(getActivity());
+        int earnings = 0;
+        int credits = 0;
+        db = new LessonManagerDatabase(getActivity());
         this.students = db.getStudents();
         this.view = inflater.inflate(R.layout.cash_gesture_layout, container, false);
 
         this.studentSpinner = (Spinner)this.view.findViewById(R.id.list_student_spinner);
-        String[] studentArray = StringUtils.toStringArrayStudents(students);
+        String[] studentArray = StringUtils.toStringArrayStudents(students ,true);
+        studentArray[0] = "All";
         ArrayAdapter<String> adapterStudent = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, studentArray);
         adapterStudent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.studentSpinner.setAdapter(adapterStudent);
-
-
-
 
         this.dateStart = (TextView)this.view.findViewById(R.id.date_start_graphic);
         this.dateEnd = (TextView)this.view.findViewById(R.id.date_end_graphic);
@@ -112,25 +117,7 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
         this.dayEnd = 1;
 
         this.dateStart.setText(""+this.dayStart+" / "+this.monthStart+" / "+this.yearStart);
-        this.dateEnd.setText(""+this.dayEnd+" / "+this.monthEnd+" / "+this.yearEnd);
-
-        this.dateStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dateStartPicker.show(getFragmentManager(), "datePicker");
-                dateStartPicker.setStart(true);
-            }
-        });
-
-        this.dateEnd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dateEndPicker.show(getFragmentManager(), "datePicker");
-                dateEndPicker.setStart(false);
-            }
-        });
-
-
+        this.dateEnd.setText("" + this.dayEnd + " / " + this.monthEnd + " / " + this.yearEnd);
 
         this.mChart = (HorizontalBarChart)this.view.findViewById(R.id.chart1);
         this.mChart.setDrawBarShadow(false);
@@ -159,20 +146,41 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
         yr.setDrawGridLines(false);
 
         this.mChart.setOnDragListener(null);
-        setData(12,50);
         this.mChart.animateY(2500);
         Legend l = this.mChart.getLegend();
         l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
         l.setFormSize(8f);
         l.setXEntrySpace(4f);
 
+        this.updateChart();
+
+        this.dateStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dateStartPicker.show(getFragmentManager(), "datePicker");
+                dateStartPicker.setStart(true);
+            }
+        });
+
+        this.dateEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dateEndPicker.show(getFragmentManager(), "datePicker");
+                dateEndPicker.setStart(false);
+            }
+        });
+        this.studentSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                updateChart();
+            }
+        });
+
         FloatingActionButton fab = (FloatingActionButton)this.view.findViewById(R.id.fab2);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    LessonManagerDatabase db = new LessonManagerDatabase(inflater.getContext());
-                    List<Student> students = db.getStudents();
                     List<Lesson> lessons = db.getStudentLessons(students.get(0).getId());
                     listener.payForSomeone(students, lessons);
                 } catch (ParseException e) {
@@ -206,6 +214,23 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
         this.mChart.setMaxVisibleValueCount(max);
 
         this.mChart.setData(data);
+    }
+
+    private void updateChart(){
+        Calendar dateBegin = Calendar.getInstance();
+        Calendar dateEnd = Calendar.getInstance();
+        int earnings = 0;
+        int credits = 0;
+        dateBegin.set(this.yearStart, this.monthStart, this.dayStart);
+        dateEnd.set(this.yearEnd, this.monthEnd, this.dayEnd);
+        if(this.studentSpinner.getSelectedItemPosition()==0){
+            earnings = this.db.getOverallEarningsOrCredits(dateBegin, dateEnd, 1);
+            credits = this.db.getOverallEarningsOrCredits(dateBegin, dateEnd, 0);
+        }else{
+            earnings = this.db.getOverAllEarningsOrCredits(dateBegin, dateEnd, 1, this.students.get(this.studentSpinner.getSelectedItemPosition()).getId());
+            credits = this.db.getOverAllEarningsOrCredits(dateBegin, dateEnd, 0, this.students.get(this.studentSpinner.getSelectedItemPosition()).getId());
+        }
+        setData(earnings, credits);
     }
 
 }

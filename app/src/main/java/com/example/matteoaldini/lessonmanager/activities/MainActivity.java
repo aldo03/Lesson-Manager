@@ -152,7 +152,7 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
         ButtonFlat pay = (ButtonFlat)dialogPayment.findViewById(R.id.pay_button);
         ButtonFlat back = (ButtonFlat)dialogPayment.findViewById(R.id.back_button);
 
-        String[] studentArray = StringUtils.toStringArrayStudents(students);
+        String[] studentArray = StringUtils.toStringArrayStudents(students, false);
         ArrayAdapter<String> adapterStudent = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, studentArray);
         adapterStudent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerStudents.setAdapter(adapterStudent);
