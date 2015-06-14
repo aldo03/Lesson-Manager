@@ -85,7 +85,6 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         LessonManagerDatabase db = new LessonManagerDatabase(getActivity());
         this.students = db.getStudents();
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.cash_gesture_layout, container, false);
 
         this.studentSpinner = (Spinner)this.view.findViewById(R.id.list_student_spinner);
