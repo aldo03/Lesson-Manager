@@ -500,7 +500,7 @@ public class LessonManagerDatabase extends SQLiteOpenHelper {
             lesson.setIdLesson(idLesson);
             lesson.setPaid(getBooleanByInt(paid));
             lesson.setPresent(getBooleanByInt(present));
-            if(!date.equals(sdf.format(day.getTime()))||hourStart>=day.get(Calendar.HOUR)||hourStart==day.get(Calendar.HOUR)&&minStart>=day.get(Calendar.MINUTE)) {
+            if(!date.equals(sdf.format(day.getTime()))||hourStart>=day.get(Calendar.HOUR_OF_DAY)||hourStart==day.get(Calendar.HOUR_OF_DAY)&&minStart>=day.get(Calendar.MINUTE)) {
                 if (hourStart < hourMin) {
                     hourMin = hourStart;
                     minuteMin = minStart;
