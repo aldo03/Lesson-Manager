@@ -1,5 +1,6 @@
 package com.example.matteoaldini.lessonmanager.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.os.AsyncTask;
 import android.support.v7.widget.Toolbar;
@@ -35,6 +37,7 @@ public class ShowLessonsActivity extends ActionBarActivity {
     private Student student;
     private View view;
     private Toolbar toolbar;
+    private ProgressDialog pd;
     private static final int DETAILS_LESSON_CODE = 8;
     private static final String DATE_FORMAT = "dd-MM-yyyy";
 
@@ -52,6 +55,11 @@ public class ShowLessonsActivity extends ActionBarActivity {
         new AsyncTask<Void, Void, Void>(){
 
             @Override
+            protected void onPreExecute() {
+                pd = ProgressDialog.show(ShowLessonsActivity.this, "Wait", "Loading...");
+            }
+
+            @Override
             protected Void doInBackground(Void... params) {
                 LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
                 try {
@@ -65,12 +73,41 @@ public class ShowLessonsActivity extends ActionBarActivity {
             @Override
             protected void onPostExecute(Void aVoid) {
                 createLessonCards(getLayoutInflater());
+                pd.cancel();
+            }
+        }.execute();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        /*new AsyncTask<Void, Void, Void>(){
+
+            @Override
+            protected void onPreExecute() {
+                pd = ProgressDialog.show(ShowLessonsActivity.this, "Wait", "Loading...");
+            }
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
+                try {
+                    list = db.getStudentLessons(student.getId());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                createLessonCards(getLayoutInflater());
+                pd.dismiss();
             }
 
 
 
-        }.execute();
-
+        }.execute();*/
     }
 
     private void createLessonCards(LayoutInflater inflater){

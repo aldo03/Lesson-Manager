@@ -226,9 +226,6 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
                 try {
                     List<Lesson> lessons = db.getStudentLessonsPaid(students.get(0).getId());
                     listener.payForSomeone(students, lessons);
-                    updateChart();
-                    pieChart.animateY(1500, Easing.EasingOption.EaseInOutQuad);
-                    setPieData();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
