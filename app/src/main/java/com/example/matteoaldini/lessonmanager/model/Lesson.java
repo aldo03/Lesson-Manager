@@ -16,7 +16,6 @@ public class Lesson implements Serializable{
     private int fare;
     private String location;
     private String subject;
-    private boolean present;
     private boolean paid;
     private long idLesson;
 
@@ -34,7 +33,6 @@ public class Lesson implements Serializable{
         this.minEnd = minEnd;
         this.fare = fare;
         this.location = location;
-        this.present = true;
         this.paid = false;
         this.subject = subject;
     }
@@ -103,14 +101,6 @@ public class Lesson implements Serializable{
         this.location = location;
     }
 
-    public boolean isPresent() {
-        return present;
-    }
-
-    public void setPresent(boolean present) {
-        this.present = present;
-    }
-
     public boolean isPaid() {
         return paid;
     }
@@ -144,7 +134,6 @@ public class Lesson implements Serializable{
                 ", fare=" + fare +
                 ", location='" + location + '\'' +
                 ", subject='" + subject + '\'' +
-                ", present=" + present +
                 ", paid=" + paid +
                 ", idLesson=" + idLesson +
                 '}';

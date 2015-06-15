@@ -71,7 +71,6 @@ public class EditLessonActivity extends ActionBarActivity implements DatePickerF
         this.fare = (EditText) findViewById(R.id.fareLesson);
         this.location = (EditText) findViewById(R.id.locationLesson);
         this.paid = (CheckBox) findViewById(R.id.paidCheckbox);
-        this.presence = (CheckBox) findViewById(R.id.presenceCheckbox);
         String[] s = (new SimpleDateFormat(DATE_FORMAT).format(this.lesson.getDate().getTime()).split("-"));
         this.year = Integer.parseInt(s[2]);
         this.month = Integer.parseInt(s[1])-1;
@@ -88,7 +87,6 @@ public class EditLessonActivity extends ActionBarActivity implements DatePickerF
         this.startTimePicker = new TimePickerFragment();
         this.endTimePicker = new TimePickerFragment();
         this.paid.setChecked(this.lesson.isPaid());
-        this.presence.setChecked(this.lesson.isPresent());
         this.date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,7 +156,6 @@ public class EditLessonActivity extends ActionBarActivity implements DatePickerF
                 LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
                 Lesson modifiedLesson = new Lesson(this.lesson.getStudent(), date, this.startHour, this.startMin, this.endHour, this.endMin,
                         Integer.parseInt(this.fare.getText().toString()), this.location.getText().toString(), this.subjects_spinner.getSelectedItem().toString());
-                modifiedLesson.setPresent(this.presence.isChecked());
                 modifiedLesson.setPaid(this.paid.isChecked());
                 modifiedLesson.setIdLesson(this.lesson.getId());
                 Lesson conflictLesson = db.updateLesson(modifiedLesson);

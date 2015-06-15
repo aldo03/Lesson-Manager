@@ -163,7 +163,7 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
                 try {
                     lessonsPayment = db.getStudentLessonsPaid(studentsPayment.get(position).getId());
                     String[] lessonArray = StringUtils.generateLessonsArray(lessonsPayment.size());
-                    ArrayAdapter<String> adapterLesson = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, lessonArray);
+                    ArrayAdapter<String> adapterLesson = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_spinner_item, lessonArray);
                     adapterLesson.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinnerLessons.setAdapter(adapterLesson);
                 } catch (ParseException e) {
