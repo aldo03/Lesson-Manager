@@ -224,8 +224,12 @@ public class CashGestureFragment extends Fragment implements DatePickerFragment.
             @Override
             public void onClick(View v) {
                 try {
-                    List<Lesson> lessons = db.getStudentLessonsPaid(students.get(0).getId());
-                    listener.payForSomeone(students, lessons);
+                    if(students!=null){
+                        List<Lesson> lessons = db.getStudentLessonsPaid(students.get(0).getId());
+                        listener.payForSomeone(students, lessons);
+                    }else {
+                        Toast.makeText(getActivity(), R.string.no_students, Toast.LENGTH_SHORT).show();
+                    }
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

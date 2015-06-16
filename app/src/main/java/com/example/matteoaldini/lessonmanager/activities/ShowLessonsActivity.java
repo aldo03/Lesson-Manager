@@ -52,7 +52,7 @@ public class ShowLessonsActivity extends ActionBarActivity {
         this.setSupportActionBar(toolbar);
         this.toolbar.setTitle("'s lessons");
         this.layout = (LinearLayout) findViewById(R.id.layoutLinear);
-        new AsyncTask<Void, Void, Void>(){
+        /*new AsyncTask<Void, Void, Void>(){
 
             @Override
             protected void onPreExecute() {
@@ -75,13 +75,13 @@ public class ShowLessonsActivity extends ActionBarActivity {
                 createLessonCards(getLayoutInflater());
                 pd.cancel();
             }
-        }.execute();
+        }.execute();*/
     }
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        /*new AsyncTask<Void, Void, Void>(){
+        new AsyncTask<Void, Void, Void>(){
 
             @Override
             protected void onPreExecute() {
@@ -107,7 +107,7 @@ public class ShowLessonsActivity extends ActionBarActivity {
 
 
 
-        }.execute();*/
+        }.execute();
     }
 
     private void createLessonCards(LayoutInflater inflater){

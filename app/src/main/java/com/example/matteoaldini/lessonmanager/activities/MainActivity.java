@@ -204,6 +204,8 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
                                 }
                                 Toast.makeText(getApplicationContext(), R.string.lessons_paid, Toast.LENGTH_LONG).show();
                                 dialogPayment.cancel();
+                                finish();
+                                startActivity(getIntent());
                             }
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)

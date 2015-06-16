@@ -15,5 +15,6 @@
     <string name="lesson_edited">Lesson edited successfully!</string>
     <string name="some_lessons_not_added">Some lessons where not added due to conflicts!</string>
     <string name="lessons_paid">Lessons paid successfully!</string>
+    <string name="no_students">There are no students!</string>
 
 </resources>
