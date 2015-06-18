@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.os.AsyncTask;
 import android.support.v7.widget.Toolbar;
@@ -17,7 +15,6 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.matteoaldini.lessonmanager.R;
 import com.example.matteoaldini.lessonmanager.database.LessonManagerDatabase;
-import com.example.matteoaldini.lessonmanager.fragments.CardFragment;
 import com.example.matteoaldini.lessonmanager.model.Lesson;
 import com.example.matteoaldini.lessonmanager.model.Student;
 import com.example.matteoaldini.lessonmanager.utils.ImageUtils;
@@ -27,15 +24,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-/**
- * Created by brando on 14/06/2015.
- */
 public class ShowLessonsActivity extends ActionBarActivity {
-    private CardFragment cardFragment;
     private LinearLayout layout;
     private List<Lesson> list;
     private Student student;
-    private View view;
     private Toolbar toolbar;
     private ProgressDialog pd;
     private static final int DETAILS_LESSON_CODE = 8;
@@ -101,7 +93,7 @@ public class ShowLessonsActivity extends ActionBarActivity {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                createLessonCards(getLayoutInflater());
+                createLessonCards();
                 pd.dismiss();
             }
 
@@ -110,7 +102,7 @@ public class ShowLessonsActivity extends ActionBarActivity {
         }.execute();
     }
 
-    private void createLessonCards(LayoutInflater inflater){
+    private void createLessonCards(){
         layout.removeAllViews();
         View tempView;
         TextView info;

@@ -141,7 +141,6 @@ public class MainActivity extends ActionBarActivity implements StudentListFragme
 
     @Override
     public void payForSomeone(final List<Student> students, List<Lesson> lessons) throws ParseException {
-        LessonManagerDatabase db = new LessonManagerDatabase(getApplicationContext());
         this.studentsPayment = students;
         this.lessonsPayment = lessons;
         final Dialog dialogPayment = new Dialog(this);
